@@ -3,6 +3,9 @@ package com.marvellimited.app
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -115,6 +118,24 @@ object MarvelApi {
         return all.sortedBy { Parse.sortKey(it.issueNumber) }
     }
 
+    /** 系列全部期数（fandom wiki allpages 枚举 + 并发解析 wikitext） */
+    suspend fun seriesIssuesByFandom(seriesTitle: String): List<Issue> {
+        val vol = seriesTitle.trim().replace(Regex(" Vol \\d+$"), "")
+        // 先在 wiki 里找该系列对应的 "XXX Vol N" 页面名
+        val candidates = searchSeries(vol)
+        val seriesPage = candidates.firstOrNull { it.equals(seriesTitle.trim(), ignoreCase = true) }
+            ?: candidates.firstOrNull()
+            ?: vol.let { it + " Vol 1" } // 兜底：直接拿名字试
+        val nums = fandomSeriesIssueNumbers(seriesPage)
+        if (nums.isEmpty()) return emptyList()
+        val issues = coroutineScope {
+            nums.map { num ->
+                async(Dispatchers.IO) { fandomIssue(seriesPage, num) }
+            }.awaitAll().filterNotNull()
+        }
+        return issues
+    }
+
     /** fandom wiki：系列名搜索（opensearch） */
     suspend fun searchSeries(query: String): List<String> {
         val url = "https://marvel.fandom.com/api.php?action=opensearch&search=" +
@@ -122,6 +143,35 @@ object MarvelApi {
         val body = parseJson<List<Any?>>(get(url))
         return (body.getOrNull(1) as? List<*>)?.map { it.toString() }
             ?.filter { Regex(" Vol \\d+$").containsMatchIn(it) } ?: emptyList()
+    }
+
+    /** fandom wiki：全站搜索（任意页，含 issue 页） */
+    suspend fun searchIssues(query: String): List<Issue> {
+        val url = "https://marvel.fandom.com/api.php?action=query&list=search&srsearch=" +
+            java.net.URLEncoder.encode(query, "UTF-8") + "&srlimit=15&format=json"
+        return try {
+            val body = parseJson<Map<String, Any?>>(get(url))
+            val search = ((body["query"] as Map<*, *>)["search"] as? List<*>) ?: return emptyList()
+            search.mapNotNull { it as? Map<*, *> }
+                .mapNotNull { p -> p["title"]?.toString() }
+                // 只保留 "系列名 + 期号" 形态的页面
+                .filter { title ->
+                    val m = Regex("^(.+) Vol \\d+ (\\d+[A-Za-z]?)$").find(title) ?: return@filter false
+                    true
+                }
+                .map { title ->
+                    val m = Regex("^(.+) Vol (\\d+) (\\d+[A-Za-z]?)$").find(title)!!
+                    Issue(
+                        id = "fandom:" + title,
+                        title = title,
+                        seriesTitle = m.groupValues[1] + " Vol " + m.groupValues[2],
+                        issueNumber = m.groupValues[3],
+                        isWiki = true,
+                    )
+                }
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     /** fandom wiki：某系列全部 issue 页（allpages 枚举） */

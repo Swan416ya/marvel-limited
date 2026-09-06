@@ -11,4 +11,7 @@ local.properties
 app/build/
 build_log*.txt
 cap*.js
-
+cap*.txt
+cap*_err.txt
+compile*.txt
+build_final.txt
