@@ -15,3 +15,7 @@ cap*.txt
 cap*_err.txt
 compile*.txt
 build_final.txt
+compile*.txt
+build5.txt
+guides_check.json
+tmp_line.txt

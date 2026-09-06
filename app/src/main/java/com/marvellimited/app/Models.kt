@@ -39,6 +39,15 @@ data class HomePageData(
     val freeInUnlimited: List<HomeIssue> = emptyList(),
 )
 
+/** 官网精选系列 */
+data class FeaturedSeries(
+    val id: String,
+    val title: String,
+    val years: String = "",
+    val coverUrl: String? = null,
+    val seriesSlug: String = "",
+)
+
 /** bifrost JSON 解析 */
 object Parse {
     fun homeIssue(json: Map<*, *>): HomeIssue {

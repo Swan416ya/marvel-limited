@@ -142,6 +142,7 @@ fun OverlayHost(dest: Any?, index: Int, stack: SnapshotStateList<Any?>, nav: (An
             is HomeIssue -> IssueDetailScreen(issueFromHomeIssue(dest), stack)
             is ReadingList -> ReadingListDetailScreen(dest, stack)
             is EventsNav -> EventsScreen(stack)
+            is PopularSeriesNav -> PopularSeriesScreen(stack)
             is SearchQueryNav -> SearchScreen(nav, initialQuery = dest.query)
         }
     }
@@ -152,6 +153,9 @@ data class SeriesNav(val seriesId: String?, val title: String, val fandomName: S
 
 /** 大事件列表导航 */
 data object EventsNav
+
+/** 热门系列列表导航 */
+data object PopularSeriesNav
 
 /** 带初始查询进搜索 */
 data class SearchQueryNav(val query: String)

@@ -1,6 +1,7 @@
 package com.marvellimited.app
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -12,6 +13,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Casino
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.RecentActors
 import androidx.compose.material3.*
@@ -84,8 +87,13 @@ fun HomeScreen(nav: (Any) -> Unit, onOpenSettings: () -> Unit) {
                         Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
                             MarvelLogoText()
                         }
-                        TextButton(onClick = onOpenSettings) {
-                            Text("主题", fontSize = 13.sp)
+                        IconButton(onClick = onOpenSettings) {
+                            Icon(
+                                if (LocalThemeMode.current == ThemeMode.DARK) Icons.Filled.LightMode
+                                else Icons.Filled.DarkMode,
+                                contentDescription = "切换主题",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
                         }
                     }
                 }
@@ -147,15 +155,13 @@ fun HomeScreen(nav: (Any) -> Unit, onOpenSettings: () -> Unit) {
     }
 }
 
-/** 居中的 MARVEL logo 文字（红色、粗体、负字距） */
+/** 居中的 MARVEL 官方矢量 logo */
 @Composable
-fun MarvelLogoText(fontSize: androidx.compose.ui.unit.TextUnit = 28.sp) {
-    Text(
-        "MARVEL",
-        color = MarvelRed,
-        fontSize = fontSize,
-        fontWeight = FontWeight.Black,
-        letterSpacing = (-0.5).sp,
+fun MarvelLogoText(height: androidx.compose.ui.unit.Dp = 22.dp) {
+    Image(
+        painter = androidx.compose.ui.res.painterResource(id = R.drawable.marvel_logo),
+        contentDescription = "Marvel",
+        modifier = Modifier.height(height),
     )
 }
 
@@ -220,7 +226,7 @@ fun QuickActions(nav: (Any) -> Unit, home: HomePageData, guides: List<Guide>) {
     ) {
         listOf(
             "随机一本" to Icons.Filled.Casino,
-            "销量最高" to Icons.Filled.LocalFireDepartment,
+            "热门系列" to Icons.Filled.LocalFireDepartment,
             "大事件导读" to Icons.Filled.RecentActors,
         ).forEach { (label, icon) ->
             Button(
@@ -232,11 +238,7 @@ fun QuickActions(nav: (Any) -> Unit, home: HomePageData, guides: List<Guide>) {
                                 nav(pool[Random.nextInt(pool.size)])
                             }
                         }
-                        "销量最高" -> {
-                            if (home.bestSelling.isNotEmpty()) {
-                                nav(home.bestSelling.first())
-                            }
-                        }
+                        "热门系列" -> nav(PopularSeriesNav)
                         "大事件导读" -> nav(EventsNav)
                     }
                 },

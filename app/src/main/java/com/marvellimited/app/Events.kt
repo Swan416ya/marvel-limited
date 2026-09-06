@@ -40,20 +40,57 @@ fun EventsScreen(stack: SnapshotStateList<Any?>) {
         when {
             error != null -> ErrorState(error!!) { reload++ }
             events == null -> LoadingState()
-            else -> LazyColumn(
-                contentPadding = PaddingValues(bottom = 24.dp),
-            ) {
-                items(events!!, key = { it.id }) { guide ->
-                    EventRow(guide, nav)
+            else -> {
+                val sorted = events!!.sortedBy { eventYear(it) }
+                LazyColumn(contentPadding = PaddingValues(bottom = 24.dp)) {
+                    items(sorted, key = { it.id }) { guide ->
+                        EventRow(guide, nav)
+                    }
                 }
             }
         }
     }
 }
 
-/** 一个大事件行：左侧 event 图 + 右侧名字 */
+/** event 按时间排序（描述中出现的最早年份） */
+private fun eventYear(guide: Guide): Int {
+    val years = Regex("\\b(19|20)\\d{2}\\b").findAll(guide.description).mapNotNull { it.value.toIntOrNull() }.toList()
+    return years.minOrNull() ?: 9999
+}
+
+/** 事件 logo 映射：guide 标题 -> fandom wiki 页面名 */
+object EventLogos {
+    private val pages = mapOf(
+        "Civil War: The Complete Event" to "Civil War (Event)",
+        "Secret Invasion: The Complete Event" to "Secret Invasion (Event)",
+        "Infinity: The Complete Event" to "Infinity (Event)",
+        "House of M: The Complete Event" to "House of M (Event)",
+        "Age of Ultron: The Complete Event" to "Age of Ultron (Event)",
+        "World War Hulk: The Complete Event" to "World War Hulk",
+        "Empyre: The Complete Event" to "Empyre (Event)",
+        "Spider-Verse: The Complete Event" to "Spider-Verse",
+        "Age of Apocalypse: The Complete Event" to "Age of Apocalypse (Event)",
+        "X-Men: Onslaught—The Complete Event" to "Onslaught (Event)",
+        "Sins of Sinister: The Complete Event" to "Sins of Sinister",
+        "Age of X-Man: The Complete Event" to "Age of X-Man (Event)",
+        "Spider-Geddon: The Complete Event" to "Spider-Geddon",
+        "Spider-Island: The Complete Event" to "Spider-Island (Event)",
+        "Avengers vs. X-Men: The Complete Event" to "Avengers vs. X-Men (Event)",
+        "X-Men: Battle of the Atom Complete Event" to "Battle of the Atom",
+    )
+
+    fun forGuide(guideTitle: String): String? = pages[guideTitle]
+}
+
+/** 一个大事件行：左侧 event logo + 右侧名字 */
 @Composable
 fun EventRow(guide: Guide, nav: (Any) -> Unit) {
+    var logoUrl by remember(guide.id) { mutableStateOf<String?>(null) }
+    LaunchedEffect(guide.id) {
+        EventLogos.forGuide(guide.title)?.let { page ->
+            logoUrl = MarvelApi.fandomPageImage(page)
+        }
+    }
     Row(
         Modifier
             .fillMaxWidth()
@@ -63,13 +100,14 @@ fun EventRow(guide: Guide, nav: (Any) -> Unit) {
     ) {
         Box(
             Modifier
-                .size(72.dp)
-                .clip(RoundedCornerShape(12.dp))
+                .width(110.dp)
+                .aspectRatio(1.6f)
+                .clip(RoundedCornerShape(10.dp))
                 .background(MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center,
         ) {
             GlideImage(
-                url = guide.coverUrl,
+                url = logoUrl ?: guide.coverUrl,
                 contentDescription = guide.title,
                 modifier = Modifier.fillMaxSize(),
             )
@@ -87,4 +125,3 @@ fun EventRow(guide: Guide, nav: (Any) -> Unit) {
         }
     }
 }
-

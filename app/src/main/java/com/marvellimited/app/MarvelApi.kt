@@ -118,6 +118,44 @@ object MarvelApi {
         return all.sortedBy { Parse.sortKey(it.issueNumber) }
     }
 
+    /** 系列页 HTML 解析：官网系列页直出 20 期 + 信息 */
+    suspend fun seriesPageInfo(seriesId: String, seriesSlug: String): Pair<String?, List<Issue>> {
+        val html = get("https://www.marvel.com/comics/series/" + seriesId + "/" + seriesSlug)
+        // 系列名（标题栏）
+        val title = Regex("<h1[^>]*>([^<]+)</h1>").find(html)?.groupValues?.get(1)?.trim()
+        // 卡片：issue id + 封面 + 标题
+        val cardRe = Regex(
+            "comic_card-\\d+\"[\\s\\S]*?issue/(\\d+)/[^\"]*\"[\\s\\S]*?src=\"([^\"]+)\"[\\s\\S]*?card_title\"><a[^>]*>([^<]+)</a>"
+        )
+        val issues = cardRe.findAll(html).map { m ->
+            Issue(
+                id = m.groupValues[1],
+                title = m.groupValues[3],
+                seriesTitle = title ?: "",
+                seriesId = seriesId,
+                issueNumber = Parse.numberOf(m.groupValues[3]),
+                coverUrl = m.groupValues[2],
+            )
+        }.distinctBy { it.id }.toList()
+        return Pair(title, issues)
+    }
+
+    /** 官网“精选系列”列表（comics/series 首屏 9 个） */
+    suspend fun featuredSeries(): List<FeaturedSeries> {
+        val html = get("https://www.marvel.com/comics/series")
+        val cardRe = Regex(
+            "comic-series_card-\\d+\"[\\s\\S]*?series/(\\d+)/[^\"]*\"[\\s\\S]*?src=\"([^\"]+)\"[\\s\\S]*?card_title\"><a[^>]*>([^<]+)</a>[\\s\\S]*?card_subtitle\">([^<]*)</p>"
+        )
+        return cardRe.findAll(html).map { m ->
+            FeaturedSeries(
+                id = m.groupValues[1],
+                title = m.groupValues[3].trim(),
+                years = m.groupValues[4].trim().removePrefix("(").removeSuffix(")"),
+                coverUrl = m.groupValues[2],
+            )
+        }.distinctBy { it.id }.toList()
+    }
+
     /** 系列全部期数（fandom wiki allpages 枚举 + 并发解析 wikitext） */
     suspend fun seriesIssuesByFandom(seriesTitle: String): List<Issue> {
         val vol = seriesTitle.trim().replace(Regex(" Vol \\d+$"), "")
@@ -256,6 +294,24 @@ object MarvelApi {
             }
         }
         null
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    /** fandom wiki：某页面原图（事件 logo） */
+    suspend fun fandomPageImage(pageTitle: String): String? {
+        return try {
+            val url = "https://marvel.fandom.com/api.php?action=query&titles=" +
+                java.net.URLEncoder.encode(pageTitle, "UTF-8") +
+                "&prop=pageimages&piprop=original&format=json"
+            val body = parseJson<Map<String, Any?>>(get(url))
+            val pages = (body["query"] as Map<*, *>)["pages"] as Map<*, *>
+            for (p in pages.values) {
+                val original = (p as Map<*, *>)["original"] as? Map<*, *>
+                if (original != null) return original["source"]?.toString()
+            }
+            null
         } catch (e: Exception) {
             null
         }

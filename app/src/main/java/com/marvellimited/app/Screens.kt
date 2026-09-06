@@ -272,8 +272,10 @@ fun IssueDetailScreen(issue: Issue, stack: SnapshotStateList<Any?>) {
             Spacer(Modifier.height(10.dp))
             OutlinedButton(
                 onClick = {
-                    val q = issue.seriesTitle + " " + issue.issueNumber
-                    val url = "https://getcomics.io/?s=" + java.net.URLEncoder.encode(q.trim(), "UTF-8").replace("+", "%20")
+                    // 标题 + 年份，去掉括号等干扰字符
+                    val year = Regex("\\(\\d{4})\\)").find(issue.title)?.groupValues?.get(1) ?: ""
+                    val q = (issue.seriesTitle.ifEmpty { Parse.seriesOf(issue.title) } + " " + year).trim()
+                    val url = "https://getcomics.org/?s=" + java.net.URLEncoder.encode(q, "UTF-8").replace("+", "%20")
                     try {
                         context.startActivity(
                             Intent(Intent.ACTION_VIEW, Uri.parse(url)),
@@ -328,6 +330,7 @@ fun IssueDetailScreen(issue: Issue, stack: SnapshotStateList<Any?>) {
 @Composable
 fun SeriesScreen(dest: SeriesNav, stack: SnapshotStateList<Any?>) {
     var issues by remember { mutableStateOf<List<Issue>?>(null) }
+    var seriesHeader by remember { mutableStateOf<Issue?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
     var reload by remember { mutableStateOf(0) }
     val nav: (Any) -> Unit = { stack.add(it) }
@@ -336,7 +339,13 @@ fun SeriesScreen(dest: SeriesNav, stack: SnapshotStateList<Any?>) {
     LaunchedEffect(reload) {
         error = null
         try {
-            issues = MarvelApi.seriesIssuesByFandom(dest.title)
+            // 双数据源：bifrost（官方目录）优先，fandom wiki 兜底（补下架期数）
+            issues = if (dest.seriesId != null) {
+                MarvelApi.seriesIssues(dest.seriesId!!)
+            } else {
+                MarvelApi.seriesIssuesByFandom(dest.title)
+            }
+            seriesHeader = issues?.firstOrNull { it.coverUrl != null }
         } catch (e: Exception) {
             error = e.message ?: "加载失败"
         }
@@ -347,11 +356,45 @@ fun SeriesScreen(dest: SeriesNav, stack: SnapshotStateList<Any?>) {
         when {
             error != null -> ErrorState(error!!) { reload++ }
             issues == null -> LoadingState()
-            else -> LazyColumn(
-                contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 24.dp),
-            ) {
-                items(issues!!, key = { it.id }) { issue ->
-                    IssueRow(issue, nav)
+            else -> {
+                // 头部：系列封面横幅 + 名称 + 期数统计
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(180.dp),
+                ) {
+                    if (seriesHeader?.coverUrl != null) {
+                        GlideImage(
+                            url = seriesHeader!!.coverUrl,
+                            contentDescription = dest.title,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                        Box(
+                            Modifier
+                                .fillMaxSize()
+                                .background(
+                                    Brush.verticalGradient(
+                                        0f to Color.Transparent,
+                                        1f to MaterialTheme.colorScheme.background,
+                                    ),
+                                ),
+                        )
+                    }
+                    Column(Modifier.align(Alignment.BottomStart).padding(20.dp, bottom = 12.dp)) {
+                        Text(dest.title, style = Title2, color = MaterialTheme.colorScheme.onSurface)
+                        Text(
+                            issues!!.size.toString() + " 期",
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+                LazyColumn(
+                    contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 24.dp),
+                ) {
+                    items(issues!!, key = { it.id }) { issue ->
+                        IssueRow(issue, nav)
+                    }
                 }
             }
         }
