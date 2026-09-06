@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 
 /** 大事件列表：所有带 Complete Event 的 guide，按年份排序 */
 @Composable
-fun EventsScreen(stack: SnapshotStateList<Any?>) {
+fun EventsScreen(stack: SnapshotStateList<Any>) {
     var events by remember { mutableStateOf<List<Guide>?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
     var reload by remember { mutableStateOf(0) }

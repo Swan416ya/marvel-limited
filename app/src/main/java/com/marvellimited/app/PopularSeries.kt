@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 
 /** 热门系列页：官网精选系列网格 */
 @Composable
-fun PopularSeriesScreen(stack: SnapshotStateList<Any?>) {
+fun PopularSeriesScreen(stack: SnapshotStateList<Any>) {
     var series by remember { mutableStateOf<List<FeaturedSeries>?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
     var reload by remember { mutableStateOf(0) }
@@ -92,4 +92,3 @@ fun SeriesCard(s: FeaturedSeries, nav: (Any) -> Unit) {
         }
     }
 }
-

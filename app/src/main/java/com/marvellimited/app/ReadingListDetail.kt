@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 
 /** 书单详情：顺序列表，可移除条目 */
 @Composable
-fun ReadingListDetailScreen(list: ReadingList, stack: SnapshotStateList<Any?>) {
+fun ReadingListDetailScreen(list: ReadingList, stack: SnapshotStateList<Any>) {
     val context = androidx.compose.ui.platform.LocalContext.current
     var current by remember { mutableStateOf(list) }
     val nav: (Any) -> Unit = { stack.add(it) }

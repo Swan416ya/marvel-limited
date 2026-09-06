@@ -65,7 +65,7 @@ fun DetailTopBar(title: String, onBack: () -> Unit, action: @Composable () -> Un
 
 /** 指南详情：按官方顺序的 issue 网格 */
 @Composable
-fun GuideDetailScreen(guide: Guide, stack: SnapshotStateList<Any?>) {
+fun GuideDetailScreen(guide: Guide, stack: SnapshotStateList<Any>) {
     var issues by remember { mutableStateOf<List<Issue>?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
     var reload by remember { mutableStateOf(0) }
@@ -153,7 +153,7 @@ fun IssueCell(issue: Issue, order: Int, nav: (Any) -> Unit) {
 
 /** Issue 详情 */
 @Composable
-fun IssueDetailScreen(issue: Issue, stack: SnapshotStateList<Any?>) {
+fun IssueDetailScreen(issue: Issue, stack: SnapshotStateList<Any>) {
     val context = LocalContext.current
     val pickFile = rememberLauncherForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.OpenDocument()
@@ -328,7 +328,7 @@ fun IssueDetailScreen(issue: Issue, stack: SnapshotStateList<Any?>) {
 
 /** 系列页：优先 fandom（可靠），seriesId 保留备用 */
 @Composable
-fun SeriesScreen(dest: SeriesNav, stack: SnapshotStateList<Any?>) {
+fun SeriesScreen(dest: SeriesNav, stack: SnapshotStateList<Any>) {
     var issues by remember { mutableStateOf<List<Issue>?>(null) }
     var seriesHeader by remember { mutableStateOf<Issue?>(null) }
     var error by remember { mutableStateOf<String?>(null) }

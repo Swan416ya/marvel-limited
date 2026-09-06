@@ -20,8 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Casino
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.activity.compose.BackHandler
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -47,14 +47,14 @@ val HomeScrollBus = java.util.concurrent.atomic.AtomicInteger(0)
 @Composable
 fun MarvelApp(onThemeChange: (ThemeMode) -> Unit) {
     var tab by remember { mutableStateOf(0) }
-    val stack = remember { mutableStateListOf<Any?>() }
+val stack = remember { mutableStateListOf<Any>() }
     var showSettings by remember { mutableStateOf(false) }
 
     val nav: (Any) -> Unit = { dest -> stack.add(dest) }
 
     val pages = listOf(
         "主页" to Icons.Filled.Home,
-        "书架" to Icons.Filled.MenuBook,
+        "书架" to Icons.AutoMirrored.Filled.MenuBook,
         "搜索" to Icons.Filled.Search,
     )
 
@@ -62,34 +62,17 @@ fun MarvelApp(onThemeChange: (ThemeMode) -> Unit) {
         Scaffold(
             containerColor = Color.Transparent,
             bottomBar = {
-                NavigationBar(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.onSurface,
-                    tonalElevation = 0.dp,
-                ) {
-                    pages.forEachIndexed { i, (label, icon) ->
-                        NavigationBarItem(
-                            selected = tab == i,
-                            onClick = {
-                                if (tab == i) {
-                                    HomeScrollBus.incrementAndGet()
-                                } else {
-                                    tab = i
-                                }
-                            },
-                            icon = {
-                                Icon(
-                                    icon, null,
-                                    tint = if (tab == i) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            },
-                            label = { Text(label, fontSize = 11.sp) },
-                            colors = NavigationBarItemDefaults.colors(
-                                indicatorColor = MaterialTheme.colorScheme.surfaceVariant,
-                            ),
-                        )
-                    }
-                }
+                AppBottomBar(
+                    pages = pages,
+                    selected = tab,
+                    onSelect = { i ->
+                        if (tab == i) {
+                            HomeScrollBus.incrementAndGet()
+                        } else {
+                            tab = i
+                        }
+                    },
+                )
             },
         ) { padding ->
             Box(Modifier.padding(padding)) {
@@ -115,7 +98,7 @@ fun MarvelApp(onThemeChange: (ThemeMode) -> Unit) {
 
 /** 叠加层：滑入动画 + 返回键支持 */
 @Composable
-fun OverlayHost(dest: Any?, index: Int, stack: SnapshotStateList<Any?>, nav: (Any) -> Unit) {
+fun OverlayHost(dest: Any, index: Int, stack: SnapshotStateList<Any>, nav: (Any) -> Unit) {
     val visible = remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { visible.value = true }
     val offsetX by animateFloatAsState(
@@ -201,4 +184,53 @@ fun SettingsSheet(onDismiss: () -> Unit, onThemeChange: (ThemeMode) -> Unit) {
             TextButton(onClick = onDismiss) { Text("完成") }
         },
     )
+}
+
+/** 自绘极简底部导航：白底细线、图标+小字、选中用主题红点缀 */
+@Composable
+fun AppBottomBar(
+    pages: List<Pair<String, androidx.compose.ui.graphics.vector.ImageVector>>,
+    selected: Int,
+    onSelect: (Int) -> Unit,
+) {
+    Column(Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surface)) {
+        HorizontalDivider(
+            thickness = 0.5.dp,
+            color = MaterialTheme.colorScheme.outline,
+        )
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .height(56.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            pages.forEachIndexed { i, (label, icon) ->
+                val active = selected == i
+                Column(
+                    Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .clickableNoRipple { onSelect(i) },
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Icon(
+                        icon,
+                        contentDescription = label,
+                        tint = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(22.dp),
+                    )
+                    Text(
+                        label,
+                        fontSize = 10.sp,
+                        lineHeight = 12.sp,
+                        color = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal,
+                        modifier = Modifier.padding(top = 2.dp),
+                    )
+                }
+            }
+        }
+    }
 }
