@@ -1,0 +1,1 @@
+export 'reader_page_stub.dart' if (dart.library.io) 'reader_page_io.dart';
