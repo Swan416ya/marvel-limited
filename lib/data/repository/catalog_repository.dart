@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/services.dart' show rootBundle;
 
 import '../models/marvel_models.dart';
 import '../models/series_summary.dart';
@@ -29,6 +32,7 @@ class CatalogRepository {
   final Map<String, List<SeriesSummary>> _characterSeries = {};
   final Map<String, Future<List<SeriesSummary>>> _characterSeriesInflight = {};
   final Map<String, ({String id, String name, String? image})> _characters = {};
+  Map<String, String>? _heroAvatarManifest;
   List<SeriesSummary>? _featured;
   Future<List<SeriesSummary>>? _featuredInflight;
 
@@ -147,14 +151,48 @@ class CatalogRepository {
   }
 
   /// 角色详情（方形头像），带内存缓存。
+  ///
+  /// 头像图床直连经常被 CDN 掐断（实测连接重置），所以优先用
+  /// `assets/data/hero_avatars/` 里打包的本地图（`tool/fetch_hero_avatars.py`
+  /// 生成），没有本地图才走网络。
   Future<({String id, String name, String? image})> characterDetail(
-      String characterId) {
+      String characterId) async {
     final cached = _characters[characterId];
-    if (cached != null) return Future.value(cached);
-    return _client.fetchCharacterDetail(characterId).then((d) {
-      _characters[characterId] = d;
-      return d;
-    });
+    if (cached != null) return cached;
+
+    var image = await _localAvatar(characterId);
+    if (image == null) {
+      try {
+        final d = await _client.fetchCharacterDetail(characterId);
+        image = d.image;
+      } catch (_) {
+        image = null;
+      }
+    }
+    final result = (
+      id: characterId,
+      name: _characters[characterId]?.name ?? characterId,
+      image: image,
+    );
+    _characters[characterId] = result;
+    return result;
+  }
+
+  /// 本地打包的英雄头像（manifest 存在且有条目时返回资产路径）。
+  Future<String?> _localAvatar(String characterId) async {
+    _heroAvatarManifest ??= await () async {
+      try {
+        final raw = await rootBundle
+            .loadString('assets/data/hero_avatars/manifest.json');
+        final map = json.decode(raw) as Map<String, dynamic>;
+        return map.map((k, v) => MapEntry(k, v.toString()));
+      } catch (_) {
+        return const <String, String>{};
+      }
+    }();
+    final file = _heroAvatarManifest![characterId];
+    if (file == null) return null;
+    return 'assets/data/hero_avatars/$file';
   }
 
   /// 系列详情（头图 / 描述 / 起止年份），带内存缓存。

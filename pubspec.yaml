@@ -75,7 +75,10 @@ flutter:
     # 品牌标识（BrandLogo 启动时探测，存在就用图）。详见该目录下的 README.txt。
     - assets/brand/
     # 大事件静态数据集（事件分级、阅读顺序），事件页打开即看。
+    # 注意 Flutter 的目录资产不递归，子目录要单独声明。
     - assets/data/
+    - assets/data/event_covers/
+    - assets/data/hero_avatars/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

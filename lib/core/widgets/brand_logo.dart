@@ -6,39 +6,77 @@ import '../theme/app_palette.dart';
 
 /// 品牌标识。全应用唯一的 logo 入口。
 ///
-/// 布局是「红底 MARVEL 方块 + 右侧单词」：首页 LIMITED，指南 GUIDE，
-/// 系列 SERIES，事件 EVENT，收藏 COLLECTION。
-///
-/// 素材：把官方 logo 放到 `assets/brand/marvel_unlimited_logo.svg|.png`
-/// 就会整体替换这个自绘标识（启动时探测，不用改代码）。
+/// 结构是「漫威 logo + 右侧单词」组合标题：
+/// - 首页 MARVEL LIMITED、指南 MARVEL GUIDE、系列 MARVEL SERIES、
+///   事件 MARVEL EVENT、收藏 MARVEL COLLECTION。
+/// - logo 用 `assets/brand/marvel_unlimited_logo.svg|.png`（存在即用）；
+///   右侧单词与 logo 等高对齐、同风格的超粗字重，视觉上连成一体。
+/// - 没放官方素材时回落到自绘的红底 MARVEL 方块（见 `_WordMark`）。
 class BrandLogo extends StatelessWidget {
   const BrandLogo({super.key, this.height = 24, this.tail = 'UNLIMITED'});
 
-  /// 视觉高度。用图时是图片高度，用文字时按它换算字号。
+  /// logo 视觉高度。右侧单词按它换算字号。
   final double height;
 
-  /// 红块右侧的单词。
+  /// logo 右侧的单词。
   final String tail;
 
   @override
   Widget build(BuildContext context) {
     final path = BrandAssets.logoPath;
     if (path != null) {
-      if (path.endsWith('.svg')) {
-        return SvgPicture.asset(
-          path,
-          height: height,
-          fit: BoxFit.contain,
-        );
-      }
-      return Image.asset(
-        path,
-        height: height,
-        fit: BoxFit.contain,
-        filterQuality: FilterQuality.high,
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (path.endsWith('.svg'))
+            SvgPicture.asset(path, height: height, fit: BoxFit.contain)
+          else
+            Image.asset(
+              path,
+              height: height,
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,
+            ),
+          // 右侧单词：与 logo 等高对齐（视觉中线），同风格超粗字重
+          if (tail.isNotEmpty) ...[
+            SizedBox(width: height * 0.28),
+            _TailWord(height: height, tail: tail),
+          ],
+        ],
       );
     }
     return _WordMark(height: height, tail: tail);
+  }
+}
+
+/// logo 右侧的单词。
+///
+/// 官方 logo 是红底白字的超粗无衬线体；单词用同级的字重（w900）、
+/// 紧字距、按 logo 高度换算字号，颜色跟随主题文本色——深色主题白字、
+/// 浅色主题黑字，和 logo 的红底白字自然并排。
+class _TailWord extends StatelessWidget {
+  const _TailWord({required this.height, required this.tail});
+
+  final double height;
+  final String tail;
+
+  @override
+  Widget build(BuildContext context) {
+    return Baseline(
+      baseline: height * 0.72,
+      baselineType: TextBaseline.alphabetic,
+      child: Text(
+        tail,
+        style: TextStyle(
+          color: context.p.textPrimary,
+          fontSize: height * 0.52,
+          height: 1.0,
+          fontWeight: FontWeight.w900,
+          letterSpacing: height * 0.02,
+        ),
+      ),
+    );
   }
 }
 
@@ -54,7 +92,6 @@ class _WordMark extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = context.p;
     final markFont = height * 0.66;
-    final tailFont = height * 0.44;
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,17 +116,10 @@ class _WordMark extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: height * 0.24),
-        Text(
-          tail,
-          style: TextStyle(
-            color: p.textPrimary,
-            fontSize: tailFont,
-            fontWeight: FontWeight.w700,
-            letterSpacing: tailFont * 0.16,
-            height: 1.0,
-          ),
-        ),
+        if (tail.isNotEmpty) ...[
+          SizedBox(width: height * 0.24),
+          _TailWord(height: height, tail: tail),
+        ],
       ],
     );
   }

@@ -190,7 +190,7 @@ class _HeroPageState extends State<HeroPage> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
-                            childAspectRatio: 0.52,
+                            childAspectRatio: 0.55,
                             crossAxisSpacing: AppSpacing.sm,
                             mainAxisSpacing: AppSpacing.md,
                           ),
@@ -248,7 +248,8 @@ class _HeroSeriesTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
+          AspectRatio(
+            aspectRatio: 2 / 3,
             child: Stack(
               fit: StackFit.expand,
               children: [

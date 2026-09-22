@@ -178,25 +178,28 @@ class _HeroStripState extends State<_HeroStrip> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(
-          // 卡片是 16:9 图 + 两行标题：viewportFraction 0.88 的页宽约
-          // 屏宽×0.88，图高 ≈ 页宽/(16/9)，再加标题区。固定 280 刚好装下，
-          // 之前 200 会溢出 62px。
-          height: 280,
-          child: PageView.builder(
-            controller: _controller,
-            itemCount: items.length,
-            onPageChanged: (i) => setState(() => _index = i),
-            itemBuilder: (context, i) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
-              child: GuideWideCard(
-                guide: items[i],
-                width: double.infinity,
-                onTap: () => widget.onOpen(items[i]),
+        // 高度由实际宽度计算（图 16:9 + 标题两行），窗口宽度变化时
+        // 自动重排，写死高度会在窄屏溢出、宽屏留白。
+        LayoutBuilder(builder: (context, constraints) {
+          final pageWidth = constraints.maxWidth * 0.88;
+          final cardHeight = pageWidth / (16 / 9) + 50;
+          return SizedBox(
+            height: cardHeight,
+            child: PageView.builder(
+              controller: _controller,
+              itemCount: items.length,
+              onPageChanged: (i) => setState(() => _index = i),
+              itemBuilder: (context, i) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+                child: GuideWideCard(
+                  guide: items[i],
+                  width: double.infinity,
+                  onTap: () => widget.onOpen(items[i]),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
         if (items.length > 1) ...[
           const SizedBox(height: AppSpacing.md),
           Row(

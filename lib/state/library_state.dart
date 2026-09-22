@@ -81,4 +81,19 @@ class LibraryState extends ChangeNotifier {
     await _prefs.clearProgress(issueId);
     notifyListeners();
   }
+
+  // ── 书签 ─────────────────────────────────────────────────────
+
+  List<IssueBookmark> bookmarksFor(String issueId) =>
+      _prefs.bookmarksFor(issueId);
+
+  bool hasBookmark(String issueId, int page) =>
+      _prefs.hasBookmark(issueId, page);
+
+  /// 加/去书签（同一页再点一次就是删）。返回「现在有没有」。
+  bool toggleBookmark(String issueId, int page) {
+    final now = _prefs.toggleBookmark(issueId, page);
+    notifyListeners();
+    return now;
+  }
 }

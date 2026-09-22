@@ -207,7 +207,7 @@ class _GuideDetailPageState extends State<GuideDetailPage> {
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 110,
-                      childAspectRatio: 0.55,
+                      childAspectRatio: 0.56,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: AppSpacing.md,
                     ),
@@ -244,7 +244,8 @@ class _GuideIssueCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
+          AspectRatio(
+            aspectRatio: 2 / 3,
             child: Stack(
               fit: StackFit.expand,
               children: [

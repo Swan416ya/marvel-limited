@@ -20,7 +20,7 @@ class SearchHitTile extends StatelessWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
       leading: SizedBox(
         width: 44,
-        height: 62,
+        height: 66,
         child: hit.coverUrl != null && hit.coverUrl!.isNotEmpty
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadius.xs),

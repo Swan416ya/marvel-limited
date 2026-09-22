@@ -345,7 +345,7 @@ class _SeriesPageState extends State<SeriesPage> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
-                            childAspectRatio: 0.55,
+                            childAspectRatio: 0.56,
                             crossAxisSpacing: AppSpacing.sm,
                             mainAxisSpacing: AppSpacing.md,
                           ),
@@ -521,7 +521,8 @@ class _IssueTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
+          AspectRatio(
+            aspectRatio: 2 / 3,
             child: Stack(
               fit: StackFit.expand,
               children: [

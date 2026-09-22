@@ -83,7 +83,7 @@ class UserListPage extends StatelessWidget {
                     ),
                     leading: SizedBox(
                       width: 52,
-                      height: 72,
+                      height: 78,
                       child: ComicCover(
                         url: entry.coverUrl,
                         borderRadius: BorderRadius.circular(AppRadius.xs),

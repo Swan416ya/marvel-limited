@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -220,6 +221,33 @@ class FollowedSeries {
       );
 }
 
+/// 一枚书签（在某期的某一页）。
+class IssueBookmark {
+  const IssueBookmark({
+    required this.issueId,
+    required this.page,
+    required this.createdAt,
+  });
+
+  final String issueId;
+
+  /// 0 基页码。
+  final int page;
+  final DateTime createdAt;
+
+  Map<String, dynamic> toJson() => {
+        'page': page,
+        'createdAt': createdAt.toIso8601String(),
+      };
+
+  factory IssueBookmark.fromJson(String issueId, Map json) => IssueBookmark(
+        issueId: issueId,
+        page: (json['page'] as num?)?.toInt() ?? 0,
+        createdAt: DateTime.tryParse(json['createdAt']?.toString() ?? '') ??
+            DateTime.fromMillisecondsSinceEpoch(0),
+      );
+}
+
 /// 本地偏好仓库：收藏（四类）、追更、自建书单、搜索历史、阅读进度、主题。
 ///
 /// 全应用唯一碰 SharedPreferences 的地方。内存里留一份同步快照，
@@ -233,6 +261,7 @@ class PreferencesRepository {
   static const _keyHistory = 'search_history_v1';
   static const _keyProgress = 'reading_progress_v1';
   static const _keyThemeMode = 'theme_mode_v1';
+  static const _keyBookmarks = 'bookmarks_v1';
 
   /// 搜索历史最多留这么多条。
   static const _historyLimit = 12;
@@ -244,6 +273,7 @@ class PreferencesRepository {
   final List<UserList> _userLists = [];
   final List<String> _history = [];
   final Map<String, ReadingProgress> _progress = {};
+  final Map<String, List<IssueBookmark>> _bookmarks = {};
   String _themeMode = 'system';
 
   bool get isReady => _prefs != null;
@@ -277,6 +307,21 @@ class PreferencesRepository {
         _progress[p.issue.id] = p;
       } catch (_) {
         // 单条损坏跳过，不影响其它进度
+      }
+    }
+
+    _bookmarks.clear();
+    final bmRaw = prefs.getString(_keyBookmarks);
+    if (bmRaw != null) {
+      try {
+        final map = jsonDecode(bmRaw) as Map<String, dynamic>;
+        map.forEach((issueId, list) {
+          _bookmarks[issueId] = (list as List? ?? [])
+              .map((e) => IssueBookmark.fromJson(issueId, e as Map))
+              .toList();
+        });
+      } catch (_) {
+        // 损坏就当没有书签
       }
     }
 
@@ -477,6 +522,46 @@ class PreferencesRepository {
       _keyProgress,
       _progress.values.map((p) => jsonEncode(p.toJson())).toList(),
     );
+  }
+
+  // ── 书签 ─────────────────────────────────────────────────────
+
+  /// 某期的全部书签，按页码排序。
+  List<IssueBookmark> bookmarksFor(String issueId) {
+    final list = _bookmarks[issueId] ?? const [];
+    return List.unmodifiable([...list]..sort((a, b) => a.page.compareTo(b.page)));
+  }
+
+  /// 当前页是否已有书签。
+  bool hasBookmark(String issueId, int page) =>
+      _bookmarks[issueId]?.any((b) => b.page == page) ?? false;
+
+  /// 加/去书签（同一页再点一次就是删）。返回「现在有没有书签」。
+  bool toggleBookmark(String issueId, int page) {
+    final list = _bookmarks.putIfAbsent(issueId, () => []);
+    final existing = list.indexWhere((b) => b.page == page);
+    if (existing >= 0) {
+      list.removeAt(existing);
+    } else {
+      list.add(IssueBookmark(
+        issueId: issueId,
+        page: page,
+        createdAt: DateTime.now(),
+      ));
+    }
+    unawaited(_persistBookmarks());
+    return existing < 0;
+  }
+
+  Future<void> removeBookmark(String issueId, int page) async {
+    _bookmarks[issueId]?.removeWhere((b) => b.page == page);
+    await _persistBookmarks();
+  }
+
+  Future<void> _persistBookmarks() async {
+    final map = _bookmarks.map((k, v) =>
+        MapEntry(k, v.map((b) => b.toJson()).toList()));
+    await _prefs?.setString(_keyBookmarks, jsonEncode(map));
   }
 
   // ── 主题 ─────────────────────────────────────────────────────

@@ -51,21 +51,31 @@ class _ReaderPageState extends State<ReaderPage> {
   bool? _lastLandscape;
   Offset _lastDoubleTapPoint = Offset.zero;
 
+  /// 双页拼合（竖屏也并排两页，参考 B 站漫画的「双页模式」）。
+  /// 横屏天然就是双页，这个开关只影响竖屏。
+  bool _spreadMode = false;
+
   int get _total => widget.pages.length;
 
   bool get _isLandscape =>
       MediaQuery.of(context).size.width > MediaQuery.of(context).size.height;
 
-  /// 横屏跨页数。
+  /// 是否处于双页视图（横屏自动，或竖屏手动开启）。
+  bool get _isSpreadView => _isLandscape || _spreadMode;
+
+  /// 双页跨页数。
   int get _spreadCount => (_total + 1) ~/ 2;
 
   /// 当前平台下「一屏」的数量。
-  int get _viewCount => _isLandscape ? _spreadCount : _total;
+  int get _viewCount => _isSpreadView ? _spreadCount : _total;
 
   /// 当前单页索引对应的视图序号。
-  int get _viewIndex => _isLandscape ? _page ~/ 2 : _page;
+  int get _viewIndex => _isSpreadView ? _page ~/ 2 : _page;
 
   bool get _zoomed => _zoomController.value.getMaxScaleOnAxis() > 1.01;
+
+  /// 当前页的书签状态（工具栏按钮用）。
+  bool get _bookmarked => _library.hasBookmark(widget.issue.id, _page);
 
   @override
   void initState() {
@@ -222,6 +232,106 @@ class _ReaderPageState extends State<ReaderPage> {
     return KeyEventResult.ignored;
   }
 
+  // ── 书签 ─────────────────────────────────────────────────────
+
+  void _toggleBookmark() {
+    final now = _library.toggleBookmark(widget.issue.id, _page);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(now
+            ? '已在第 ${_page + 1} 页加书签'
+            : '已移除第 ${_page + 1} 页的书签'),
+        duration: const Duration(milliseconds: 1200),
+      ),
+    );
+    // 书签状态变了，刷新工具栏图标
+    setState(() {});
+  }
+
+  /// 书签列表底部弹层：点一条跳过去。
+  void _showBookmarks() {
+    final p = context.p;
+    final bookmarks = _library.bookmarksFor(widget.issue.id);
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: p.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Text(
+                '书签 · ${bookmarks.length}',
+                style: TextStyle(
+                  color: p.textPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            if (bookmarks.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: AppSpacing.lg, right: AppSpacing.lg, bottom: AppSpacing.lg),
+                child: Text(
+                  '还没有书签。工具栏的书签图标可以在当前页加一个。',
+                  style: TextStyle(color: p.textFaint, fontSize: 13),
+                ),
+              )
+            else
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: bookmarks.length,
+                  itemBuilder: (context, i) {
+                    final b = bookmarks[i];
+                    return ListTile(
+                      dense: true,
+                      leading: Icon(Icons.bookmark,
+                          size: 18, color: p.brand),
+                      title: Text('第 ${b.page + 1} 页',
+                          style: const TextStyle(fontSize: 14)),
+                      trailing: GestureDetector(
+                        onTap: () {
+                          _library.toggleBookmark(widget.issue.id, b.page);
+                          Navigator.of(context).pop();
+                          setState(() {});
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Icon(Icons.close,
+                              size: 16, color: p.textGhost),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _goToView(_isSpreadView ? b.page ~/ 2 : b.page);
+                      },
+                    );
+                  },
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 竖屏切换单页/双页拼合。切换后锚回当前内容的起始页。
+  void _toggleSpreadMode() {
+    setState(() => _spreadMode = !_spreadMode);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && _pageController.hasClients) {
+        _pageController.jumpToPage(_viewIndex);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -254,7 +364,7 @@ class _ReaderPageState extends State<ReaderPage> {
                     controller: _pageController,
                     itemCount: _viewCount,
                     onPageChanged: _onPageChanged,
-                    itemBuilder: (context, i) => landscape
+                    itemBuilder: (context, i) => _isSpreadView
                         ? _buildSpread(i)
                         : _buildSinglePage(i),
                   ),
@@ -271,6 +381,8 @@ class _ReaderPageState extends State<ReaderPage> {
   }
 
   Widget _statusPill(bool landscape) {
+    // 状态文字按「当前视图模式」算（横屏自动双页 + 竖屏手动双页），
+    // 不能只看物理方向——手动开双页时也要显示跨页文字
     return AnimatedPositioned(
       duration: AppDuration.normal,
       curve: Curves.easeOutCubic,
@@ -282,7 +394,7 @@ class _ReaderPageState extends State<ReaderPage> {
           borderRadius: BorderRadius.circular(AppRadius.pill),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Text(
-            _statusText(landscape),
+            _statusText(_isSpreadView),
             style: TextStyle(color: context.p.textStrong, fontSize: 12),
           ),
         ),
@@ -335,13 +447,52 @@ class _ReaderPageState extends State<ReaderPage> {
           borderRadius: BorderRadius.circular(AppRadius.pill),
           border: Border.all(color: context.p.border),
           padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.xl,
+            horizontal: AppSpacing.md,
             vertical: 10,
           ),
-          child: ReaderToolbar(
-            viewIndex: _viewIndex,
-            viewCount: _viewCount,
-            onChanged: _goToView,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // 书签：当前页加/去
+                IconButton(
+                  visualDensity: VisualDensity.compact,
+                  icon: Icon(
+                    _bookmarked ? Icons.bookmark : Icons.bookmark_border,
+                    size: 20,
+                    color: _bookmarked ? context.p.brand : context.p.textStrong,
+                  ),
+                  tooltip: _bookmarked ? '去掉书签' : '加书签',
+                  onPressed: _toggleBookmark,
+                ),
+                // 书签列表：点开跳页
+                IconButton(
+                  visualDensity: VisualDensity.compact,
+                  icon: Icon(Icons.bookmarks_outlined,
+                      size: 19, color: context.p.textStrong),
+                  tooltip: '书签列表',
+                  onPressed: _showBookmarks,
+                ),
+                // 竖屏时的双页拼合切换（横屏天然双页，不显示）
+                if (!landscape)
+                  IconButton(
+                    visualDensity: VisualDensity.compact,
+                    icon: Icon(
+                      _spreadMode ? Icons.import_contacts : Icons.menu_book_outlined,
+                      size: 20,
+                      color: context.p.textStrong,
+                    ),
+                    tooltip: _spreadMode ? '切回单页' : '双页拼合',
+                    onPressed: _toggleSpreadMode,
+                  ),
+                ReaderToolbar(
+                  viewIndex: _viewIndex,
+                  viewCount: _viewCount,
+                  onChanged: _goToView,
+                ),
+              ],
+            ),
           ),
         ),
       ),

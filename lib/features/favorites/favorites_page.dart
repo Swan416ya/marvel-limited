@@ -9,7 +9,6 @@ import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/comic_cover.dart';
 import '../../core/widgets/glass_panel.dart';
-import '../../core/widgets/state_views.dart';
 import '../../core/widgets/tab_app_bar.dart';
 import '../../data/repository/preferences_repository.dart';
 import '../../state/favorites_state.dart';
@@ -56,14 +55,13 @@ class _FavoritesPageState extends State<FavoritesPage> {
       _Filter.list: lists.length,
     };
 
-    final showLists = _filter == _Filter.all || _filter == _Filter.list;
     final filtered = switch (_filter) {
       _Filter.all => entries,
       _Filter.list => const <FavoriteEntry>[],
       _ => entries.where((e) => e.kind.name == _filter.name).toList(),
     };
 
-    final empty = filtered.isEmpty && (!showLists || lists.isEmpty);
+    final showShelf = _filter == _Filter.all || _filter == _Filter.issue;
 
     return Scaffold(
       appBar: const TabAppBar(word: 'COLLECTION'),
@@ -71,27 +69,35 @@ class _FavoritesPageState extends State<FavoritesPage> {
         children: [
           _filters(counts),
           Expanded(
-            // 注意：空态也要显示「+」导入卡——收藏为空时它往往是
-            // 用户最先要用的功能，藏在 ListView 里会跟着空态一起消失。
-            child: ListView(
-              padding: AppInsets.page,
-              children: [
-                if (empty)
-                  // ListView 里没有高度约束，给空态一个固定高度居中
-                  SizedBox(
-                    height: 460,
-                    child: _emptyFor(_filter),
+            // 书架式：漫画封面一行一行排列，「+」是最后一本的下一本——
+            // 灰色、和封面同尺寸的方块，点击导入本地漫画。
+            child: _filter == _Filter.list || !showShelf
+                ? ListView(
+                    padding: AppInsets.page,
+                    children: [
+                      if (_filter == _Filter.list) ..._listSection(lists),
+                      if (_filter == _Filter.series || _filter == _Filter.guide)
+                        ...filtered.map((e) => _swipeable(e)),
+                    ],
                   )
-                else ...[
-                  if (showLists) ..._listSection(lists),
-                  if (_filter == _Filter.all && lists.isNotEmpty && filtered.isNotEmpty)
-                    const _SectionLabel('收藏的内容'),
-                  ...filtered.map((e) => _swipeable(e)),
-                ],
-                if (_filter == _Filter.all || _filter == _Filter.issue)
-                  const _ImportCard(),
-              ],
-            ),
+                : GridView.builder(
+                    padding: AppInsets.page,
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 150,
+                      childAspectRatio: 0.55,
+                      crossAxisSpacing: AppSpacing.md,
+                      mainAxisSpacing: AppSpacing.md,
+                    ),
+                    itemCount: filtered.length + 1,
+                    itemBuilder: (context, i) {
+                      // 最后一格永远是「+」导入卡
+                      if (i == filtered.length) {
+                        return const _ImportBookCard();
+                      }
+                      return _ShelfBookTile(entry: filtered[i]);
+                    },
+                  ),
           ),
         ],
       ),
@@ -131,28 +137,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
           );
         },
       ),
-    );
-  }
-
-  EmptyView _emptyFor(_Filter filter) {
-    if (filter == _Filter.list) {
-      return EmptyView(
-        icon: Icons.playlist_add_outlined,
-        title: '还没有自建书单',
-        subtitle: '在详情页的「加入书单」里新建一个',
-        action: FilledButton.tonalIcon(
-          onPressed: () => _createList(),
-          icon: const Icon(Icons.add),
-          label: const Text('新建书单'),
-        ),
-      );
-    }
-    return EmptyView(
-      icon: Icons.favorite_outline,
-      title: '这里还没有收藏',
-      subtitle: filter == _Filter.all
-          ? '漫画、系列、指南都能收藏，详情页右上角的心形按钮'
-          : '去${filter.label}相关的详情页点收藏',
     );
   }
 
@@ -265,40 +249,16 @@ class _FavoritesPageState extends State<FavoritesPage> {
           ),
         );
       },
-      child: _FavoriteTile(entry: entry),
+      child: _ShelfBookTile(entry: entry),
     );
   }
 }
 
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: AppSpacing.xs,
-        top: AppSpacing.sm,
-        bottom: AppSpacing.xs,
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: context.p.textFaint,
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
-}
-
-/// 末尾的「+」导入卡。点 = 选文件进导入流程（可逐个核对匹配）；
-/// 长按 = 多选批量，直接进流程一键全导。
-class _ImportCard extends StatelessWidget {
-  const _ImportCard();
+/// 书架末尾的「+」导入卡：作为最后一本书的下一本——灰色、
+/// 和漫画封面同尺寸的方块，中间一个加号。
+/// 点 = 选文件进导入流程（可逐个核对匹配）；长按 = 多选批量。
+class _ImportBookCard extends StatelessWidget {
+  const _ImportBookCard();
 
   Future<void> _pick(BuildContext context, {required bool batch}) async {
     if (kIsWeb) {
@@ -325,55 +285,55 @@ class _ImportCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = context.p;
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.xs,
-        vertical: AppSpacing.sm,
-      ),
-      child: InkWell(
-        onTap: () => _pick(context, batch: false),
-        onLongPress: () => _pick(context, batch: true),
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        child: Container(
-          height: 72,
-          decoration: BoxDecoration(
-            color: p.fill,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AspectRatio(
+          aspectRatio: 2 / 3,
+          child: InkWell(
+            onTap: () => _pick(context, batch: false),
+            onLongPress: () => _pick(context, batch: true),
             borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(
-              color: p.brand.withValues(alpha: 0.35),
-            ),
-          ),
-          child: Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.add_circle_outline, size: 22, color: p.brand),
-                const SizedBox(width: AppSpacing.sm),
-                Text(
-                  '导入本地漫画（CBZ/ZIP）',
-                  style: TextStyle(
-                    color: p.brand,
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.w600,
-                  ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: p.fillStrong,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: Border.all(
+                  color: p.textFaint,
+                  width: 1.4,
                 ),
-                const SizedBox(width: AppSpacing.md),
-                Text(
-                  '长按批量',
-                  style: TextStyle(color: p.textGhost, fontSize: 11),
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.add,
+                  size: 40,
+                  color: p.textMuted,
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          '导入本地漫画',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: p.textMuted,
+            fontSize: 11.5,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
     );
   }
 }
 
-/// 一条收藏：封面（带种类角标）+ 标题 + 副标题/进度。
-class _FavoriteTile extends StatelessWidget {
-  const _FavoriteTile({required this.entry});
+/// 书架上的一本：封面（2:3，带种类角标、进度条）+ 标题。
+/// 长按移除（带撤销）。
+class _ShelfBookTile extends StatelessWidget {
+  const _ShelfBookTile({required this.entry});
 
   final FavoriteEntry entry;
 
@@ -389,89 +349,97 @@ class _FavoriteTile extends StatelessWidget {
     }
   }
 
+  void _remove(BuildContext context) {
+    final favorites = context.read<FavoritesState>();
+    final messenger = ScaffoldMessenger.of(context);
+    final index = favorites.remove(entry);
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text('已移除《${entry.title}》'),
+        action: SnackBarAction(
+          label: '撤销',
+          onPressed: () => favorites.restore(entry, index),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final p = context.p;
     final progress = entry.kind == FavoriteKind.issue
         ? context.watch<LibraryState>().progressFor(entry.id)
         : null;
 
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.xs,
-        vertical: AppSpacing.xs,
-      ),
-      leading: SizedBox(
-        width: 52,
-        height: 72,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ComicCover(
-              url: entry.coverUrl,
-              borderRadius: BorderRadius.circular(AppRadius.xs),
-              placeholderColor: context.p.fillStrong,
-            ),
-            // 种类角标：全部视图里一眼区分这是什么
-            Positioned(
-              left: 0,
-              top: 0,
-              child: CoverBadge(
-                label: switch (entry.kind) {
-                  FavoriteKind.issue => '期',
-                  FavoriteKind.series => '系列',
-                  FavoriteKind.guide => '指南',
-                },
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-              ),
-            ),
-          ],
-        ),
-      ),
-      title: Text(entry.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-      subtitle: _subtitle(context, progress),
-      trailing: Icon(Icons.chevron_right, color: context.p.textGhost),
+    return InkWell(
       onTap: () => _open(context),
-    );
-  }
-
-  Widget? _subtitle(BuildContext context, ReadingProgress? progress) {
-    final p = context.p;
-    if (progress != null) {
-      return Column(
+      onLongPress: () => _remove(context),
+      borderRadius: BorderRadius.circular(AppRadius.md),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            progress.isFinished
-                ? '已读完 · 共 ${progress.totalPages} 页'
-                : '第 ${progress.page + 1} / ${progress.totalPages} 页',
-            style: TextStyle(
-              color: progress.isFinished ? p.success : p.brand,
-              fontSize: 12,
+          AspectRatio(
+            aspectRatio: 2 / 3,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ComicCover(
+                  url: entry.coverUrl,
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  placeholderIcon: Icons.menu_book,
+                ),
+                // 种类角标
+                Positioned(
+                  left: 4,
+                  top: 4,
+                  child: CoverBadge(
+                    label: switch (entry.kind) {
+                      FavoriteKind.issue => '期',
+                      FavoriteKind.series => '系列',
+                      FavoriteKind.guide => '指南',
+                    },
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 5, vertical: 1),
+                  ),
+                ),
+                // 在读进度条压在封面底部
+                if (progress != null)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        bottom: Radius.circular(AppRadius.md),
+                      ),
+                      child: LinearProgressIndicator(
+                        value: progress.ratio,
+                        minHeight: 3,
+                        backgroundColor: p.badge,
+                        valueColor: AlwaysStoppedAnimation(
+                          progress.isFinished ? p.success : p.brand,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
-          const SizedBox(height: 4),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(2),
-            child: LinearProgressIndicator(
-              value: progress.ratio,
-              minHeight: 3,
-              backgroundColor: p.fillStrong,
-              valueColor: AlwaysStoppedAnimation(
-                progress.isFinished ? p.success : p.brand,
-              ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            entry.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: p.textSecondary,
+              fontSize: 11.5,
+              height: 1.2,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
-      );
-    }
-    if (entry.subtitle == null || entry.subtitle!.isEmpty) return null;
-    return Text(
-      entry.subtitle!,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(color: p.textFaint, fontSize: 12),
+      ),
     );
   }
 }
