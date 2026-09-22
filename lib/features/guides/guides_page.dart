@@ -5,7 +5,6 @@ import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/section_header.dart';
-import '../../core/widgets/shelf_list.dart';
 import '../../core/widgets/state_views.dart';
 import '../../core/widgets/tab_app_bar.dart';
 import '../../data/models/marvel_models.dart';
@@ -78,31 +77,39 @@ class _GuidesPageState extends State<GuidesPage> {
     );
   }
 
+  /// 时间最近的 Complete Event 型导览（列表本身新的在前）。
+  /// 官方最近的大事件导览一般都叫 "XXX: The Complete Event"，
+  /// banner 只放这类，比泛泛的「官方精选」有意义。
+  static List<ReadingGuide> _completeEventGuides(List<ReadingGuide> guides) {
+    final matched = <ReadingGuide>[];
+    for (final g in guides) {
+      final t = g.title.toLowerCase();
+      if (t.contains('complete event') || t.contains('main event')) {
+        matched.add(g);
+      }
+      if (matched.length >= 6) break;
+    }
+    // 不够 6 个就用最近的指南补齐，避免 banner 空着
+    if (matched.length < 6) {
+      for (final g in guides) {
+        if (matched.contains(g)) continue;
+        matched.add(g);
+        if (matched.length >= 6) break;
+      }
+    }
+    return matched;
+  }
+
   List<Widget> _content(BuildContext context, List<ReadingGuide> guides) {
     return [
+      // 顶部 banner：时间最近的 Complete Event 型官方导览
+      // （指南列表本身就是新的在前）。原来重复的「官方精选」书架删掉了。
       SliverToBoxAdapter(
         child: Padding(
           padding: const EdgeInsets.only(top: AppSpacing.md),
           child: _HeroStrip(
-            guides: guides,
+            guides: _completeEventGuides(guides),
             onOpen: (g) => AppRouter.openGuide(context, g),
-          ),
-        ),
-      ),
-      SliverToBoxAdapter(
-        child: SectionHeader(
-          title: '官方精选',
-          subtitle: '按官方推荐顺序整理',
-        ),
-      ),
-      SliverToBoxAdapter(
-        child: ShelfList(
-          height: 208,
-          itemCount: guides.length,
-          itemWidth: 232,
-          itemBuilder: (context, i) => GuideWideCard(
-            guide: guides[i],
-            onTap: () => AppRouter.openGuide(context, guides[i]),
           ),
         ),
       ),
@@ -155,7 +162,7 @@ class _HeroStripState extends State<_HeroStrip> {
       PageController(viewportFraction: 0.88);
   int _index = 0;
 
-  List<ReadingGuide> get _items => widget.guides.take(5).toList();
+  List<ReadingGuide> get _items => widget.guides.take(6).toList();
 
   @override
   void dispose() {
@@ -172,7 +179,10 @@ class _HeroStripState extends State<_HeroStrip> {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          height: 200,
+          // 卡片是 16:9 图 + 两行标题：viewportFraction 0.88 的页宽约
+          // 屏宽×0.88，图高 ≈ 页宽/(16/9)，再加标题区。固定 280 刚好装下，
+          // 之前 200 会溢出 62px。
+          height: 280,
           child: PageView.builder(
             controller: _controller,
             itemCount: items.length,

@@ -37,6 +37,12 @@ class _EventsPageState extends State<EventsPage> {
   void initState() {
     super.initState();
     _load();
+    // 事件封面要从官方指南列表里匹配——这里主动触发加载，
+    // 之前只在首页/指南页触发，直接进事件 tab 时封面全是渐变兜底。
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<CatalogState>().loadGuides();
+    });
   }
 
   Future<void> _load() async {
@@ -101,19 +107,11 @@ class _EventsPageState extends State<EventsPage> {
                           itemCount: visible.length,
                           itemBuilder: (context, i) {
                             final e = visible[i];
-                            return e.isCompanyWide
-                                ? _CompanyEventCard(
-                                    event: e,
-                                    coverUrl: repo.coverUrlFor(e, guides),
-                                    onTap: () =>
-                                        AppRouter.openEvent(context, e),
-                                  )
-                                : _EventRow(
-                                    event: e,
-                                    coverUrl: repo.coverUrlFor(e, guides),
-                                    onTap: () =>
-                                        AppRouter.openEvent(context, e),
-                                  );
+                            return _CompanyEventCard(
+                              event: e,
+                              coverUrl: repo.coverUrlFor(e, guides),
+                              onTap: () => AppRouter.openEvent(context, e),
+                            );
                           },
                         ),
                 ),
@@ -165,15 +163,13 @@ class _EventsPageState extends State<EventsPage> {
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
-          // 排序切换
+          // 排序切换（与下拉框同高，视觉对齐）
           InkWell(
             onTap: () => setState(() => _descending = !_descending),
             borderRadius: BorderRadius.circular(AppRadius.md),
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: 10,
-              ),
+              height: 40,
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
               decoration: BoxDecoration(
                 color: p.fill,
                 borderRadius: BorderRadius.circular(AppRadius.md),
@@ -224,32 +220,37 @@ class _EventDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = context.p;
     return Container(
+      height: 40,
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
       decoration: BoxDecoration(
         color: p.fill,
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(color: p.border),
       ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: value,
-          hint: Text(hint, style: TextStyle(color: p.textMuted, fontSize: 12.5)),
-          isExpanded: true,
-          items: [
-            const DropdownMenuItem(value: '', child: Text('全部')),
-            ...items,
-          ],
-          onChanged: onChanged,
-          icon: Icon(Icons.expand_more, size: 18, color: p.textMuted),
-          style: TextStyle(color: p.textPrimary, fontSize: 13),
-          dropdownColor: p.surface,
+      child: Center(
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            value: value,
+            hint:
+                Text(hint, style: TextStyle(color: p.textMuted, fontSize: 12.5)),
+            isExpanded: true,
+            items: [
+              const DropdownMenuItem(value: '', child: Text('全部')),
+              ...items,
+            ],
+            onChanged: onChanged,
+            icon: Icon(Icons.expand_more, size: 18, color: p.textMuted),
+            style: TextStyle(color: p.textPrimary, fontSize: 13),
+            dropdownColor: p.surface,
+          ),
         ),
       ),
     );
   }
 }
 
-/// 全公司级大卡：横版主视觉 + 标题 + 年份 + 一句话。
+/// 事件大卡：横版主视觉 + 标题 + 年份 + 一句话。
+/// 所有级别统一这个样式，级别用角标区分（全公司级红底，其它中性底）。
 class _CompanyEventCard extends StatelessWidget {
   const _CompanyEventCard({
     required this.event,
@@ -278,7 +279,7 @@ class _CompanyEventCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: SizedBox(
-          height: 184,
+          height: 176,
           child: Stack(
             fit: StackFit.expand,
             children: [
@@ -329,12 +330,14 @@ class _CompanyEventCard extends StatelessWidget {
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: p.brand,
+                            color: event.isCompanyWide
+                                ? p.brand
+                                : p.badge,
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          child: const Text(
-                            '全公司级',
-                            style: TextStyle(
+                          child: Text(
+                            event.tierLabel,
+                            style: const TextStyle(
                               color: Color(0xFFFFFFFF),
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -359,7 +362,7 @@ class _CompanyEventCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         color: Color(0xFFFFFFFF),
-                        fontSize: 22,
+                        fontSize: 21,
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.4,
                       ),
@@ -393,77 +396,6 @@ class _CompanyEventCard extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-/// 非 company 级的行条目。
-class _EventRow extends StatelessWidget {
-  const _EventRow({
-    required this.event,
-    required this.coverUrl,
-    required this.onTap,
-  });
-
-  final MarvelEvent event;
-  final String? coverUrl;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = context.p;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppRadius.md),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
-          vertical: AppSpacing.sm + 2,
-        ),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 72,
-              height: 44,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(AppRadius.xs),
-                child: coverUrl == null
-                    ? ColoredBox(
-                        color: p.fillStrong,
-                        child: Icon(Icons.bolt, color: p.iconOnCover, size: 20),
-                      )
-                    : ComicCover(url: coverUrl, retryOnTap: false),
-              ),
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    event.titleZh.isEmpty ? event.title : event.titleZh,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: p.textPrimary,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    '${event.title} · ${event.year}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: p.textFaint, fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-            Icon(Icons.chevron_right, color: p.textGhost),
-          ],
         ),
       ),
     );

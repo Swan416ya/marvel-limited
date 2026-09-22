@@ -107,6 +107,7 @@ class _HomePageState extends State<HomePage> {
     List<ReadingGuide> guides,
   ) {
     final events = _topEvents ?? const [];
+    final repo = context.read<EventsRepository>();
     final feed = <_FeedCard>[];
 
     // 在读的期
@@ -133,7 +134,8 @@ class _HomePageState extends State<HomePage> {
           kind: _FeedKind.event,
           title: e.titleZh.isEmpty ? e.title : e.titleZh,
           subtitle: '${e.tierLabel} · ${e.year}',
-          coverUrl: null, // 事件封面在卡片里用渐变兜底
+          // 事件封面：本地打包 > 数据集 URL > 官方指南匹配 > 渐变兜底
+          coverUrl: repo.coverUrlFor(e, guides),
           event: e,
         ));
       }

@@ -9,6 +9,7 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/comic_cover.dart';
 import '../../data/getcomics_service.dart';
 import '../../data/models/marvel_models.dart';
+import '../../data/repository/catalog_repository.dart';
 import '../../data/repository/preferences_repository.dart';
 import '../../state/favorites_state.dart';
 import '../../state/library_state.dart';
@@ -25,6 +26,8 @@ class IssueDetailPage extends StatefulWidget {
 
 class _IssueDetailPageState extends State<IssueDetailPage> {
   bool _importing = false;
+  bool _resolvingSeries = false;
+
   String? _error;
 
   ComicIssue get _issue => widget.issue;
@@ -135,15 +138,12 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
                     if (_issue.releaseDate.isNotEmpty)
                       Text(_issue.releaseDate,
                           style: TextStyle(color: p.textFaint, fontSize: 12)),
-                    // 系列名做成醒目的可点入口
-                    if (_issue.seriesId != null) ...[
+                    // 系列名做成醒目的可点入口。指南来源的 issue 没有
+                    // seriesId，点的时候用 lockjaw 按系列名现查再跳。
+                    if (_issue.seriesTitle.isNotEmpty) ...[
                       const SizedBox(height: AppSpacing.md),
                       InkWell(
-                        onTap: () => AppRouter.openSeries(
-                          context,
-                          _issue.seriesId!,
-                          _issue.seriesTitle,
-                        ),
+                        onTap: _resolvingSeries ? null : _openSeries,
                         borderRadius: BorderRadius.circular(AppRadius.pill),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -161,14 +161,20 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.library_books,
-                                  size: 15, color: p.brand),
+                              if (_resolvingSeries)
+                                const SizedBox(
+                                  width: 13,
+                                  height: 13,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2),
+                                )
+                              else
+                                Icon(Icons.library_books,
+                                    size: 15, color: p.brand),
                               const SizedBox(width: 6),
                               Flexible(
                                 child: Text(
-                                  _issue.seriesTitle.isEmpty
-                                      ? '查看系列'
-                                      : _issue.seriesTitle,
+                                  _issue.seriesTitle,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -272,6 +278,39 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
         ],
       ),
     );
+  }
+
+  /// 跳到所属系列。有 seriesId 直接跳；没有（指南来源）就按系列名
+  /// 用 lockjaw 现查官网系列 id，查不到退回搜索。
+  Future<void> _openSeries() async {
+    final seriesId = _issue.seriesId;
+    if (seriesId != null) {
+      AppRouter.openSeries(context, seriesId, _issue.seriesTitle);
+      return;
+    }
+
+    final messenger = ScaffoldMessenger.of(context);
+    setState(() => _resolvingSeries = true);
+    try {
+      final results = await context
+          .read<CatalogRepository>()
+          .searchOfficialSeries(_issue.seriesTitle)
+          .timeout(const Duration(seconds: 12));
+      if (!mounted) return;
+      if (results.isNotEmpty) {
+        final best = results.first;
+        AppRouter.openSeries(context, best.id, best.title);
+      } else {
+        AppRouter.openSearch(context, query: _issue.seriesTitle);
+      }
+    } catch (_) {
+      if (!mounted) return;
+      messenger.showSnackBar(
+        const SnackBar(content: Text('没查到这个系列，试试搜索')),
+      );
+    } finally {
+      if (mounted) setState(() => _resolvingSeries = false);
+    }
   }
 
   Future<void> _createListAndAdd(FavoritesState favorites) async {

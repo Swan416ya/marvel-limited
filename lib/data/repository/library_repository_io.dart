@@ -68,15 +68,30 @@ class LibraryRepository {
   }
 
   /// 导入压缩包（zip/cbz，嵌套压缩自动解开）。
+  ///
+  /// 注意：.cbr 如果是真 RAR 压缩（magic `Rar!`）这里解不了——
+  /// Dart 生态没有 RAR5 解压器。先用 `tool/convert_cbr.py` 转成 CBZ。
+  /// 有些 .cbr 其实是改了后缀的 zip，那种能直接进。
   Future<ComicIssue> importArchive(ComicIssue issue, String archivePath) async {
     if (isImported(issue.id)) return _issues[issue.id]!;
+
+    final bytes = await File(archivePath).readAsBytes();
+    if (bytes.length >= 8) {
+      final magic = bytes.sublist(0, 8);
+      final isRar = magic[0] == 0x52 && magic[1] == 0x61 &&
+          magic[2] == 0x72 && magic[3] == 0x21;
+      if (isRar) {
+        throw UnsupportedError(
+            '这个 CBR 是 RAR 压缩，应用内解不了。请先运行 '
+            'tool/convert_cbr.py 把它转成 CBZ 再导入。');
+      }
+    }
 
     final seriesDir = _safeDirName(issue.seriesTitle);
     final issueDir = _safeDirName('issue-${issue.issueNumber}');
     final target = '$root/$seriesDir/$issueDir';
     await Directory(target).create(recursive: true);
 
-    final bytes = await File(archivePath).readAsBytes();
     await _extractNested(ZipDecoder().decodeBytes(bytes), target);
 
     issue.localPath = target;

@@ -75,18 +75,29 @@ class _SeriesHubPageState extends State<SeriesHubPage> {
     }
   }
 
+  /// 头像不阻塞首屏，慢慢补——限并发 4 拉取（原来是串行，
+  /// 12 个头像要等 12 轮往返）。
   Future<void> _loadAvatars() async {
     final repo = context.read<CatalogRepository>();
-    for (final h in heroes) {
-      if (_avatars.containsKey(h.id)) continue;
-      try {
-        final d = await repo.characterDetail(h.id);
-        if (!mounted) return;
-        setState(() => _avatars[h.id] = d);
-      } catch (_) {
-        // 单个头像失败不碍事，用兜底图标
+    final todo = heroes.where((h) => !_avatars.containsKey(h.id)).toList();
+    var next = 0;
+    Future<void> worker() async {
+      while (true) {
+        final i = next++;
+        if (i >= todo.length) return;
+        try {
+          final d = await repo.characterDetail(todo[i].id);
+          if (!mounted) return;
+          setState(() => _avatars[todo[i].id] = d);
+        } catch (_) {
+          // 单个头像失败不碍事，用兜底图标
+        }
       }
     }
+
+    await Future.wait(
+      List.generate(todo.length.clamp(1, 4), (_) => worker()),
+    );
   }
 
   @override
@@ -120,7 +131,7 @@ class _SeriesHubPageState extends State<SeriesHubPage> {
                         ),
                       ),
                       if (follows.isNotEmpty) ...[
-                        const _SectionLabel('我的追更'),
+                        const SliverToBoxAdapter(child: _SectionLabel('我的追更')),
                         SliverToBoxAdapter(
                           child: ShelfList(
                             height: 186,
@@ -142,7 +153,7 @@ class _SeriesHubPageState extends State<SeriesHubPage> {
                         ),
                       ],
                       if (_featured != null && _featured!.isNotEmpty) ...[
-                        const _SectionLabel('编辑精选'),
+                        const SliverToBoxAdapter(child: _SectionLabel('编辑精选')),
                         SliverToBoxAdapter(
                           child: ShelfList(
                             height: 196,
@@ -159,7 +170,7 @@ class _SeriesHubPageState extends State<SeriesHubPage> {
                           ),
                         ),
                       ],
-                      _SectionLabel('最近更新 · ${latest.length} 个系列'),
+                      SliverToBoxAdapter(child: _SectionLabel('最近更新 · ${latest.length} 个系列')),
                       if (latest.isEmpty)
                         const SliverFillRemaining(
                           hasScrollBody: false,

@@ -7,6 +7,10 @@ import '../../../core/widgets/comic_cover.dart';
 import '../../../data/models/marvel_models.dart';
 
 /// 书架用的横版指南卡：官方指南缩略图本来就是横向的，按 16:9 走。
+///
+/// `width` 传 `double.infinity` 时按可用宽度撑满（banner 轮播用），
+/// 内部用 LayoutBuilder 拿真实宽度再算图高——直接用 infinity 算
+/// 高度会得到无穷大，布局直接崩。
 class GuideWideCard extends StatelessWidget {
   const GuideWideCard({
     super.key,
@@ -26,39 +30,42 @@ class GuideWideCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = context.p;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppRadius.lg),
-      child: SizedBox(
-        width: width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: width / imageAspect,
-              child: ComicCover(
-                url: guide.coverUrl,
-                borderRadius: BorderRadius.circular(AppRadius.lg),
-                placeholderIcon: Icons.menu_book,
+    return LayoutBuilder(builder: (context, constraints) {
+      final w = width.isInfinite ? constraints.maxWidth : width;
+      return InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        child: SizedBox(
+          width: w,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: w / imageAspect,
+                child: ComicCover(
+                  url: guide.coverUrl,
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  placeholderIcon: Icons.menu_book,
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              guide.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: p.textSecondary,
-                fontSize: 13,
-                height: 1.25,
-                fontWeight: FontWeight.w600,
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                guide.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: p.textSecondary,
+                  fontSize: 13,
+                  height: 1.25,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 

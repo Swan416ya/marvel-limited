@@ -7,6 +7,7 @@ import '../../data/repository/preferences_repository.dart';
 import '../../features/events/event_detail_page.dart';
 import '../../features/events/events_page.dart';
 import '../../features/favorites/favorites_page.dart';
+import '../../features/favorites/import_flow_page.dart';
 import '../../features/favorites/user_list_page.dart';
 import '../../features/guide_detail/guide_detail_page.dart';
 import '../../features/guides/guides_page.dart';
@@ -36,6 +37,7 @@ abstract final class RouteNames {
   static const event = 'event';
   static const userList = 'userList';
   static const hero = 'hero';
+  static const importFlow = 'import';
 }
 
 /// 全应用路由表。
@@ -152,6 +154,13 @@ class AppRouter {
           name: RouteNames.hero,
           builder: (context, state) => HeroPage(
             heroId: state.pathParameters['id']!,
+          ),
+        ),
+        GoRoute(
+          path: '/import',
+          name: RouteNames.importFlow,
+          builder: (context, state) => ImportFlowPage(
+            initialPaths: (state.extra as List<String>? ?? const []),
           ),
         ),
         GoRoute(

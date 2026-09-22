@@ -58,11 +58,11 @@ class GuidesSkeleton extends StatelessWidget {
             child: Row(
               children: [
                 const Expanded(
-                  child: SkeletonBox(height: 140, radius: 12, expand: true),
+                  child: SkeletonBox(height: 140, radius: 12),
                 ),
                 SizedBox(width: AppSpacing.md),
                 const Expanded(
-                  child: SkeletonBox(height: 140, radius: 12, expand: true),
+                  child: SkeletonBox(height: 140, radius: 12),
                 ),
               ],
             ),

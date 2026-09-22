@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/router/app_router.dart';
@@ -68,17 +71,27 @@ class _FavoritesPageState extends State<FavoritesPage> {
         children: [
           _filters(counts),
           Expanded(
-            child: empty
-                ? _emptyFor(_filter)
-                : ListView(
-                    padding: AppInsets.page,
-                    children: [
-                      if (showLists) ..._listSection(lists),
-                      if (_filter == _Filter.all && lists.isNotEmpty && filtered.isNotEmpty)
-                        const _SectionLabel('收藏的内容'),
-                      ...filtered.map((e) => _swipeable(e)),
-                    ],
-                  ),
+            // 注意：空态也要显示「+」导入卡——收藏为空时它往往是
+            // 用户最先要用的功能，藏在 ListView 里会跟着空态一起消失。
+            child: ListView(
+              padding: AppInsets.page,
+              children: [
+                if (empty)
+                  // ListView 里没有高度约束，给空态一个固定高度居中
+                  SizedBox(
+                    height: 460,
+                    child: _emptyFor(_filter),
+                  )
+                else ...[
+                  if (showLists) ..._listSection(lists),
+                  if (_filter == _Filter.all && lists.isNotEmpty && filtered.isNotEmpty)
+                    const _SectionLabel('收藏的内容'),
+                  ...filtered.map((e) => _swipeable(e)),
+                ],
+                if (_filter == _Filter.all || _filter == _Filter.issue)
+                  const _ImportCard(),
+              ],
+            ),
           ),
         ],
       ),
@@ -276,6 +289,82 @@ class _SectionLabel extends StatelessWidget {
           color: context.p.textFaint,
           fontSize: 12,
           fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
+/// 末尾的「+」导入卡。点 = 选文件进导入流程（可逐个核对匹配）；
+/// 长按 = 多选批量，直接进流程一键全导。
+class _ImportCard extends StatelessWidget {
+  const _ImportCard();
+
+  Future<void> _pick(BuildContext context, {required bool batch}) async {
+    if (kIsWeb) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Web 预览不支持本地导入，请使用 Android 版')),
+      );
+      return;
+    }
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['cbz', 'zip', 'cbr'],
+      allowMultiple: batch,
+    );
+    final paths = result?.files
+            .where((f) => f.path != null)
+            .map((f) => f.path!)
+            .toList() ??
+        const <String>[];
+    if (paths.isEmpty) return;
+    if (!context.mounted) return;
+    context.pushNamed(RouteNames.importFlow, extra: paths);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.p;
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.xs,
+        vertical: AppSpacing.sm,
+      ),
+      child: InkWell(
+        onTap: () => _pick(context, batch: false),
+        onLongPress: () => _pick(context, batch: true),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        child: Container(
+          height: 72,
+          decoration: BoxDecoration(
+            color: p.fill,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(
+              color: p.brand.withValues(alpha: 0.35),
+            ),
+          ),
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.add_circle_outline, size: 22, color: p.brand),
+                const SizedBox(width: AppSpacing.sm),
+                Text(
+                  '导入本地漫画（CBZ/ZIP）',
+                  style: TextStyle(
+                    color: p.brand,
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Text(
+                  '长按批量',
+                  style: TextStyle(color: p.textGhost, fontSize: 11),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
