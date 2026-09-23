@@ -50,3 +50,6 @@ app.*.map.json
 
 # Kotlin/Gradle 会话文件（构建产物）
 .kotlin/
+
+# 发布产物（APK 走 GitHub Release，不进仓库）
+dist/
