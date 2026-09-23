@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../core/theme/app_palette.dart';
 import '../../../core/theme/app_tokens.dart';
+import '../../../core/widgets/card_tap_area.dart';
 import '../../../core/widgets/comic_cover.dart';
 import '../../../data/models/marvel_models.dart';
 
@@ -32,7 +33,9 @@ class GuideWideCard extends StatelessWidget {
     final p = context.p;
     return LayoutBuilder(builder: (context, constraints) {
       final w = width.isInfinite ? constraints.maxWidth : width;
-      return InkWell(
+      // 槽位高度是按「图 + 两行标题」估的，标题只有一行时底下会空一截；
+      // 用 CardTapArea 让高亮/水波纹只跟着内容，别把那截空白也点亮
+      return CardTapArea(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: SizedBox(

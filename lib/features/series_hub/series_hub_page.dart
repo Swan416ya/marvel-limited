@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
+import '../../core/widgets/card_tap_area.dart';
 import '../../core/widgets/comic_cover.dart';
 import '../../core/widgets/cover_grid.dart';
 import '../../core/widgets/shelf_list.dart';
@@ -149,7 +150,9 @@ class _SeriesHubPageState extends State<SeriesHubPage> {
                         const SliverToBoxAdapter(child: _SectionLabel('我的追更')),
                         SliverToBoxAdapter(
                           child: ShelfList(
-                            height: 186,
+                            // 118 宽的封面按 2:3 是 177 高，加标题两行约 28、
+                            // 间距 4 ≈ 209。槽位给足，封面才是精确 2:3
+                            height: 209,
                             itemCount: follows.length,
                             itemWidth: 118,
                             itemBuilder: (context, i) => _SeriesCard(
@@ -318,9 +321,11 @@ class _WideSeriesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = context.p;
-    return InkWell(
+    // 书架槽位比内容高一截（按两行标题估的），高亮只跟着内容走
+    return CardTapArea(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppRadius.lg),
+      alignment: Alignment.topLeft,
       child: SizedBox(
         width: 220,
         child: Column(

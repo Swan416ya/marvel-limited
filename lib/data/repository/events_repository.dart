@@ -21,8 +21,16 @@ class EventsRepository {
   /// 本地封面清单（id → 文件名），没有跑过打包脚本时为空。
   Map<String, String>? _localCovers;
 
-  /// tier 的固定展示顺序：全公司级永远最前。
-  static const tierOrder = ['company', 'cosmic', 'earth', 'spider', 'xmen'];
+  /// tier 的固定展示顺序：全公司级永远最前，两个平行宇宙线垫底。
+  static const tierOrder = [
+    'company',
+    'cosmic',
+    'earth',
+    'spider',
+    'xmen',
+    'ultimate1610',
+    'ultimate6160',
+  ];
 
   /// 加载并缓存。并发调用只读一次资产。
   Future<List<MarvelEvent>> all() {

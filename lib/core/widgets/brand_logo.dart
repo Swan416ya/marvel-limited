@@ -67,6 +67,10 @@ class BrandLogo extends StatelessWidget {
                 color: context.p.textPrimary,
                 fontFamily: 'Anton',
                 fontSize: tailFontSize(height),
+                // 必须显式给字重：AppBar 的 titleTextStyle 是 w700，而 Anton
+                // 只注册了 w400，继承下去会让 Flutter 做**合成加粗**——字被
+                // 撑大一圈，看着比 logo 的字形大、也比 log 更粗。
+                fontWeight: FontWeight.w400,
                 height: 1.0,
                 letterSpacing: tailFontSize(height) * 0.01,
               ),
@@ -115,6 +119,7 @@ class _WordMark extends StatelessWidget {
                 color: const Color(0xFFFFFFFF),
                 fontFamily: 'Anton',
                 fontSize: markFont,
+                fontWeight: FontWeight.w400,
                 height: 1.0,
                 letterSpacing: markFont * 0.01,
               ),
@@ -129,6 +134,7 @@ class _WordMark extends StatelessWidget {
               color: p.textPrimary,
               fontFamily: 'Anton',
               fontSize: BrandLogo.tailFontSize(height),
+              fontWeight: FontWeight.w400,
               height: 1.0,
               letterSpacing: BrandLogo.tailFontSize(height) * 0.01,
             ),

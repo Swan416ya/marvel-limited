@@ -21,7 +21,9 @@ class MarvelEvent {
   /// 中文译名。
   final String titleZh;
 
-  /// 分级：company（全公司级最大事件）/ cosmic / earth / spider / xmen。
+  /// 分级：company（全公司级最大事件）/ cosmic / earth / spider / xmen，
+  /// 以及两个平行宇宙线：ultimate1610（地球-1610 终极宇宙）、
+  /// ultimate6160（地球-6160 新终极宇宙）。
   final String tier;
 
   final int year;
@@ -44,6 +46,8 @@ class MarvelEvent {
     'earth': '地球线',
     'spider': '蜘蛛侠线',
     'xmen': 'X 战警线',
+    'ultimate1610': '1610 终极宇宙',
+    'ultimate6160': '6160 新终极宇宙',
   };
 
   /// tier 的展示名，未知值原样返回。
