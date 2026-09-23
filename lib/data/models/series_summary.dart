@@ -1,3 +1,11 @@
+/// 官网 JSON 里的数字字段有时是字符串（如 `"start_year": "2026"`），
+/// 直接 `as num?` 会抛 TypeError，统一走这里转。
+int? looseInt(Object? value) {
+  if (value == null) return null;
+  if (value is num) return value.toInt();
+  return int.tryParse(value.toString());
+}
+
 /// 系列页瀑布流用的系列摘要：不管来自官网还是 wiki，统一一个壳。
 class SeriesSummary {
   const SeriesSummary({
@@ -81,9 +89,9 @@ class SeriesDetail {
       title: json['title']?.toString() ?? '',
       description: json['description']?.toString() ?? '',
       coverUrl: hasCover ? '$imageBase/landscape_incredible.$ext' : null,
-      startYear: (json['start_year'] as num?)?.toInt(),
-      endYear: (json['end_year'] as num?)?.toInt(),
-      comicsCount: (json['comics_count'] as num?)?.toInt() ?? 0,
+      startYear: looseInt(json['start_year']),
+      endYear: looseInt(json['end_year']),
+      comicsCount: looseInt(json['comics_count']) ?? 0,
     );
   }
 }

@@ -6,6 +6,7 @@ import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/async_view.dart';
 import '../../core/widgets/comic_cover.dart';
+import '../../core/widgets/cover_grid.dart';
 import '../../core/widgets/glass_panel.dart';
 import '../../core/widgets/state_views.dart';
 import '../../core/widgets/tab_app_bar.dart';
@@ -334,29 +335,19 @@ class _SeriesPageState extends State<SeriesPage> {
                         ),
                       )
                     else
-                      SliverPadding(
+                      CoverGrid(
+                        itemCount: issues.length,
+                        textBlockHeight: 18, // 只有期号一行
                         padding: const EdgeInsets.fromLTRB(
                           AppSpacing.md,
                           AppSpacing.md,
                           AppSpacing.md,
                           AppSpacing.navBarClearance,
                         ),
-                        sliver: SliverGrid(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.56,
-                            crossAxisSpacing: AppSpacing.sm,
-                            mainAxisSpacing: AppSpacing.md,
-                          ),
-                          delegate: SliverChildBuilderDelegate(
-                            (context, i) => _IssueTile(
-                              issue: issues[i],
-                              imported: library.isImported(issues[i].id),
-                              progress: library.progressFor(issues[i].id),
-                            ),
-                            childCount: issues.length,
-                          ),
+                        itemBuilder: (context, i) => _IssueTile(
+                          issue: issues[i],
+                          imported: library.isImported(issues[i].id),
+                          progress: library.progressFor(issues[i].id),
                         ),
                       ),
                   ],
@@ -519,10 +510,8 @@ class _IssueTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppRadius.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          AspectRatio(
-            aspectRatio: 2 / 3,
+          Expanded(
             child: Stack(
               fit: StackFit.expand,
               children: [

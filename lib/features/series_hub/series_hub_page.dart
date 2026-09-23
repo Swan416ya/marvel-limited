@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +8,7 @@ import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/comic_cover.dart';
+import '../../core/widgets/cover_grid.dart';
 import '../../core/widgets/shelf_list.dart';
 import '../../core/widgets/state_views.dart';
 import '../../core/widgets/tab_app_bar.dart';
@@ -44,27 +47,22 @@ class _SeriesHubPageState extends State<SeriesHubPage> {
   }
 
   Future<void> _load() async {
+    // 下拉刷新时保留已有内容，别把整页打回骨架屏
     setState(() {
-      _loading = true;
       _error = null;
+      if (_latest == null) _loading = true;
     });
+    final repo = context.read<CatalogRepository>();
+    // 「最近更新的系列」是主内容，先单独拉先渲染；编辑精选晚到不影响首屏
     try {
-      final repo = context.read<CatalogRepository>();
-      final results = await Future.wait([
-        repo
-            .latestIssues(limit: 100)
-            .timeout(const Duration(seconds: 60))
-            .then(CatalogRepository.distinctSeries),
-        repo.featuredSeries().timeout(const Duration(seconds: 60)),
-      ]);
+      final issues = await repo
+          .latestIssues(limit: 100)
+          .timeout(const Duration(seconds: 60));
       if (!mounted) return;
       setState(() {
-        _latest = results[0];
-        _featured = results[1];
+        _latest = CatalogRepository.distinctSeries(issues);
         _loading = false;
       });
-      // 头像不阻塞首屏，慢慢补
-      _loadAvatars();
     } catch (e) {
       debugPrint('[SeriesHub] 加载失败: $e');
       if (!mounted) return;
@@ -72,6 +70,23 @@ class _SeriesHubPageState extends State<SeriesHubPage> {
         _loading = false;
         _error = e.toString();
       });
+      return;
+    }
+    // 这两个都不阻塞首屏，慢慢补
+    unawaited(_loadFeatured());
+    unawaited(_loadAvatars());
+  }
+
+  Future<void> _loadFeatured() async {
+    try {
+      final list = await context
+          .read<CatalogRepository>()
+          .featuredSeries()
+          .timeout(const Duration(seconds: 30));
+      if (!mounted) return;
+      setState(() => _featured = list);
+    } catch (_) {
+      // 精选位拿不到就不显示，不影响主列表
     }
   }
 
@@ -181,26 +196,16 @@ class _SeriesHubPageState extends State<SeriesHubPage> {
                           ),
                         )
                       else
-                        SliverPadding(
+                        CoverGrid(
+                          itemCount: latest.length,
                           padding: const EdgeInsets.fromLTRB(
                             AppSpacing.md,
                             0,
                             AppSpacing.md,
                             AppSpacing.navBarClearance,
                           ),
-                          sliver: SliverGrid(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              childAspectRatio: 0.55,
-                              crossAxisSpacing: AppSpacing.sm,
-                              mainAxisSpacing: AppSpacing.md,
-                            ),
-                            delegate: SliverChildBuilderDelegate(
-                              (context, i) => _SeriesCard(series: latest[i]),
-                              childCount: latest.length,
-                            ),
-                          ),
+                          itemBuilder: (context, i) =>
+                              _SeriesCard(series: latest[i]),
                         ),
                     ],
                   ),
@@ -377,10 +382,10 @@ class _SeriesCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppRadius.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          AspectRatio(
-            aspectRatio: 2 / 3,
+          // Expanded 而不是 AspectRatio：格子高度由 CoverGrid 按宽度算好，
+          // 封面吃掉剩余空间——差一两个像素也只是封面微调，绝不 overflow。
+          Expanded(
             child: Stack(
               fit: StackFit.expand,
               children: [

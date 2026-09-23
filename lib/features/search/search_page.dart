@@ -7,6 +7,7 @@ import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/state_views.dart';
+import '../../core/widgets/tag_pill.dart';
 import '../../state/search_state.dart';
 import 'widgets/search_hit_tile.dart';
 
@@ -249,15 +250,10 @@ class _SearchPageState extends State<SearchPage> {
             runSpacing: AppSpacing.sm,
             children: [
               for (final h in history)
-                ActionChip(
-                  label: Text(h),
-                  onPressed: () => _submit(h),
-                  backgroundColor: context.p.fill,
-                  side: BorderSide(color: context.p.border),
-                  labelStyle: TextStyle(
-                    color: context.p.textMuted,
-                    fontSize: 13,
-                  ),
+                TagPill(
+                  label: h,
+                  height: 30,
+                  onTap: () => _submit(h),
                 ),
             ],
           ),

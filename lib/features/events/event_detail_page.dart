@@ -5,6 +5,7 @@ import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/comic_cover.dart';
+import '../../core/widgets/cover_grid.dart';
 import '../../core/widgets/glass_panel.dart';
 import '../../core/widgets/section_header.dart';
 import '../../core/widgets/async_view.dart';
@@ -58,24 +59,37 @@ class _EventDetailPageState extends State<EventDetailPage> {
   }
 
   /// 找官方的 Complete Event 指南并拉它的 issue 列表。
+  ///
+  /// 同名事件很多（1984 和 2015 都叫 Secret Wars，Civil War 和
+  /// Civil War II 也互相包含），光比标题必然张冠李戴。所以候选按标题
+  /// 评分排好后，逐个拉它的期数、用**发行年份**验明正身，第一个年份
+  /// 对得上的才采纳；全都不对上就退回本地静态顺序，宁可不显示也不能
+  /// 显示错的。
   Future<void> _loadOfficialGuide(MarvelEvent event) async {
     setState(() => _guideLoading = true);
     try {
       final catalog = context.read<CatalogState>();
       if (catalog.guides == null) await catalog.loadGuides();
       if (!mounted) return;
-      final guide = _matchGuide(catalog.guides ?? const [], event);
-      if (guide == null) {
-        setState(() => _guideLoading = false);
+      final candidates = _candidates(catalog.guides ?? const [], event);
+      for (final guide in candidates) {
+        final issues = await catalog.guideIssues(guide.id);
+        if (!mounted) return;
+        if (issues.isEmpty) continue;
+        if (!_yearFits(issues, event.year)) {
+          debugPrint('[EventDetail] 跳过年份不符的指南：'
+              '${guide.title}（事件 ${event.year}）');
+          continue;
+        }
+        setState(() {
+          _guide = guide;
+          _guideIssues = issues;
+          _guideLoading = false;
+        });
         return;
       }
-      setState(() => _guide = guide);
-      final issues = await catalog.guideIssues(guide.id);
       if (!mounted) return;
-      setState(() {
-        _guideIssues = issues;
-        _guideLoading = false;
-      });
+      setState(() => _guideLoading = false);
     } catch (e) {
       debugPrint('[EventDetail] 官方指南加载失败: $e');
       if (!mounted) return;
@@ -83,28 +97,65 @@ class _EventDetailPageState extends State<EventDetailPage> {
     }
   }
 
-  /// 匹配规则：指南标题包含事件名；优先 "The Complete Event" /
-  /// "The Main Event" 后缀的；再优先带事件年份的。
-  static ReadingGuide? _matchGuide(
+  /// 标题候选：必须按词边界完整包含事件名，再按「像不像这个事件的正传」
+  /// 排序。返回的是**待验证**列表，年份由 [_yearFits] 说了算。
+  static List<ReadingGuide> _candidates(
       List<ReadingGuide> guides, MarvelEvent event) {
-    final key = event.title.toLowerCase();
-    ReadingGuide? best;
-    var bestScore = -1;
+    final key = _normalize(event.title);
+    if (key.isEmpty) return const [];
+    final scored = <({ReadingGuide guide, int score})>[];
     for (final g in guides) {
-      final t = g.title.toLowerCase();
-      if (!t.contains(key)) continue;
+      final t = _normalize(g.title);
+      final at = t.indexOf(key);
+      if (at < 0) continue;
+      // 词边界：'civil war' 不该命中 'civil warrior'
+      final before = at == 0 ? ' ' : t[at - 1];
+      final after = at + key.length >= t.length ? ' ' : t[at + key.length];
+      if (!_isBoundary(before) || !_isBoundary(after)) continue;
+      final tail = t.substring(at + key.length).trim();
+      // 续作/姐妹篇：Secret Wars 不该拿 Civil War II 那种东西
+      if (RegExp(r'^(ii|iii|iv|v|vi|vii|2|3|4)\b').hasMatch(tail)) continue;
       var score = 0;
-      if (t.contains('complete event')) score += 4;
-      if (t.contains('main event')) score += 3;
-      if (t.contains(event.year.toString())) score += 2;
-      if (t.length <= key.length + 4) score += 1; // 越接近纯事件名越好
-      if (score > bestScore) {
-        bestScore = score;
-        best = g;
+      if (t.contains('complete event')) score += 6;
+      if (t.contains('main event')) score += 5;
+      if (RegExp(r'\b' + event.year.toString() + r'\b').hasMatch(t)) {
+        score += 4;
       }
+      if (tail.isEmpty) score += 3; // 纯事件名，最像正传
+      if (t.startsWith(key)) score += 2;
+      if (tail.startsWith('road to') || tail.startsWith('the road to')) {
+        score -= 2; // 前传导览，能不用就不用
+      }
+      scored.add((guide: g, score: score));
     }
-    return best;
+    scored.sort((a, b) => b.score.compareTo(a.score));
+    return scored.take(3).map((e) => e.guide).toList();
   }
+
+  /// 指南里的期数发行年份是否和事件年份对得上。
+  ///
+  /// 大事件正传都是事件当年到次年发的，所以取年份区间放宽 ±2 年做判定。
+  static bool _yearFits(List<ComicIssue> issues, int eventYear) {
+    final years = issues
+        .map((i) => int.tryParse(i.releaseDate.split('-').first))
+        .whereType<int>()
+        .toList()
+      ..sort();
+    if (years.isEmpty) return true; // 没有日期就不拦，交给标题匹配
+    final lo = years.first;
+    final hi = years.last;
+    return eventYear >= lo - 2 && eventYear <= hi + 2;
+  }
+
+  static bool _isBoundary(String ch) =>
+      ch == ' ' || ch == ':' || ch == '-' || ch == ',' || ch == '(';
+
+  static String _normalize(String s) => s
+      .toLowerCase()
+      .replaceAll('’', "'")
+      .replaceAll(RegExp(r'[^a-z0-9:()\-, ]'), ' ')
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .trim();
 
   @override
   Widget build(BuildContext context) {
@@ -293,28 +344,12 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 ),
               )
             else
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.md,
-                  0,
-                  AppSpacing.md,
-                  0,
-                ),
-                sliver: SliverGrid(
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 0.55,
-                    crossAxisSpacing: AppSpacing.sm,
-                    mainAxisSpacing: AppSpacing.md,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, i) => _GuideIssueTile(
-                      issue: _guideIssues![i],
-                      index: i,
-                    ),
-                    childCount: _guideIssues!.length,
-                  ),
+              CoverGrid(
+                itemCount: _guideIssues!.length,
+                textBlockHeight: 32, // 期号 + 系列名
+                itemBuilder: (context, i) => _GuideIssueTile(
+                  issue: _guideIssues![i],
+                  index: i,
                 ),
               ),
           ],

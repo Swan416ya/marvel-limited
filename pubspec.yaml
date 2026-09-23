@@ -80,6 +80,25 @@ flutter:
     - assets/data/event_covers/
     - assets/data/hero_avatars/
 
+  # 品牌字体：Anton（SIL OFL 1.1）。重型窄体无衬线，字形和漫威 logo 里的
+  # MARVEL 字形最接近，用在品牌栏右侧单词和自绘兜底标识上。
+  #
+  # 正文字体：Noto Sans SC 子集（SIL OFL 1.1，按本项目实际用到的
+  # 1248 个字符裁剪，两个字重各约 380KB）。**必须打包**：Flutter Web
+  # 的中文靠 CanvasKit 联网下载 Noto 回退字体，网络一慢/被墙就会出现
+  # 缺字形（豆腐块）和「测量宽度 ≠ 实际绘制宽度」，后者会把 chip 标签
+  # 的文字淡出裁掉。打包之后测量和绘制用同一份字体，问题从根上没了。
+  fonts:
+    - family: Anton
+      fonts:
+        - asset: assets/fonts/Anton-Regular.ttf
+    - family: NotoSansSC
+      fonts:
+        - asset: assets/fonts/NotoSansSC-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/NotoSansSC-Bold.ttf
+          weight: 700
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

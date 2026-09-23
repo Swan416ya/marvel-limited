@@ -7,6 +7,7 @@ import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/async_view.dart';
 import '../../core/widgets/brand_fade.dart';
 import '../../core/widgets/comic_cover.dart';
+import '../../core/widgets/cover_grid.dart';
 import '../../core/widgets/glass_panel.dart';
 import '../../core/widgets/state_views.dart';
 import '../../data/models/marvel_models.dart';
@@ -196,28 +197,20 @@ class _GuideDetailPageState extends State<GuideDetailPage> {
                     ),
                   ),
                 ),
-                SliverPadding(
+                CoverGrid(
+                  itemCount: issues.length,
+                  maxCellWidth: 110,
+                  textBlockHeight: 34, // 期号 + 系列名两行
+                  crossSpacing: 10,
                   padding: const EdgeInsets.fromLTRB(
                     AppSpacing.lg,
                     AppSpacing.sm,
                     AppSpacing.lg,
                     AppSpacing.navBarClearance,
                   ),
-                  sliver: SliverGrid(
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 110,
-                      childAspectRatio: 0.56,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: AppSpacing.md,
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, i) => _GuideIssueCard(
-                        issue: issues[i],
-                        index: i,
-                      ),
-                      childCount: issues.length,
-                    ),
+                  itemBuilder: (context, i) => _GuideIssueCard(
+                    issue: issues[i],
+                    index: i,
                   ),
                 ),
               ],
@@ -244,8 +237,7 @@ class _GuideIssueCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AspectRatio(
-            aspectRatio: 2 / 3,
+          Expanded(
             child: Stack(
               fit: StackFit.expand,
               children: [

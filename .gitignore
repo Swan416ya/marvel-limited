@@ -44,3 +44,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 .zcode/
+
+# 本地临时工作目录（脚本/日志/中间产物，不进仓库）
+.tmp/

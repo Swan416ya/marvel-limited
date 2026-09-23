@@ -197,7 +197,7 @@ class BifrostClient {
       final data = body['data'] as Map<String, dynamic>;
       final results = (data['results'] as List).cast<Map<String, dynamic>>();
       all.addAll(results.map(ComicIssue.fromBifrost).where((i) => !i.isVariant));
-      final total = (data['total'] as num).toInt();
+      final total = looseInt(data['total']) ?? 0;
       offset += limit;
       if (offset >= total || results.isEmpty) break;
     }
@@ -247,7 +247,7 @@ class BifrostClient {
               seriesId: s['id']?.toString(),
               title: s['title']?.toString() ?? '',
               coverUrl: _seriesCover(s, preferLandscape: false),
-              issueCount: (s['comics_count'] as num?)?.toInt() ?? 0,
+              issueCount: looseInt(s['comics_count']) ?? 0,
             ))
         .where((s) => s.seriesId != null && s.title.isNotEmpty)
         .toList();

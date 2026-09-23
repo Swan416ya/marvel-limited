@@ -6,6 +6,7 @@ import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/async_view.dart';
 import '../../core/widgets/comic_cover.dart';
+import '../../core/widgets/cover_grid.dart';
 import '../../core/widgets/state_views.dart';
 import '../../core/widgets/tab_app_bar.dart';
 import '../../data/models/series_summary.dart';
@@ -179,30 +180,19 @@ class _HeroPageState extends State<HeroPage> {
                         child: _EmptySeries(),
                       )
                     else
-                      SliverPadding(
+                      CoverGrid(
+                        itemCount: _series!.length,
+                        textBlockHeight: 32, // 只有标题（两行），没有副标题
                         padding: const EdgeInsets.fromLTRB(
                           AppSpacing.lg,
                           0,
                           AppSpacing.lg,
                           AppSpacing.navBarClearance,
                         ),
-                        sliver: SliverGrid(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.55,
-                            crossAxisSpacing: AppSpacing.sm,
-                            mainAxisSpacing: AppSpacing.md,
-                          ),
-                          delegate: SliverChildBuilderDelegate(
-                            (context, i) => _HeroSeriesTile(
-                              series: _series![i],
-                            ),
-                            childCount: _series!.length,
-                          ),
+                        itemBuilder: (context, i) => _HeroSeriesTile(
+                          series: _series![i],
                         ),
-                      ),
-                  ],
+                      ),                  ],
                 ),
     );
   }
@@ -246,10 +236,8 @@ class _HeroSeriesTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppRadius.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          AspectRatio(
-            aspectRatio: 2 / 3,
+          Expanded(
             child: Stack(
               fit: StackFit.expand,
               children: [

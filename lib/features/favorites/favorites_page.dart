@@ -8,8 +8,10 @@ import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/comic_cover.dart';
+import '../../core/widgets/cover_grid.dart';
 import '../../core/widgets/glass_panel.dart';
 import '../../core/widgets/tab_app_bar.dart';
+import '../../core/widgets/tag_pill.dart';
 import '../../data/repository/preferences_repository.dart';
 import '../../state/favorites_state.dart';
 import '../../state/library_state.dart';
@@ -80,22 +82,39 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         ...filtered.map((e) => _swipeable(e)),
                     ],
                   )
-                : GridView.builder(
-                    padding: AppInsets.page,
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 150,
-                      childAspectRatio: 0.55,
-                      crossAxisSpacing: AppSpacing.md,
-                      mainAxisSpacing: AppSpacing.md,
-                    ),
-                    itemCount: filtered.length + 1,
-                    itemBuilder: (context, i) {
-                      // 最后一格永远是「+」导入卡
-                      if (i == filtered.length) {
-                        return const _ImportBookCard();
-                      }
-                      return _ShelfBookTile(entry: filtered[i]);
+                : LayoutBuilder(
+                    builder: (context, c) {
+                      // 比例按真实宽度算：固定 0.55 在窄屏会差几像素，
+                      // 卡片标题就被 overflow 顶掉
+                      final usable = c.maxWidth - AppInsets.page.horizontal;
+                      final cols = CoverGrid.columnsFor(
+                        usableWidth: usable,
+                        maxCellWidth: 150,
+                        crossSpacing: AppSpacing.md,
+                      );
+                      return GridView.builder(
+                        padding: AppInsets.page,
+                        gridDelegate:
+                            SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: cols,
+                          childAspectRatio: CoverGrid.aspectFor(
+                            usableWidth: usable,
+                            columns: cols,
+                            textBlockHeight: 32, // 标题两行
+                            crossSpacing: AppSpacing.md,
+                          ),
+                          crossAxisSpacing: AppSpacing.md,
+                          mainAxisSpacing: AppSpacing.md,
+                        ),
+                        itemCount: filtered.length + 1,
+                        itemBuilder: (context, i) {
+                          // 最后一格永远是「+」导入卡
+                          if (i == filtered.length) {
+                            return const _ImportBookCard();
+                          }
+                          return _ShelfBookTile(entry: filtered[i]);
+                        },
+                      );
                     },
                   ),
           ),
@@ -114,25 +133,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
         separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
         itemBuilder: (context, i) {
           final f = _Filter.values[i];
-          final selected = f == _filter;
           return Center(
-            child: ChoiceChip(
-              label: Text('${f.label} ${counts[f] ?? 0}'),
-              selected: selected,
-              onSelected: (_) => setState(() => _filter = f),
-              showCheckmark: false,
-              labelStyle: TextStyle(
-                color: selected
-                    ? context.p.textPrimary
-                    : context.p.textMuted,
-                fontSize: 13,
-                fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-              ),
-              backgroundColor: context.p.fill,
-              selectedColor: context.p.brand.withValues(alpha: 0.22),
-              side: BorderSide(
-                color: selected ? context.p.brand : context.p.border,
-              ),
+            child: TagPill(
+              label: '${f.label} ${counts[f] ?? 0}',
+              selected: f == _filter,
+              onTap: () => setState(() => _filter = f),
             ),
           );
         },
@@ -287,10 +292,8 @@ class _ImportBookCard extends StatelessWidget {
     final p = context.p;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
       children: [
-        AspectRatio(
-          aspectRatio: 2 / 3,
+        Expanded(
           child: InkWell(
             onTap: () => _pick(context, batch: false),
             onLongPress: () => _pick(context, batch: true),
@@ -377,10 +380,8 @@ class _ShelfBookTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppRadius.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          AspectRatio(
-            aspectRatio: 2 / 3,
+          Expanded(
             child: Stack(
               fit: StackFit.expand,
               children: [

@@ -7,6 +7,7 @@ import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/comic_cover.dart';
+import '../../core/widgets/tag_pill.dart';
 import '../../data/getcomics_service.dart';
 import '../../data/models/marvel_models.dart';
 import '../../data/repository/catalog_repository.dart';
@@ -211,16 +212,11 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
               runSpacing: AppSpacing.sm,
               children: [
                 for (final creator in _issue.creators.take(8))
-                  ActionChip(
-                    label: Text(creator),
-                    onPressed: () =>
-                        AppRouter.openSearch(context, query: creator),
-                    backgroundColor: p.fill,
-                    side: BorderSide(color: p.border),
-                    labelStyle: TextStyle(
-                      color: p.textSecondary,
-                      fontSize: 12.5,
-                    ),
+                  TagPill(
+                    label: creator,
+                    fontSize: 12.5,
+                    height: 30,
+                    onTap: () => AppRouter.openSearch(context, query: creator),
                   ),
               ],
             ),

@@ -22,6 +22,10 @@ abstract final class AppTheme {
       brightness: brightness,
       scaffoldBackgroundColor: palette.background,
       extensions: [palette],
+      // 全局字体用打包的 Noto Sans SC 子集：中文在 Web 上不再依赖
+      // CanvasKit 联网拉回退字体（慢且会缺字形/量错宽度），
+      // 测量与绘制同源，中英混排也不会再被裁。
+      fontFamily: 'NotoSansSC',
     );
     return base.copyWith(
       appBarTheme: AppBarTheme(

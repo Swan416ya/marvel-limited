@@ -31,17 +31,17 @@ class ComicIssue {
   factory ComicIssue.fromBifrost(Map json) {
     final meta = (json['metadata'] ?? json) as Map;
     final series = meta['series'] as Map?;
-    final imageBase = (json['image_url'] ?? '') as String;
-    final ext = (json['thumb_ext'] ?? 'jpg') as String;
+    final imageBase = json['image_url']?.toString() ?? '';
+    final ext = json['thumb_ext']?.toString() ?? 'jpg';
     final digital = meta['digital_comic'] as Map?;
     return ComicIssue(
       id: json['id'].toString(),
-      title: (json['title'] ?? '') as String,
-      seriesTitle: (series?['title'] ?? '') as String,
+      title: json['title']?.toString() ?? '',
+      seriesTitle: series?['title']?.toString() ?? '',
       seriesId: series?['id']?.toString(),
       issueNumber: json['issue_number'].toString(),
-      releaseDate: (json['release_date'] ?? '') as String,
-      description: (json['summary'] ?? meta['description'] ?? '') as String,
+      releaseDate: json['release_date']?.toString() ?? '',
+      description: (json['summary'] ?? meta['description'])?.toString() ?? '',
       coverUrl: imageBase.isEmpty
           ? null
           : imageBase.startsWith('http')
@@ -120,8 +120,8 @@ class ReadingGuide {
     final img = images.isNotEmpty ? images.first as Map : null;
     return ReadingGuide(
       id: json['id'].toString(),
-      title: (json['title'] ?? '') as String,
-      description: (json['description'] ?? '') as String,
+      title: json['title']?.toString() ?? '',
+      description: json['description']?.toString() ?? '',
       coverUrl: img == null ? null : '${img['path']}.${img['extension']}',
     );
   }
