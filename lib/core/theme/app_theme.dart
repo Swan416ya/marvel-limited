@@ -7,6 +7,14 @@ import 'app_tokens.dart';
 /// 全应用主题：深浅两套，各自注册一份 [AppPalette]，
 /// 页面里用 `context.p.xxx` 取语义颜色。
 abstract final class AppTheme {
+  /// 全局正文字体族。打包的自绘字体子集，见 pubspec 的 fonts 段。
+  ///
+  /// **凡是自己造 `TextStyle` 又要交给会把它当 DefaultTextStyle 的组件**
+  /// （DropdownButton.style、Tooltip 之类），都要显式带上这个 family：
+  /// 只写 color/fontSize 的话家族是 null，Web 上就落到 CanvasKit 那套
+  /// 残缺的系统回退里，中文直接变豆腐块。
+  static const fontFamily = 'NotoSansSC';
+
   static ThemeData dark() => _build(AppPalette.dark, Brightness.dark);
 
   static ThemeData light() => _build(AppPalette.light, Brightness.light);
@@ -25,7 +33,7 @@ abstract final class AppTheme {
       // 全局字体用打包的 Noto Sans SC 子集：中文在 Web 上不再依赖
       // CanvasKit 联网拉回退字体（慢且会缺字形/量错宽度），
       // 测量与绘制同源，中英混排也不会再被裁。
-      fontFamily: 'NotoSansSC',
+      fontFamily: fontFamily,
     );
     return base.copyWith(
       appBarTheme: AppBarTheme(

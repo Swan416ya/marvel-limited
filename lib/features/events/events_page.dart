@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/async_view.dart';
 import '../../core/widgets/comic_cover.dart';
@@ -231,8 +232,14 @@ class _EventDropdown extends StatelessWidget {
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
             value: value,
-            hint:
-                Text(hint, style: TextStyle(color: p.textMuted, fontSize: 12.5)),
+            hint: Text(
+              hint,
+              style: TextStyle(
+                color: p.textMuted,
+                fontSize: 12.5,
+                fontFamily: AppTheme.fontFamily,
+              ),
+            ),
             isExpanded: true,
             items: [
               const DropdownMenuItem(value: '', child: Text('全部')),
@@ -240,7 +247,13 @@ class _EventDropdown extends StatelessWidget {
             ],
             onChanged: onChanged,
             icon: Icon(Icons.expand_more, size: 18, color: p.textMuted),
-            style: TextStyle(color: p.textPrimary, fontSize: 13),
+            // 必须带 family：DropdownButton 把这个 style 当 DefaultTextStyle 用，
+            // 家族为 null 就落到系统字体，Web 上中文直接变豆腐块
+            style: TextStyle(
+              color: p.textPrimary,
+              fontSize: 13,
+              fontFamily: AppTheme.fontFamily,
+            ),
             dropdownColor: p.surface,
           ),
         ),

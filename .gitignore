@@ -47,3 +47,6 @@ app.*.map.json
 
 # 本地临时工作目录（脚本/日志/中间产物，不进仓库）
 .tmp/
+
+# Kotlin/Gradle 会话文件（构建产物）
+.kotlin/
