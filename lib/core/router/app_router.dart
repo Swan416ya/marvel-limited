@@ -58,6 +58,15 @@ class AppRouter {
             StatefulShellBranch(
               routes: [
                 GoRoute(
+                  path: '/',
+                  name: RouteNames.home,
+                  builder: (context, state) => const HomePage(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
                   path: '/guides',
                   name: RouteNames.guides,
                   builder: (context, state) => const GuidesPage(),
@@ -70,15 +79,6 @@ class AppRouter {
                   path: '/series',
                   name: RouteNames.seriesHub,
                   builder: (context, state) => const SeriesHubPage(),
-                ),
-              ],
-            ),
-            StatefulShellBranch(
-              routes: [
-                GoRoute(
-                  path: '/',
-                  name: RouteNames.home,
-                  builder: (context, state) => const HomePage(),
                 ),
               ],
             ),

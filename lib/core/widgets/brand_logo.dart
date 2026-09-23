@@ -31,6 +31,13 @@ class BrandLogo extends StatelessWidget {
   /// Anton 的 capHeight / unitsPerEm = 1760 / 2048。
   static const antonCapRatio = 0.859375;
 
+  /// 文字相对 logo 字形的**视觉**微调。
+  ///
+  /// 按基线对齐算下来（0.9202H）实际渲染出来还是比 MARVEL 字形高 1px
+  /// 左右（字体渲染的取整差异），看着像顶到红框上沿。这里只挪绘制、
+  /// 不动基线布局，字号保持和字形同高。
+  static const tailNudge = 0.045;
+
   /// 右侧单词的字号：目标字高反推。
   static double tailFontSize(double height) =>
       height * glyphCapHeight / antonCapRatio;
@@ -61,18 +68,21 @@ class BrandLogo extends StatelessWidget {
           ),
           if (tail.isNotEmpty) ...[
             SizedBox(width: height * 0.22),
-            Text(
-              tail,
-              style: TextStyle(
-                color: context.p.textPrimary,
-                fontFamily: 'Anton',
-                fontSize: tailFontSize(height),
-                // 必须显式给字重：AppBar 的 titleTextStyle 是 w700，而 Anton
-                // 只注册了 w400，继承下去会让 Flutter 做**合成加粗**——字被
-                // 撑大一圈，看着比 logo 的字形大、也比 log 更粗。
-                fontWeight: FontWeight.w400,
-                height: 1.0,
-                letterSpacing: tailFontSize(height) * 0.01,
+            Transform.translate(
+              offset: Offset(0, height * tailNudge),
+              child: Text(
+                tail,
+                style: TextStyle(
+                  color: context.p.textPrimary,
+                  fontFamily: 'Anton',
+                  fontSize: tailFontSize(height),
+                  // 必须显式给字重：AppBar 的 titleTextStyle 是 w700，而 Anton
+                  // 只注册了 w400，继承下去会让 Flutter 做**合成加粗**——字被
+                  // 撑大一圈，看着比 logo 的字形大、也比 logo 更粗。
+                  fontWeight: FontWeight.w400,
+                  height: 1.0,
+                  letterSpacing: tailFontSize(height) * 0.01,
+                ),
               ),
             ),
           ],

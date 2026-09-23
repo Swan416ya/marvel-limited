@@ -2,25 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_palette.dart';
-import '../../core/widgets/glass_panel.dart';
+import '../../core/theme/app_tokens.dart';
 
-/// 应用外壳：五个 tab + 悬浮毛玻璃底部导航。
+/// 应用外壳：五个 tab + 悬浮「液态玻璃」胶囊导航。
 ///
-/// 中间的「首页」是骑在导航栏顶上的大圆钮（参考 B 站加号按钮的形制），
-/// 其余四个（指南 / 系列 / 事件 / 收藏）是常规图标位。
+/// 参考 iOS 26 的 Liquid Glass：一枚圆角胶囊浮在内容之上，背景模糊、
+/// 边缘有一圈受光的细高光和内侧的玻璃反光，激活项在图标后面垫一层
+/// 淡淡的玻璃高光——不用整条实心栏，也不用红色大圆钮。
 /// 内容由 `StatefulShellRoute` 提供，切 tab 不重建页面。
+///
+/// 性能：`BackdropFilter` 只包这一小条（不整屏），模糊半径 18，
+/// 移动端一帧的额外开销可以忽略；没有动画背景、没有逐项 blur。
 class RootShell extends StatelessWidget {
   const RootShell({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
 
-  /// 分支顺序与路由表一致：指南=0，系列=1，首页=2（中间），事件=3，收藏=4。
-  static const _homeIndex = 2;
-
+  /// 分支顺序与路由表一致：首页=0（默认），指南=1，系列=2，事件=3，收藏=4。
   static const _destinations = [
+    (icon: Icons.home_outlined, activeIcon: Icons.home_rounded, label: '首页'),
     (icon: Icons.explore_outlined, activeIcon: Icons.explore, label: '指南'),
-    (icon: Icons.auto_stories_outlined, activeIcon: Icons.auto_stories, label: '系列'),
-    (icon: null, activeIcon: null, label: '首页'), // 中间大按钮占位
+    (
+      icon: Icons.auto_stories_outlined,
+      activeIcon: Icons.auto_stories,
+      label: '系列'
+    ),
     (icon: Icons.bolt_outlined, activeIcon: Icons.bolt, label: '事件'),
     (icon: Icons.favorite_border, activeIcon: Icons.favorite, label: '收藏'),
   ];
@@ -35,150 +41,142 @@ class RootShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final p = context.p;
     final safeBottom = MediaQuery.paddingOf(context).bottom;
-    const barHeight = 64.0;
-    // 大按钮要「骑」在玻璃栏顶上：把 bottomNavigationBar 整体加高 28，
-    // 玻璃栏贴底放，按钮钉在顶部。不靠负偏移（会受外层裁剪影响，实测被压平）。
-    const raise = 28.0;
-
     return Scaffold(
       extendBody: true,
       body: navigationShell,
-      bottomNavigationBar: SizedBox(
-        height: barHeight + safeBottom + raise,
-        child: Stack(
-          children: [
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: GlassPanel(
-                border: Border(top: BorderSide(color: p.border)),
-                child: SafeArea(
-                  top: false,
-                  child: SizedBox(
-                    height: barHeight,
-                    child: Row(
-                      children: [
-                        for (var i = 0; i < _destinations.length; i++)
-                          Expanded(child: _slot(context, i)),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // 中央大按钮：钉在整个导航区域顶部，带一圈底色描边从内容里浮出来。
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: _CenterButton(
-                  active: navigationShell.currentIndex == _homeIndex,
-                  onTap: () => _goBranch(_homeIndex),
-                ),
-              ),
-            ),
-          ],
+      bottomNavigationBar: Padding(
+        // 悬浮胶囊：左右留边、离底部留一点，内容从玻璃下面透出来
+        padding: EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          0,
+          AppSpacing.lg,
+          safeBottom + AppSpacing.sm,
         ),
-      ),
-    );
-  }
-
-  Widget _slot(BuildContext context, int index) {
-    final p = context.p;
-    final d = _destinations[index];
-    final active = navigationShell.currentIndex == index;
-
-    // 中间位留给大按钮，这里只画与其它位对齐的标签
-    if (d.icon == null) {
-      return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => _goBranch(index),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            const SizedBox(height: 28),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 9),
-              child: Text(
-                d.label,
-                style: TextStyle(
-                  color: active ? p.brand : p.textSubtle,
-                  fontSize: 11,
-                  fontWeight: active ? FontWeight.w600 : FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
+        child: _LiquidGlassBar(
+          index: navigationShell.currentIndex,
+          onSelect: _goBranch,
+          items: _destinations,
         ),
-      );
-    }
-
-    return InkWell(
-      onTap: () => _goBranch(index),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            active ? d.activeIcon : d.icon,
-            size: 24,
-            color: active ? p.brand : p.textSubtle,
-          ),
-          const SizedBox(height: 3),
-          Text(
-            d.label,
-            style: TextStyle(
-              color: active ? p.brand : p.textSubtle,
-              fontSize: 11,
-              fontWeight: active ? FontWeight.w600 : FontWeight.w500,
-            ),
-          ),
-        ],
       ),
     );
   }
 }
 
-/// 中间的红色大圆钮。
-class _CenterButton extends StatelessWidget {
-  const _CenterButton({required this.active, required this.onTap});
+/// 悬浮的液态玻璃导航胶囊。
+class _LiquidGlassBar extends StatelessWidget {
+  const _LiquidGlassBar({
+    required this.index,
+    required this.onSelect,
+    required this.items,
+  });
 
-  final bool active;
-  final VoidCallback onTap;
+  final int index;
+  final ValueChanged<int> onSelect;
+  final List<({IconData icon, IconData activeIcon, String label})> items;
+
+  static const _height = 62.0;
 
   @override
   Widget build(BuildContext context) {
     final p = context.p;
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 58,
-        height: 58,
+    final radius = BorderRadius.circular(_height / 2);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // 液态玻璃的「边缘受光」：外圈一道很淡的白边，内侧一层斜向反光
+    final edge = isDark ? const Color(0x2EFFFFFF) : const Color(0x1F0B0B10);
+    final sheen = isDark ? const Color(0x1FFFFFFF) : const Color(0x59FFFFFF);
+    // 玻璃底：半透明，能透出一点下面的内容
+    final fill = isDark ? const Color(0xB3151518) : const Color(0xE8FFFFFF);
+
+    // 说明：这里刻意**不用 BackdropFilter**。实测在 Flutter Web(CanvasKit)
+    // 上，圆角裁剪 + BackdropFilter 会让整页 body 的图片停止绘制（封面全空，
+    // 去掉滤镜立刻恢复）。改用「半透明底 + 反光渐变 + 亮边」做的磨砂玻璃，
+    // 观感接近而代价是一次普通绘制——顺手把性能开销也省了。
+    return RepaintBoundary(
+      child: DecoratedBox(
         decoration: BoxDecoration(
-          color: p.background,
-          shape: BoxShape.circle,
+          borderRadius: radius,
           boxShadow: [
             BoxShadow(
-              color: p.brand.withValues(alpha: active ? 0.55 : 0.3),
-              blurRadius: active ? 18 : 10,
-              spreadRadius: active ? 2 : 0,
+              color: const Color(0xFF000000).withValues(alpha: isDark ? 0.45 : 0.16),
+              blurRadius: 22,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(4),
-          child: Container(
+        child: ClipRRect(
+          borderRadius: radius,
+          child: DecoratedBox(
             decoration: BoxDecoration(
-              color: p.brand,
-              shape: BoxShape.circle,
+              color: fill,
+              borderRadius: radius,
+              border: Border.all(color: edge, width: 0.8),
+            ),
+            child: Stack(
+              children: [
+                // 反光：上半部一层从白到透明的斜向渐变
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: radius,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [sheen, const Color(0x00FFFFFF)],
+                          stops: const [0, 0.62],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    for (var i = 0; i < items.length; i++)
+                      Expanded(child: _slot(context, i, p)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _slot(BuildContext context, int i, AppPalette p) {
+    final item = items[i];
+    final active = i == index;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final fg = isDark ? const Color(0xFFFFFFFF) : const Color(0xFF0B0B10);
+
+    return Semantics(
+      button: true,
+      selected: active,
+      label: item.label,
+      child: InkWell(
+        onTap: () => onSelect(i),
+        borderRadius: BorderRadius.circular(_height / 2),
+        splashFactory: NoSplash.splashFactory,
+        highlightColor: Colors.transparent,
+        child: Center(
+          child: AnimatedContainer(
+            duration: AppDuration.quick,
+            curve: Curves.easeOut,
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+            decoration: BoxDecoration(
+              // 激活项：图标后面垫一层玻璃高光（iOS 26 的选中态形制）
+              color: active
+                  ? fg.withValues(alpha: isDark ? 0.14 : 0.10)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(_height / 2),
             ),
             child: Icon(
-              Icons.home_rounded,
-              color: const Color(0xFFFFFFFF),
-              size: 26,
+              active ? item.activeIcon : item.icon,
+              size: 23,
+              color: active
+                  ? (isDark ? fg : p.brand)
+                  : fg.withValues(alpha: isDark ? 0.62 : 0.45),
             ),
           ),
         ),
