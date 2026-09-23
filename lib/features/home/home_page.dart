@@ -114,11 +114,13 @@ class _HomePageState extends State<HomePage> {
   ///
   /// 数据是分批到的（本地事件先到、网络系列后到），但每次重建都会重排
   /// 一遍池子——所以只在池子明显变大时才动，避免用户正看着整页跳一下。
-  void _rebuildPool() {
+  void _rebuildPool({bool force = false}) {
     final pool = _poolCards();
     if (pool.isEmpty || _rebuilding) return;
+    // 数据没变就别重排（用户正看着会跳）；下拉刷新走 force，
+    // 这样点一下刷新就能换一批推荐。
     final grew = pool.length > _cards.length + _engine.batchSize;
-    if (_cards.isNotEmpty && !grew) return;
+    if (_cards.isNotEmpty && !grew && !force) return;
     _rebuilding = true;
     _engine.reset(pool: pool, signals: _signals());
     _cards.clear();
@@ -185,6 +187,7 @@ class _HomePageState extends State<HomePage> {
         onRefresh: () async {
           await context.read<CatalogState>().refresh();
           await _loadFeed();
+          if (mounted) _rebuildPool(force: true);
         },
         child: CustomScrollView(
           controller: _scroll,
