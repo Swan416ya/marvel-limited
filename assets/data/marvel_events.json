@@ -4,240 +4,215 @@
   "notes": "事件主视觉图（imageUrl）默认为空：界面会先去官方阅读指南列表里按标题匹配封面，匹配不到用品牌渐变兜底。阅读顺序为事实性整理，介绍文字为原创概述。",
   "events": [
     {
-      "id": "secret-wars-1984",
-      "title": "Secret Wars",
-      "titleZh": "秘密战争",
+      "id": "avengers-armageddon-2026",
+      "title": "Avengers: Armageddon",
+      "titleZh": "复仇者：末日之战",
       "tier": "company",
-      "year": 1984,
-      "oneLiner": "超越者把正反两派全掳到拼凑星球混战，漫威第一次把全公司角色放进同一个故事。",
+      "year": 2026,
+      "oneLiner": "毁灭博士倒台后红浩克占下拉托维尼亚自立「新美国」，以推行民主为名对全球动武，复仇者与神奇四侠必须拦下一个已经失控的旧世界。",
       "coreOrder": [
-        { "series": "Marvel Super Heroes Secret Wars", "issues": "1-12", "note": "主线，本体系列首次登场" }
+        {
+          "series": "Dungeons of Doom",
+          "issues": "1-3",
+          "note": "前导线，同时是《末日统治世界》的余波"
+        },
+        {
+          "series": "Captain America (2025)",
+          "issues": "6-11",
+          "note": "前导线"
+        },
+        {
+          "series": "Wolverine: Weapons of Armageddon",
+          "issues": "1-4",
+          "note": "前导线"
+        },
+        {
+          "series": "Avengers: Armageddon",
+          "issues": "1-5",
+          "note": "主线，2026 年 6 月至 10 月"
+        }
       ],
       "optionalOrder": [
-        { "series": "Thing", "issues": "11-22", "note": "石头人回到地球后的余波" }
+        {
+          "series": "Ultimate Universe Fallout（Ultimate Spider-Man: Incursion 1-5 / Ultimate Impact: Reborn 1-5）",
+          "issues": "",
+          "note": "官方把终极宇宙的收束也算在这一波前导里"
+        }
       ],
       "imageUrl": null
     },
     {
-      "id": "infinity-gauntlet-1991",
-      "title": "Infinity Gauntlet",
-      "titleZh": "无限手套",
+      "id": "one-world-under-doom-2025",
+      "title": "One World Under Doom",
+      "titleZh": "末日统治世界",
       "tier": "company",
-      "year": 1991,
-      "oneLiner": "灭霸集齐六颗无限宝石，一个响指让宇宙一半生命消失，幸存者集结反击。",
+      "year": 2025,
+      "oneLiner": "毁灭博士当上至尊法师后顺势把整个地球收入名下，各国领袖低头，英雄们第一次要在一位合法掌权的暴君治下反抗。",
       "coreOrder": [
-        { "series": "The Thanos Quest", "issues": "1-2", "note": "前置：灭霸如何集齐宝石" },
-        { "series": "Infinity Gauntlet", "issues": "1-6", "note": "主线必读" }
+        {
+          "series": "One World Under Doom",
+          "issues": "1-9",
+          "note": "主线，2025 年 2 月至 11 月"
+        }
       ],
       "optionalOrder": [
-        { "series": "Silver Surfer", "issues": "34-48", "note": "银影侠视角的前后铺垫" }
+        {
+          "series": "Fantastic Four (Vol 7)",
+          "issues": "28-33",
+          "note": "第 28 期是官方认定的前置，之后转入联动"
+        },
+        {
+          "series": "Red Hulk",
+          "issues": "1-10",
+          "note": "罗斯将军与浩克军团战线"
+        },
+        {
+          "series": "Avengers",
+          "issues": "25-28",
+          "note": "复仇者战线"
+        },
+        {
+          "series": "Iron Man",
+          "issues": "6-10",
+          "note": "托尼·斯塔克战线"
+        },
+        {
+          "series": "Doom Academy / Thunderbolts: Doomstrike / Superior Avengers / Doom's Division / Doctor Strange of Asgard / Runaways",
+          "issues": "各 1-5（Superior Avengers 1-6）",
+          "note": "其余联动刊，按兴趣挑"
+        },
+        {
+          "series": "The Amazing Spider-Man",
+          "issues": "61-70",
+          "note": "蜘蛛侠战线，已单独列为 8 Deaths of Spider-Man 条目"
+        }
       ],
       "imageUrl": null
     },
     {
-      "id": "age-of-apocalypse-1995",
-      "title": "Age of Apocalypse",
-      "titleZh": "天启纪元",
+      "id": "blood-hunt-2024",
+      "title": "Blood Hunt",
+      "titleZh": "血猎",
       "tier": "company",
-      "year": 1995,
-      "oneLiner": "过去被改写，万磁王统治的黑暗世界取代了正史，X 战警在一个从未存在过查尔斯·泽维尔的时代抗争。",
+      "year": 2024,
+      "oneLiner": "吸血鬼之神统领的全球血族日蚀降临，白昼消失，地球被按进永夜。",
       "coreOrder": [
-        { "series": "X-Men: Legion Quest", "issues": "X-Men 40-41, Uncanny X-Men 320-321", "note": "前置：时间线如何被改变" },
-        { "series": "X-Men Alpha", "issues": "1", "note": "异世界开篇" },
-        { "series": "Amazing X-Men / Astonishing X-Men", "issues": "各 1-4", "note": "天启纪元主线刊物，按刊内交叉序号读" },
-        { "series": "Weapon X", "issues": "1-4", "note": "金刚狼与琴·格雷线" },
-        { "series": "X-Men Omega", "issues": "1", "note": "终章" }
-      ],
-      "optionalOrder": [
-        { "series": "X-Calibre / Gambit & the X-Ternals / Generation Next / X-Man", "issues": "各 1-4", "note": "支线刊物，感兴趣的再补" }
-      ],
-      "imageUrl": null
-    },
-    {
-      "id": "onslaught-1996",
-      "title": "Onslaught",
-      "titleZh": "狂攻",
-      "tier": "company",
-      "year": 1996,
-      "oneLiner": "X 教授与万磁王意识扭曲融合成的怪物现身纽约，全英雄联手迎战，直接引出后来的英雄重生。",
-      "coreOrder": [
-        { "series": "Uncanny X-Men 322 / X-Men 53-54", "issues": "", "note": "铺垫：狂攻现身" },
-        { "series": "Onslaught: X-Men", "issues": "1", "note": "事件正式开始" },
-        { "series": "Uncanny X-Men 335 / X-Men 54", "issues": "", "note": "中段主力战" },
-        { "series": "Onslaught: Marvel Universe", "issues": "1", "note": "终章" }
-      ],
-      "optionalOrder": [
-        { "series": "Avengers 401-402 / Fantastic Four 415 / Cable 34-35 / Hulk 445-446", "issues": "", "note": "各刊迎战视角" }
-      ],
-      "imageUrl": null
-    },
-    {
-      "id": "house-of-m-2005",
-      "title": "House of M",
-      "titleZh": "M 氏家族",
-      "tier": "company",
-      "year": 2005,
-      "oneLiner": "绯红女巫改写现实，变种人统治世界而人类沦为二等公民；一句「不要再有变种人」改变了此后十年的漫威。",
-      "coreOrder": [
-        { "series": "House of M", "issues": "1-8", "note": "主线必读，可以不看任何延伸" }
-      ],
-      "optionalOrder": [
-        { "series": "House of M", "issues": "各刊 tie-in（Spider-Man /Fantastic Four / Uncanny X-Men 等）", "note": "配角视角，量力而行" }
-      ],
-      "imageUrl": null
-    },
-    {
-      "id": "civil-war-2006",
-      "title": "Civil War",
-      "titleZh": "内战",
-      "tier": "company",
-      "year": 2006,
-      "oneLiner": "超级英雄注册法案把复仇者劈成两半，钢铁侠与美国队长正面为敌，蜘蛛侠公开了身份。",
-      "coreOrder": [
-        { "series": "Civil War", "issues": "1-7", "note": "主线必读" }
-      ],
-      "optionalOrder": [
-        { "series": "Amazing Spider-Man", "issues": "532-538", "note": "蜘蛛侠身份公开与后果" },
-        { "series": "Captain America", "issues": "22-25", "note": "队长视角，收尾极佳" },
-        { "series": "Civil War: Front Line", "issues": "1-11", "note": "记者视角的战地报道" }
-      ],
-      "imageUrl": null
-    },
-    {
-      "id": "secret-invasion-2008",
-      "title": "Secret Invasion",
-      "titleZh": "秘密入侵",
-      "tier": "company",
-      "year": 2008,
-      "oneLiner": "斯克鲁人花多年时间替换了地球上的关键人物，信任崩塌的英雄们发现身边早就是假货。",
-      "coreOrder": [
-        { "series": "Secret Invasion", "issues": "1-8", "note": "主线必读" }
-      ],
-      "optionalOrder": [
-        { "series": "New Avengers", "issues": "38-47", "note": "光照会与斯克鲁的旧账" },
-        { "series": "Mighty Avengers", "issues": "12-20", "note": "主力战线视角" }
-      ],
-      "imageUrl": null
-    },
-    {
-      "id": "siege-2010",
-      "title": "Siege",
-      "titleZh": "围城",
-      "tier": "company",
-      "year": 2010,
-      "oneLiner": "黑暗王朝崩盘，诺曼·奥斯本率军强攻仙宫在人间的领地，英雄时代重新开场。",
-      "coreOrder": [
-        { "series": "Siege", "issues": "1-4", "note": "主线，短平快" }
-      ],
-      "optionalOrder": [
-        { "series": "Dark Avengers", "issues": "13-16", "note": "奥斯本阵营视角" },
-        { "series": "Thor", "issues": "604-606", "note": "仙宫战线" }
-      ],
-      "imageUrl": null
-    },
-    {
-      "id": "fear-itself-2011",
-      "title": "Fear Itself",
-      "titleZh": "恐惧本源",
-      "tier": "company",
-      "year": 2011,
-      "oneLiner": "大蛇苏醒，七柄神锤散落人间，被选中者堕落为天灾化身，全球陷入恐惧。",
-      "coreOrder": [
-        { "series": "Fear Itself", "issues": "1-7", "note": "主线必读" },
-        { "series": "Fear Itself: Book of the Skull / Sin's Origin", "issues": "1", "note": "前置短篇" }
-      ],
-      "optionalOrder": [
-        { "series": "Journey into Mystery", "issues": "622-626", "note": "洛基线，口碑极佳" },
-        { "series": "Fear Itself: The Home Front", "issues": "1-7", "note": "平民视角" }
-      ],
-      "imageUrl": null
-    },
-    {
-      "id": "avengers-vs-x-men-2012",
-      "title": "Avengers vs. X-Men",
-      "titleZh": "复仇者大战 X 战警",
-      "tier": "company",
-      "year": 2012,
-      "oneLiner": "凤凰之力逼近地球，为了它该属于谁，两队最强大的英雄全面开战，最后代价惨重。",
-      "coreOrder": [
-        { "series": "Avengers vs. X-Men", "issues": "0-12", "note": "主线，第 0 期是铺垫" }
-      ],
-      "optionalOrder": [
-        { "series": "AVX: VS", "issues": "1-6", "note": "纯打斗番外，轻松向" },
-        { "series": "Uncanny X-Men", "issues": "11-19", "note": "X 侧主线联动" },
-        { "series": "Wolverine and the X-Men", "issues": "9-16", "note": "学院视角" }
-      ],
-      "imageUrl": null
-    },
-    {
-      "id": "infinity-2013",
-      "title": "Infinity",
-      "titleZh": "无限",
-      "tier": "company",
-      "year": 2013,
-      "oneLiner": "建构者舰队横扫宇宙的同时，灭霸趁地球空虚发兵来袭，两条战线同时开打。",
-      "coreOrder": [
-        { "series": "Infinity", "issues": "1-6", "note": "主线必读" },
-        { "series": "Avengers", "issues": "18-23", "note": "宇宙战线主力" },
-        { "series": "New Avengers", "issues": "9-12", "note": "光照会与地球战线" }
+        {
+          "series": "Blood Hunt",
+          "issues": "1-5",
+          "note": "主线"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
     },
     {
-      "id": "original-sin-2014",
-      "title": "Original Sin",
-      "titleZh": "原罪",
+      "id": "venom-war-2024",
+      "title": "Venom War",
+      "titleZh": "毒液之战",
       "tier": "company",
-      "year": 2014,
-      "oneLiner": "观星者被杀，他看过的所有秘密开始外泄，每个英雄都被迫直面不想知道的事。",
+      "year": 2024,
+      "oneLiner": "两代毒液——艾迪·布洛克与儿子迪兰——各自拉队争夺共生体的归属，纽约变成一场父子内战的战场。",
       "coreOrder": [
-        { "series": "Original Sin", "issues": "0-8", "note": "主线" }
+        {
+          "series": "Free Comic Book Day 2024: Ultimate Universe/Spider-Man",
+          "issues": "1",
+          "note": "前置，官方指南收录"
+        },
+        {
+          "series": "Venom War",
+          "issues": "1-5",
+          "note": "主线，2024 年 8 月至 11 月"
+        }
       ],
       "optionalOrder": [
-        { "series": "Original Sin: Thor & Loki", "issues": "1-5", "note": "引出雷神重大设定变动" }
+        {
+          "series": "Venom (2021)",
+          "issues": "36-39",
+          "note": "本刊联动"
+        },
+        {
+          "series": "Venom War: Spider-Man",
+          "issues": "1-4",
+          "note": "蜘蛛侠战线"
+        },
+        {
+          "series": "Venom War: Carnage / Zombiotes / Lethal Protectors / Wolverine / Deadpool / Venomous",
+          "issues": "各 1-3（Venomous 前置为 Black Widow: Venomous 1）",
+          "note": "其余支线，量力而行"
+        },
+        {
+          "series": "Venom War: Fantastic Four / Daredevil / It's Jeff",
+          "issues": "各 1",
+          "note": "单期特刊"
+        }
       ],
       "imageUrl": null
     },
     {
-      "id": "axis-2014",
-      "title": "AXIS",
-      "titleZh": "轴心",
+      "id": "judgment-day-2022",
+      "title": "A.X.E.: Judgment Day",
+      "titleZh": "审判日",
       "tier": "company",
-      "year": 2014,
-      "oneLiner": "红骷髅的颠倒咒语失灵，英雄反派的人格与阵营整体翻转，一场荒诞的错位大战。",
+      "year": 2022,
+      "oneLiner": "天神组降临审判地球，永生者、X 战警与永恒族三方混战里每个人都收到一句判词。",
       "coreOrder": [
-        { "series": "AXIS", "issues": "1-9", "note": "主线" }
-      ],
-      "optionalOrder": [],
-      "imageUrl": null
-    },
-    {
-      "id": "secret-wars-2015",
-      "title": "Secret Wars",
-      "titleZh": "秘密战争（2015）",
-      "tier": "company",
-      "year": 2015,
-      "oneLiner": "多元宇宙相撞殆尽，毁灭博士以上帝之姿拼起残片世界，万物尽头的最后一战。",
-      "coreOrder": [
-        { "series": "Avengers: Time Runs Out（Avengers 35-44 / New Avengers 24-33）", "issues": "", "note": "前置：世界如何走到相撞" },
-        { "series": "Secret Wars", "issues": "1-9", "note": "主线必读" }
+        {
+          "series": "A.X.E.: Judgment Day",
+          "issues": "1-6",
+          "note": "主线"
+        }
       ],
       "optionalOrder": [
-        { "series": "Secret Wars 各战域刊物（如 A-Force / Planet Hulk / Civil War）", "issues": "", "note": "拼图世界的支线，按兴趣挑" }
+        {
+          "series": "A.X.E.: Death to the Mutants",
+          "issues": "1-3",
+          "note": "变种人侧延伸"
+        }
       ],
       "imageUrl": null
     },
     {
-      "id": "secret-empire-2017",
-      "title": "Secret Empire",
-      "titleZh": "秘密帝国",
+      "id": "empyre-2020",
+      "title": "Empyre",
+      "titleZh": "帝国",
       "tier": "company",
-      "year": 2017,
-      "oneLiner": "美国队长被改写为九头蛇卧底并夺权成功，一个法西斯美国与地下抵抗军的故事。",
+      "year": 2020,
+      "oneLiner": "克里与斯克鲁结成联盟进军地球，目标直指植物文明的古老母星，神奇四侠与复仇者被迫应战。",
       "coreOrder": [
-        { "series": "Secret Empire", "issues": "0-10", "note": "主线" },
-        { "series": "Captain America: Steve Rogers", "issues": "1-16", "note": "前置：队长如何被改写" }
+        {
+          "series": "Empyre",
+          "issues": "0-6",
+          "note": "主线"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Empyre: Avengers / Fantastic Four",
+          "issues": "各 0-3",
+          "note": "两队各自的战线"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "king-in-black-2020",
+      "title": "King in Black",
+      "titleZh": "黑衣之王",
+      "tier": "company",
+      "year": 2020,
+      "oneLiner": "共生体之神纳尔降临地球，一夜之间黑雾蔽日，英雄们面对的是造物层面的绝望。",
+      "coreOrder": [
+        {
+          "series": "King in Black",
+          "issues": "1-5",
+          "note": "主线"
+        },
+        {
+          "series": "Venom",
+          "issues": "1-25（Donny Cates 版）",
+          "note": "前置：纳尔的来龙去脉"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
@@ -250,100 +225,514 @@
       "year": 2019,
       "oneLiner": "玛勒基斯率黑暗精灵大军入侵地球，十界战火在纽约街头全面点燃。",
       "coreOrder": [
-        { "series": "War of the Realms", "issues": "1-6", "note": "主线" }
+        {
+          "series": "War of the Realms",
+          "issues": "1-6",
+          "note": "主线"
+        }
       ],
       "optionalOrder": [
-        { "series": "Thor", "issues": "12-16", "note": "雷神本刊联动" },
-        { "series": "War of the Realms: New Agents of Atlas", "issues": "1-4", "note": "亚洲英雄战线" }
+        {
+          "series": "Thor",
+          "issues": "12-16",
+          "note": "雷神本刊联动"
+        },
+        {
+          "series": "War of the Realms: New Agents of Atlas",
+          "issues": "1-4",
+          "note": "亚洲英雄战线"
+        }
       ],
       "imageUrl": null
     },
     {
-      "id": "empyre-2020",
-      "title": "Empyre",
-      "titleZh": "帝国",
+      "id": "secret-empire-2017",
+      "title": "Secret Empire",
+      "titleZh": "秘密帝国",
       "tier": "company",
-      "year": 2020,
-      "oneLiner": "克里与斯克鲁结成联盟进军地球，目标直指植物文明的古老母星，神奇四侠与复仇者被迫应战。",
+      "year": 2017,
+      "oneLiner": "美国队长被改写为九头蛇卧底并夺权成功，一个法西斯美国与地下抵抗军的故事。",
       "coreOrder": [
-        { "series": "Empyre", "issues": "0-6", "note": "主线" }
-      ],
-      "optionalOrder": [
-        { "series": "Empyre: Avengers / Fantastic Four", "issues": "各 0-3", "note": "两队各自的战线" }
-      ],
-      "imageUrl": null
-    },
-    {
-      "id": "king-in-black-2020",
-      "title": "King in Black",
-      "titleZh": "黑衣之王",
-      "tier": "company",
-      "year": 2020,
-      "oneLiner": "共生体之神纳尔降临地球，一夜之间黑雾蔽日，英雄们面对的是造物层面的绝望。",
-      "coreOrder": [
-        { "series": "King in Black", "issues": "1-5", "note": "主线" },
-        { "series": "Venom", "issues": "1-25（Donny Cates 版）", "note": "前置：纳尔的来龙去脉" }
+        {
+          "series": "Secret Empire",
+          "issues": "0-10",
+          "note": "主线"
+        },
+        {
+          "series": "Captain America: Steve Rogers",
+          "issues": "1-16",
+          "note": "前置：队长如何被改写"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
     },
     {
-      "id": "judgment-day-2022",
-      "title": "A.X.E.: Judgment Day",
-      "titleZh": "审判日",
+      "id": "secret-wars-2015",
+      "title": "Secret Wars",
+      "titleZh": "秘密战争（2015）",
       "tier": "company",
-      "year": 2022,
-      "oneLiner": "天神组降临审判地球，永生者、X 战警与永恒族三方混战里每个人都收到一句判词。",
+      "year": 2015,
+      "oneLiner": "多元宇宙相撞殆尽，毁灭博士以上帝之姿拼起残片世界，万物尽头的最后一战。",
       "coreOrder": [
-        { "series": "A.X.E.: Judgment Day", "issues": "1-6", "note": "主线" }
+        {
+          "series": "Avengers: Time Runs Out（Avengers 35-44 / New Avengers 24-33）",
+          "issues": "",
+          "note": "前置：世界如何走到相撞"
+        },
+        {
+          "series": "Secret Wars",
+          "issues": "1-9",
+          "note": "主线必读"
+        }
       ],
       "optionalOrder": [
-        { "series": "A.X.E.: Death to the Mutants", "issues": "1-3", "note": "变种人侧延伸" }
+        {
+          "series": "Secret Wars 各战域刊物（如 A-Force / Planet Hulk / Civil War）",
+          "issues": "",
+          "note": "拼图世界的支线，按兴趣挑"
+        }
       ],
       "imageUrl": null
     },
     {
-      "id": "blood-hunt-2024",
-      "title": "Blood Hunt",
-      "titleZh": "血猎",
+      "id": "axis-2014",
+      "title": "AXIS",
+      "titleZh": "轴心",
       "tier": "company",
-      "year": 2024,
-      "oneLiner": "吸血鬼之神统领的全球血族日蚀降临，白昼消失，地球被按进永夜。",
+      "year": 2014,
+      "oneLiner": "红骷髅的颠倒咒语失灵，英雄反派的人格与阵营整体翻转，一场荒诞的错位大战。",
       "coreOrder": [
-        { "series": "Blood Hunt", "issues": "1-5", "note": "主线" }
+        {
+          "series": "AXIS",
+          "issues": "1-9",
+          "note": "主线"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
     },
     {
-      "id": "annihilation-2006",
-      "title": "Annihilation",
-      "titleZh": "湮灭",
-      "tier": "cosmic",
+      "id": "original-sin-2014",
+      "title": "Original Sin",
+      "titleZh": "原罪",
+      "tier": "company",
+      "year": 2014,
+      "oneLiner": "观星者被杀，他看过的所有秘密开始外泄，每个英雄都被迫直面不想知道的事。",
+      "coreOrder": [
+        {
+          "series": "Original Sin",
+          "issues": "0-8",
+          "note": "主线"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Original Sin: Thor & Loki",
+          "issues": "1-5",
+          "note": "引出雷神重大设定变动"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "infinity-2013",
+      "title": "Infinity",
+      "titleZh": "无限",
+      "tier": "company",
+      "year": 2013,
+      "oneLiner": "建构者舰队横扫宇宙的同时，灭霸趁地球空虚发兵来袭，两条战线同时开打。",
+      "coreOrder": [
+        {
+          "series": "Infinity",
+          "issues": "1-6",
+          "note": "主线必读"
+        },
+        {
+          "series": "Avengers",
+          "issues": "18-23",
+          "note": "宇宙战线主力"
+        },
+        {
+          "series": "New Avengers",
+          "issues": "9-12",
+          "note": "光照会与地球战线"
+        }
+      ],
+      "optionalOrder": [],
+      "imageUrl": null
+    },
+    {
+      "id": "avengers-vs-x-men-2012",
+      "title": "Avengers vs. X-Men",
+      "titleZh": "复仇者大战 X 战警",
+      "tier": "company",
+      "year": 2012,
+      "oneLiner": "凤凰之力逼近地球，为了它该属于谁，两队最强大的英雄全面开战，最后代价惨重。",
+      "coreOrder": [
+        {
+          "series": "Avengers vs. X-Men",
+          "issues": "0-12",
+          "note": "主线，第 0 期是铺垫"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "AVX: VS",
+          "issues": "1-6",
+          "note": "纯打斗番外，轻松向"
+        },
+        {
+          "series": "Uncanny X-Men",
+          "issues": "11-19",
+          "note": "X 侧主线联动"
+        },
+        {
+          "series": "Wolverine and the X-Men",
+          "issues": "9-16",
+          "note": "学院视角"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "fear-itself-2011",
+      "title": "Fear Itself",
+      "titleZh": "恐惧本源",
+      "tier": "company",
+      "year": 2011,
+      "oneLiner": "大蛇苏醒，七柄神锤散落人间，被选中者堕落为天灾化身，全球陷入恐惧。",
+      "coreOrder": [
+        {
+          "series": "Fear Itself",
+          "issues": "1-7",
+          "note": "主线必读"
+        },
+        {
+          "series": "Fear Itself: Book of the Skull / Sin's Origin",
+          "issues": "1",
+          "note": "前置短篇"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Journey into Mystery",
+          "issues": "622-626",
+          "note": "洛基线，口碑极佳"
+        },
+        {
+          "series": "Fear Itself: The Home Front",
+          "issues": "1-7",
+          "note": "平民视角"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "siege-2010",
+      "title": "Siege",
+      "titleZh": "围城",
+      "tier": "company",
+      "year": 2010,
+      "oneLiner": "黑暗王朝崩盘，诺曼·奥斯本率军强攻仙宫在人间的领地，英雄时代重新开场。",
+      "coreOrder": [
+        {
+          "series": "Siege",
+          "issues": "1-4",
+          "note": "主线，短平快"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Dark Avengers",
+          "issues": "13-16",
+          "note": "奥斯本阵营视角"
+        },
+        {
+          "series": "Thor",
+          "issues": "604-606",
+          "note": "仙宫战线"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "secret-invasion-2008",
+      "title": "Secret Invasion",
+      "titleZh": "秘密入侵",
+      "tier": "company",
+      "year": 2008,
+      "oneLiner": "斯克鲁人花多年时间替换了地球上的关键人物，信任崩塌的英雄们发现身边早就是假货。",
+      "coreOrder": [
+        {
+          "series": "Secret Invasion",
+          "issues": "1-8",
+          "note": "主线必读"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "New Avengers",
+          "issues": "38-47",
+          "note": "光照会与斯克鲁的旧账"
+        },
+        {
+          "series": "Mighty Avengers",
+          "issues": "12-20",
+          "note": "主力战线视角"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "civil-war-2006",
+      "title": "Civil War",
+      "titleZh": "内战",
+      "tier": "company",
       "year": 2006,
-      "oneLiner": "湮灭波吞掉半个宇宙，一支由二线角色拼成的杂牌军成了最后的防线，现代宇宙线的起点。",
+      "oneLiner": "超级英雄注册法案把复仇者劈成两半，钢铁侠与美国队长正面为敌，蜘蛛侠公开了身份。",
       "coreOrder": [
-        { "series": "Annihilation: Prologue", "issues": "1", "note": "开篇：新星陨落" },
-        { "series": "Annihilation: Nova", "issues": "1-4", "note": "理查德·赖德重启" },
-        { "series": "Annihilation: Silver Surfer", "issues": "1-4", "note": "银影侠线" },
-        { "series": "Annihilation: Super-Skrull / Drax", "issues": "各 1-4", "note": "两条支线" },
-        { "series": "Annihilation", "issues": "1-6", "note": "决战主线" }
+        {
+          "series": "Civil War",
+          "issues": "1-7",
+          "note": "主线必读"
+        }
       ],
-      "optionalOrder": [],
+      "optionalOrder": [
+        {
+          "series": "Amazing Spider-Man",
+          "issues": "532-538",
+          "note": "蜘蛛侠身份公开与后果"
+        },
+        {
+          "series": "Captain America",
+          "issues": "22-25",
+          "note": "队长视角，收尾极佳"
+        },
+        {
+          "series": "Civil War: Front Line",
+          "issues": "1-11",
+          "note": "记者视角的战地报道"
+        }
+      ],
       "imageUrl": null
     },
     {
-      "id": "annihilation-conquest-2007",
-      "title": "Annihilation: Conquest",
-      "titleZh": "湮灭：征服",
-      "tier": "cosmic",
-      "year": 2007,
-      "oneLiner": "奥创借浮士德军团吞噬克里帝国，星爵的杂牌小队在这里首次集结。",
+      "id": "house-of-m-2005",
+      "title": "House of M",
+      "titleZh": "M 氏家族",
+      "tier": "company",
+      "year": 2005,
+      "oneLiner": "绯红女巫改写现实，变种人统治世界而人类沦为二等公民；一句「不要再有变种人」改变了此后十年的漫威。",
       "coreOrder": [
-        { "series": "Annihilation: Conquest - Star-Lord", "issues": "1-4", "note": "银河护卫队雏形" },
-        { "series": "Annihilation: Conquest - Quasar / Wraith", "issues": "各 1-4", "note": "支线" },
-        { "series": "Nova", "issues": "4-7", "note": "新星主刊联动" },
-        { "series": "Annihilation: Conquest", "issues": "1-6", "note": "决战主线" }
+        {
+          "series": "House of M",
+          "issues": "1-8",
+          "note": "主线必读，可以不看任何延伸"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "House of M",
+          "issues": "各刊 tie-in（Spider-Man /Fantastic Four / Uncanny X-Men 等）",
+          "note": "配角视角，量力而行"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "onslaught-1996",
+      "title": "Onslaught",
+      "titleZh": "狂攻",
+      "tier": "company",
+      "year": 1996,
+      "oneLiner": "X 教授与万磁王意识扭曲融合成的怪物现身纽约，全英雄联手迎战，直接引出后来的英雄重生。",
+      "coreOrder": [
+        {
+          "series": "Uncanny X-Men 322 / X-Men 53-54",
+          "issues": "",
+          "note": "铺垫：狂攻现身"
+        },
+        {
+          "series": "Onslaught: X-Men",
+          "issues": "1",
+          "note": "事件正式开始"
+        },
+        {
+          "series": "Uncanny X-Men 335 / X-Men 54",
+          "issues": "",
+          "note": "中段主力战"
+        },
+        {
+          "series": "Onslaught: Marvel Universe",
+          "issues": "1",
+          "note": "终章"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Avengers 401-402 / Fantastic Four 415 / Cable 34-35 / Hulk 445-446",
+          "issues": "",
+          "note": "各刊迎战视角"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "age-of-apocalypse-1995",
+      "title": "Age of Apocalypse",
+      "titleZh": "天启纪元",
+      "tier": "company",
+      "year": 1995,
+      "oneLiner": "过去被改写，万磁王统治的黑暗世界取代了正史，X 战警在一个从未存在过查尔斯·泽维尔的时代抗争。",
+      "coreOrder": [
+        {
+          "series": "X-Men: Legion Quest",
+          "issues": "X-Men 40-41, Uncanny X-Men 320-321",
+          "note": "前置：时间线如何被改变"
+        },
+        {
+          "series": "X-Men Alpha",
+          "issues": "1",
+          "note": "异世界开篇"
+        },
+        {
+          "series": "Amazing X-Men / Astonishing X-Men",
+          "issues": "各 1-4",
+          "note": "天启纪元主线刊物，按刊内交叉序号读"
+        },
+        {
+          "series": "Weapon X",
+          "issues": "1-4",
+          "note": "金刚狼与琴·格雷线"
+        },
+        {
+          "series": "X-Men Omega",
+          "issues": "1",
+          "note": "终章"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "X-Calibre / Gambit & the X-Ternals / Generation Next / X-Man",
+          "issues": "各 1-4",
+          "note": "支线刊物，感兴趣的再补"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "infinity-gauntlet-1991",
+      "title": "Infinity Gauntlet",
+      "titleZh": "无限手套",
+      "tier": "company",
+      "year": 1991,
+      "oneLiner": "灭霸集齐六颗无限宝石，一个响指让宇宙一半生命消失，幸存者集结反击。",
+      "coreOrder": [
+        {
+          "series": "The Thanos Quest",
+          "issues": "1-2",
+          "note": "前置：灭霸如何集齐宝石"
+        },
+        {
+          "series": "Infinity Gauntlet",
+          "issues": "1-6",
+          "note": "主线必读"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Silver Surfer",
+          "issues": "34-48",
+          "note": "银影侠视角的前后铺垫"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "secret-wars-1984",
+      "title": "Secret Wars",
+      "titleZh": "秘密战争",
+      "tier": "company",
+      "year": 1984,
+      "oneLiner": "超越者把正反两派全掳到拼凑星球混战，漫威第一次把全公司角色放进同一个故事。",
+      "coreOrder": [
+        {
+          "series": "Marvel Super Heroes Secret Wars",
+          "issues": "1-12",
+          "note": "主线，本体系列首次登场"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Thing",
+          "issues": "11-22",
+          "note": "石头人回到地球后的余波"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "imperial-2025",
+      "title": "Imperial",
+      "titleZh": "帝权",
+      "tier": "cosmic",
+      "year": 2025,
+      "oneLiner": "大博弈者接下疯狂马克西姆斯的赌局，把银河议会、希阿帝国与克里／斯克鲁同盟一起推进内战，希克曼的宇宙线从这里重新起盘。",
+      "coreOrder": [
+        {
+          "series": "Imperial",
+          "issues": "1-4",
+          "note": "主线，2025 年 6 月至 10 月"
+        },
+        {
+          "series": "Imperial War: Black Panther / Planet She-Hulk / Exiles / Nova - Centurion / Imperial Guardians",
+          "issues": "各 1",
+          "note": "战事特刊，串联各条战线"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Planet She-Hulk",
+          "issues": "1-6",
+          "note": "浩克家族接管萨卡尔"
+        },
+        {
+          "series": "Nova: Centurion",
+          "issues": "1-6",
+          "note": "新星线"
+        },
+        {
+          "series": "Black Panther: Intergalactic",
+          "issues": "1-4",
+          "note": "瓦坎达进入宇宙"
+        },
+        {
+          "series": "Imperial Guardians",
+          "issues": "1-3",
+          "note": "希阿帝国卫队"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "thanos-imperative-2010",
+      "title": "The Thanos Imperative",
+      "titleZh": "灭霸令",
+      "tier": "cosmic",
+      "year": 2010,
+      "oneLiner": "死亡消失的镜像宇宙入侵主宇宙，毁灭博士的残局需要灭霸活着才能收拾。",
+      "coreOrder": [
+        {
+          "series": "The Thanos Imperative: Ignition",
+          "issues": "1",
+          "note": "开篇"
+        },
+        {
+          "series": "The Thanos Imperative",
+          "issues": "1-6",
+          "note": "主线，Abnett & Lanning 宇宙线收尾"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
@@ -356,26 +745,101 @@
       "year": 2009,
       "oneLiner": "黑蝠王领导的异人接管克里帝国，与 Vulcan 的西阿帝国迎头相撞，宇宙两强全面开战。",
       "coreOrder": [
-        { "series": "Secret Invasion: Inhumans", "issues": "1-4", "note": "前置：异人为何参战" },
-        { "series": "X-Men: Kingbreaker", "issues": "1-4", "note": "前置：Vulcan 的扩张" },
-        { "series": "War of Kings", "issues": "1-6", "note": "主线" }
+        {
+          "series": "Secret Invasion: Inhumans",
+          "issues": "1-4",
+          "note": "前置：异人为何参战"
+        },
+        {
+          "series": "X-Men: Kingbreaker",
+          "issues": "1-4",
+          "note": "前置：Vulcan 的扩张"
+        },
+        {
+          "series": "War of Kings",
+          "issues": "1-6",
+          "note": "主线"
+        }
       ],
       "optionalOrder": [
-        { "series": "Guardians of the Galaxy", "issues": "7-19", "note": "护卫队夹缝求生" },
-        { "series": "Nova", "issues": "22-30", "note": "新星视角" }
+        {
+          "series": "Guardians of the Galaxy",
+          "issues": "7-19",
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "series": "Nova",
+          "issues": "22-30",
+          "note": "新星视角"
+        }
       ],
       "imageUrl": null
     },
     {
-      "id": "thanos-imperative-2010",
-      "title": "The Thanos Imperative",
-      "titleZh": "灭霸令",
+      "id": "annihilation-conquest-2007",
+      "title": "Annihilation: Conquest",
+      "titleZh": "湮灭：征服",
       "tier": "cosmic",
-      "year": 2010,
-      "oneLiner": "死亡消失的镜像宇宙入侵主宇宙，毁灭博士的残局需要灭霸活着才能收拾。",
+      "year": 2007,
+      "oneLiner": "奥创借浮士德军团吞噬克里帝国，星爵的杂牌小队在这里首次集结。",
       "coreOrder": [
-        { "series": "The Thanos Imperative: Ignition", "issues": "1", "note": "开篇" },
-        { "series": "The Thanos Imperative", "issues": "1-6", "note": "主线，Abnett & Lanning 宇宙线收尾" }
+        {
+          "series": "Annihilation: Conquest - Star-Lord",
+          "issues": "1-4",
+          "note": "银河护卫队雏形"
+        },
+        {
+          "series": "Annihilation: Conquest - Quasar / Wraith",
+          "issues": "各 1-4",
+          "note": "支线"
+        },
+        {
+          "series": "Nova",
+          "issues": "4-7",
+          "note": "新星主刊联动"
+        },
+        {
+          "series": "Annihilation: Conquest",
+          "issues": "1-6",
+          "note": "决战主线"
+        }
+      ],
+      "optionalOrder": [],
+      "imageUrl": null
+    },
+    {
+      "id": "annihilation-2006",
+      "title": "Annihilation",
+      "titleZh": "湮灭",
+      "tier": "cosmic",
+      "year": 2006,
+      "oneLiner": "湮灭波吞掉半个宇宙，一支由二线角色拼成的杂牌军成了最后的防线，现代宇宙线的起点。",
+      "coreOrder": [
+        {
+          "series": "Annihilation: Prologue",
+          "issues": "1",
+          "note": "开篇：新星陨落"
+        },
+        {
+          "series": "Annihilation: Nova",
+          "issues": "1-4",
+          "note": "理查德·赖德重启"
+        },
+        {
+          "series": "Annihilation: Silver Surfer",
+          "issues": "1-4",
+          "note": "银影侠线"
+        },
+        {
+          "series": "Annihilation: Super-Skrull / Drax",
+          "issues": "各 1-4",
+          "note": "两条支线"
+        },
+        {
+          "series": "Annihilation",
+          "issues": "1-6",
+          "note": "决战主线"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
@@ -388,23 +852,67 @@
       "year": 2004,
       "oneLiner": "一连串看似随机的灾难把复仇者拆得七零八落，幕后是一颗被扭曲的心，漫威本世纪变革的起点。",
       "coreOrder": [
-        { "series": "Avengers", "issues": "500-503", "note": "主线四连" },
-        { "series": "Avengers Finale", "issues": "1", "note": "告别终章" }
+        {
+          "series": "Avengers",
+          "issues": "500-503",
+          "note": "主线四连"
+        },
+        {
+          "series": "Avengers Finale",
+          "issues": "1",
+          "note": "告别终章"
+        }
       ],
       "optionalOrder": [
-        { "series": "Iron Man 84-89 / Captain America & Falcon 1-7 / Spectacular Spider-Man 15-20", "issues": "", "note": "各成员的余波刊" }
+        {
+          "series": "Iron Man 84-89 / Captain America & Falcon 1-7 / Spectacular Spider-Man 15-20",
+          "issues": "",
+          "note": "各成员的余波刊"
+        }
       ],
       "imageUrl": null
     },
     {
-      "id": "maximum-carnage-1993",
-      "title": "Maximum Carnage",
-      "titleZh": "极度屠杀",
+      "id": "eight-deaths-of-spider-man-2024",
+      "title": "8 Deaths of Spider-Man",
+      "titleZh": "蜘蛛侠的八次死亡",
       "tier": "spider",
-      "year": 1993,
-      "oneLiner": "屠杀越狱率一群疯子在纽约大开杀戒，蜘蛛侠被迫和死对头毒液临时结盟。",
+      "year": 2024,
+      "oneLiner": "当上至尊法师的毁灭博士嫌差事麻烦，把它外包给蜘蛛侠：去打败西索拉克的八位神使，代价是每输一次就死一遍。",
       "coreOrder": [
-        { "series": "五刊交叉（Spider-Man Unlimited 1, Web of Spider-Man 101-103, Amazing Spider-Man 378-380, Spider-Man 35-37, Spectacular Spider-Man 201-203）", "issues": "共 14 章", "note": "按每期角落的章节序号 1-14 顺序读" }
+        {
+          "series": "The Amazing Spider-Man (2022)",
+          "issues": "61-70（含 65.DEATHS、68.DEATHS 两个附加章节）",
+          "note": "主线，2024 年 11 月至 2025 年 3 月"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "One World Under Doom",
+          "issues": "",
+          "note": "毁灭博士至尊法师线的延伸，见同名条目"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "clone-conspiracy-2016",
+      "title": "Dead No More: The Clone Conspiracy",
+      "titleZh": "克隆阴谋",
+      "tier": "spider",
+      "year": 2016,
+      "oneLiner": "死去的人一个个回来，杰克尔的克隆技术把彼得·帕克最不愿面对的旧账全部翻开。",
+      "coreOrder": [
+        {
+          "series": "Amazing Spider-Man (Vol 4)",
+          "issues": "20-24",
+          "note": "本刊联动线"
+        },
+        {
+          "series": "Dead No More: The Clone Conspiracy",
+          "issues": "1-5",
+          "note": "主线限定刊"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
@@ -417,77 +925,219 @@
       "year": 2014,
       "oneLiner": "继承者家族跨宇宙猎杀所有蜘蛛图腾，来自每个宇宙的蜘蛛侠大集结。",
       "coreOrder": [
-        { "series": "Amazing Spider-Man (Vol 3)", "issues": "9-15", "note": "主线" },
-        { "series": "Spider-Verse Team-Up / Spider-Man 2099 / Scarlet Spiders", "issues": "各 1-3", "note": "各平行宇宙支线，按兴趣挑" }
+        {
+          "series": "Amazing Spider-Man (Vol 3)",
+          "issues": "9-15",
+          "note": "主线"
+        },
+        {
+          "series": "Spider-Verse Team-Up / Spider-Man 2099 / Scarlet Spiders",
+          "issues": "各 1-3",
+          "note": "各平行宇宙支线，按兴趣挑"
+        }
       ],
       "optionalOrder": [
-        { "series": "Superior Spider-Man", "issues": "32-33", "note": "前置：继承者登场" }
+        {
+          "series": "Superior Spider-Man",
+          "issues": "32-33",
+          "note": "前置：继承者登场"
+        }
       ],
       "imageUrl": null
     },
     {
-      "id": "clone-conspiracy-2016",
-      "title": "Dead No More: The Clone Conspiracy",
-      "titleZh": "克隆阴谋",
+      "id": "maximum-carnage-1993",
+      "title": "Maximum Carnage",
+      "titleZh": "极度屠杀",
       "tier": "spider",
-      "year": 2016,
-      "oneLiner": "死去的人一个个回来，杰克尔的克隆技术把彼得·帕克最不愿面对的旧账全部翻开。",
+      "year": 1993,
+      "oneLiner": "屠杀越狱率一群疯子在纽约大开杀戒，蜘蛛侠被迫和死对头毒液临时结盟。",
       "coreOrder": [
-        { "series": "Amazing Spider-Man (Vol 4)", "issues": "20-24", "note": "本刊联动线" },
-        { "series": "Dead No More: The Clone Conspiracy", "issues": "1-5", "note": "主线限定刊" }
+        {
+          "series": "五刊交叉（Spider-Man Unlimited 1, Web of Spider-Man 101-103, Amazing Spider-Man 378-380, Spider-Man 35-37, Spectacular Spider-Man 201-203）",
+          "issues": "共 14 章",
+          "note": "按每期角落的章节序号 1-14 顺序读"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
     },
     {
-      "id": "messiah-complex-2007",
-      "title": "Messiah Complex",
-      "titleZh": "弥赛亚情结",
+      "id": "age-of-revelation-2025",
+      "title": "X-Men: Age of Revelation",
+      "titleZh": "启示纪元",
       "tier": "xmen",
-      "year": 2007,
-      "oneLiner": "M 氏家族之后第一个变种人婴儿降生，所有势力同时出动抢夺这个种族的未来。",
+      "year": 2025,
+      "oneLiner": "天启把「只剩适者生存」的遗愿交给道格·拉姆齐，语言变种人用一句话重塑地球，数年后人类被清扫殆尽，只剩一支杂牌 X 战警在反抗。",
       "coreOrder": [
-        { "series": "X-Men: Messiah Complex", "issues": "共 13 章（跨 X-Men 205-207 / Uncanny X-Men 492-494 / X-Factor 25-27 / New X-Men 44-46 + 首尾两话）", "note": "按章节序号顺序读" }
+        {
+          "series": "X-Men (2024)",
+          "issues": "22",
+          "note": "前置：启示现身当下时间线"
+        },
+        {
+          "series": "X-Men: Age of Revelation",
+          "issues": "0",
+          "note": "序幕"
+        },
+        {
+          "series": "X-Men: Age of Revelation Overture",
+          "issues": "1",
+          "note": "开启事件所在的未来时间线"
+        },
+        {
+          "series": "World of Revelation",
+          "issues": "1",
+          "note": "世界观设定篇"
+        },
+        {
+          "series": "X-Men: Book of Revelation",
+          "issues": "1-3",
+          "note": "主线中轴"
+        },
+        {
+          "series": "X-Men: Age of Revelation Finale",
+          "issues": "1",
+          "note": "终章"
+        },
+        {
+          "series": "X-Men (2024)",
+          "issues": "23",
+          "note": "收尾，回到当下时间线"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Amazing X-Men / Binary / Laura Kinney: Sabretooth / Longshots / Unbreakable X-Men / Iron & Frost / Rogue Storm / Sinister's Six / Omega Kids / Radioactive Spider-Man / The Last Wolverine / Expatriate X-Men / X-Vengers / Cloak or Dagger / Undeadpool",
+          "issues": "各 1-3",
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "series": "X-Men: Age of Revelation Infinity Comic",
+          "issues": "1-9",
+          "note": "无限漫画副线"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "x-manhunt-2025",
+      "title": "X-Manhunt",
+      "titleZh": "X 大追捕",
+      "tier": "xmen",
+      "year": 2025,
+      "oneLiner": "泽维尔从格雷马尔金监狱越狱，一颗正在啃掉他心智的心灵病毒逼他跑完最后一件事，而追他的 X 战警先为「该不该抓他」自己打了起来。",
+      "coreOrder": [
+        {
+          "series": "Uncanny X-Men (2024)",
+          "issues": "11",
+          "note": "第 1 章"
+        },
+        {
+          "series": "NYX (2024)",
+          "issues": "9",
+          "note": "第 2 章"
+        },
+        {
+          "series": "Storm (2024)",
+          "issues": "6",
+          "note": "第 3 章"
+        },
+        {
+          "series": "X-Men (2024)",
+          "issues": "13",
+          "note": "第 4 章"
+        },
+        {
+          "series": "X-Factor (2024)",
+          "issues": "8",
+          "note": "第 5 章"
+        },
+        {
+          "series": "X-Force (2024)",
+          "issues": "9",
+          "note": "第 6 章"
+        },
+        {
+          "series": "X-Manhunt Omega",
+          "issues": "1",
+          "note": "终章，双倍篇幅"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Exceptional X-Men (2024)",
+          "issues": "7",
+          "note": "同期联动，官方指南也收录"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "fall-of-the-house-of-x-2024",
+      "title": "Fall of the House of X / Rise of the Powers of X",
+      "titleZh": "X 之陨落与崛起",
+      "tier": "xmen",
+      "year": 2024,
+      "oneLiner": "克拉科纪元的终局：组织崩塌、人类反扑，两条时间线上的最后抵抗同时收束。",
+      "coreOrder": [
+        {
+          "series": "Fall of the House of X",
+          "issues": "1-5",
+          "note": "当下时间线"
+        },
+        {
+          "series": "Rise of the Powers of X",
+          "issues": "1-5",
+          "note": "十年后的时间线，与上面交替读"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
     },
     {
-      "id": "second-coming-2010",
-      "title": "Second Coming",
-      "titleZh": "二次降临",
+      "id": "raid-on-graymalkin-2024",
+      "title": "X-Men: Raid on Graymalkin",
+      "titleZh": "突袭格雷马尔金",
       "tier": "xmen",
-      "year": 2010,
-      "oneLiner": "霍普归来，巴斯特库德的机械猎兵压境，弥赛亚三部曲的终章改写 X 战警的格局。",
+      "year": 2024,
+      "oneLiner": "关押泽维尔的格雷马尔金监狱成了靶子，阿拉斯加与路易斯安那两支 X 战警同时动手，救人还是算账的分歧在牢房里炸开。",
       "coreOrder": [
-        { "series": "X-Men: Second Coming", "issues": "共 14 章（跨 X-Men Legacy / New Mutants / X-Force / Uncanny X-Men + 首尾两话）", "note": "按章节序号顺序读" }
-      ],
-      "optionalOrder": [],
-      "imageUrl": null
-    },
-    {
-      "id": "schism-2011",
-      "title": "Schism",
-      "titleZh": "分裂",
-      "tier": "xmen",
-      "year": 2011,
-      "oneLiner": "金刚狼与镭射眼在孩子该不该上战场的问题上彻底决裂，X 战警一分为二。",
-      "coreOrder": [
-        { "series": "X-Men: Schism", "issues": "1-5", "note": "主线" },
-        { "series": "X-Men: Regenesis", "issues": "1", "note": "后续：两个阵营各自点兵" }
-      ],
-      "optionalOrder": [],
-      "imageUrl": null
-    },
-    {
-      "id": "battle-of-the-atom-2013",
-      "title": "Battle of the Atom",
-      "titleZh": "原子之战",
-      "tier": "xmen",
-      "year": 2013,
-      "oneLiner": "来自未来的 X 战警要求把初代五人送回去，一场横跨时间线的自家混战。",
-      "coreOrder": [
-        { "series": "X-Men: Battle of the Atom", "issues": "共 10 章（跨 All-New X-Men / Uncanny X-Men / X-Men / Wolverine and the X-Men + 首尾两话）", "note": "按章节序号顺序读" }
+        {
+          "series": "X-Men (2024)",
+          "issues": "7",
+          "note": "第 1 章"
+        },
+        {
+          "series": "Uncanny X-Men (2024)",
+          "issues": "6",
+          "note": "第 2 章"
+        },
+        {
+          "series": "X-Men (2024)",
+          "issues": "8",
+          "note": "第 3 章"
+        },
+        {
+          "series": "Uncanny X-Men (2024)",
+          "issues": "7",
+          "note": "第 4 章"
+        },
+        {
+          "series": "X-Men (2024)",
+          "issues": "9",
+          "note": "第 5 章"
+        },
+        {
+          "series": "Uncanny X-Men (2024)",
+          "issues": "8",
+          "note": "第 6 章"
+        },
+        {
+          "series": "X-Men (2024)",
+          "issues": "10",
+          "note": "第 7 章"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
@@ -500,23 +1150,458 @@
       "year": 2020,
       "oneLiner": "阿瑞泰之战开启，克拉科与异界各出十名剑士打一场规则古怪的豪赌，气氛忽而史诗忽而荒诞。",
       "coreOrder": [
-        { "series": "X of Swords", "issues": "共 22 章（跨 X 系全部刊物 + Creation/Stasis 两话首尾）", "note": "按章节序号顺序读" }
+        {
+          "series": "X of Swords",
+          "issues": "共 22 章（跨 X 系全部刊物 + Creation/Stasis 两话首尾）",
+          "note": "按章节序号顺序读"
+        }
       ],
       "optionalOrder": [],
       "imageUrl": null
     },
     {
-      "id": "fall-of-the-house-of-x-2024",
-      "title": "Fall of the House of X / Rise of the Powers of X",
-      "titleZh": "X 之陨落与崛起",
+      "id": "battle-of-the-atom-2013",
+      "title": "Battle of the Atom",
+      "titleZh": "原子之战",
       "tier": "xmen",
-      "year": 2024,
-      "oneLiner": "克拉科纪元的终局：组织崩塌、人类反扑，两条时间线上的最后抵抗同时收束。",
+      "year": 2013,
+      "oneLiner": "来自未来的 X 战警要求把初代五人送回去，一场横跨时间线的自家混战。",
       "coreOrder": [
-        { "series": "Fall of the House of X", "issues": "1-5", "note": "当下时间线" },
-        { "series": "Rise of the Powers of X", "issues": "1-5", "note": "十年后的时间线，与上面交替读" }
+        {
+          "series": "X-Men: Battle of the Atom",
+          "issues": "共 10 章（跨 All-New X-Men / Uncanny X-Men / X-Men / Wolverine and the X-Men + 首尾两话）",
+          "note": "按章节序号顺序读"
+        }
       ],
       "optionalOrder": [],
+      "imageUrl": null
+    },
+    {
+      "id": "schism-2011",
+      "title": "Schism",
+      "titleZh": "分裂",
+      "tier": "xmen",
+      "year": 2011,
+      "oneLiner": "金刚狼与镭射眼在孩子该不该上战场的问题上彻底决裂，X 战警一分为二。",
+      "coreOrder": [
+        {
+          "series": "X-Men: Schism",
+          "issues": "1-5",
+          "note": "主线"
+        },
+        {
+          "series": "X-Men: Regenesis",
+          "issues": "1",
+          "note": "后续：两个阵营各自点兵"
+        }
+      ],
+      "optionalOrder": [],
+      "imageUrl": null
+    },
+    {
+      "id": "second-coming-2010",
+      "title": "Second Coming",
+      "titleZh": "二次降临",
+      "tier": "xmen",
+      "year": 2010,
+      "oneLiner": "霍普归来，巴斯特库德的机械猎兵压境，弥赛亚三部曲的终章改写 X 战警的格局。",
+      "coreOrder": [
+        {
+          "series": "X-Men: Second Coming",
+          "issues": "共 14 章（跨 X-Men Legacy / New Mutants / X-Force / Uncanny X-Men + 首尾两话）",
+          "note": "按章节序号顺序读"
+        }
+      ],
+      "optionalOrder": [],
+      "imageUrl": null
+    },
+    {
+      "id": "messiah-complex-2007",
+      "title": "Messiah Complex",
+      "titleZh": "弥赛亚情结",
+      "tier": "xmen",
+      "year": 2007,
+      "oneLiner": "M 氏家族之后第一个变种人婴儿降生，所有势力同时出动抢夺这个种族的未来。",
+      "coreOrder": [
+        {
+          "series": "X-Men: Messiah Complex",
+          "issues": "共 13 章（跨 X-Men 205-207 / Uncanny X-Men 492-494 / X-Factor 25-27 / New X-Men 44-46 + 首尾两话）",
+          "note": "按章节序号顺序读"
+        }
+      ],
+      "optionalOrder": [],
+      "imageUrl": null
+    },
+    {
+      "id": "cataclysm-2013",
+      "title": "Cataclysm: The Ultimates' Last Stand",
+      "titleZh": "大灾变：终极战队最后一战",
+      "tier": "ultimate1610",
+      "year": 2013,
+      "oneLiner": "主宇宙的吞星越过两个世界之间的裂缝找上终极地球，这次没有吞星群可以指望，只能靠终极战队硬撑。",
+      "coreOrder": [
+        {
+          "series": "Hunger",
+          "issues": "1-4",
+          "note": "前置：吞星抵达终极地球"
+        },
+        {
+          "series": "Cataclysm: The Ultimates' Last Stand",
+          "issues": "1-5",
+          "note": "主线，2013 年 11 月至 2014 年 2 月"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Cataclysm: Ultimate Spider-Man / Ultimate X-Men / Ultimates",
+          "issues": "各 1-3",
+          "note": "三条同题支线，补各队视角"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-fallout-2011",
+      "title": "Ultimate Fallout",
+      "titleZh": "终极余波",
+      "tier": "ultimate1610",
+      "year": 2011,
+      "oneLiner": "「蜘蛛侠之死」之后的六期集群：纽约为彼得·帕克送葬，同一个布鲁克林的少年被蜘蛛咬伤，终极宇宙从此换了主角。",
+      "coreOrder": [
+        {
+          "series": "Ultimate Fallout",
+          "issues": "1-6",
+          "note": "主线，2011 年 7 月至 8 月，每周一期"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Ultimate Spider-Man (Vol 2) / Ultimate Avengers vs. New Ultimates",
+          "issues": "153-160 / 1-6",
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "series": "Ultimate Comics Spider-Man",
+          "issues": "1",
+          "note": "后续：迈尔斯正式接任"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-enemy-trilogy-2010",
+      "title": "Ultimate Enemy / Ultimate Mystery / Ultimate Doom",
+      "titleZh": "终极敌人三部曲",
+      "tier": "ultimate1610",
+      "year": 2010,
+      "oneLiner": "通牒之后残破的终极宇宙里，一个来历不明的东西在逐个拆解英雄，三部曲把答案一路拖到最后，顺手改写了神奇四侠的命运。",
+      "coreOrder": [
+        {
+          "series": "Ultimate Enemy",
+          "issues": "1-4",
+          "note": "第一部，2010 年 1 月至 5 月"
+        },
+        {
+          "series": "Ultimate Mystery",
+          "issues": "1-4",
+          "note": "第二部，2010 年 7 月至 10 月"
+        },
+        {
+          "series": "Ultimate Doom",
+          "issues": "1-4",
+          "note": "第三部，2010 年 12 月至 2011 年 3 月"
+        }
+      ],
+      "optionalOrder": [],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimatum-2008",
+      "title": "Ultimatum",
+      "titleZh": "终极通牒",
+      "tier": "ultimate1610",
+      "year": 2008,
+      "oneLiner": "万磁王为一双儿女的死向全人类复仇，一道巨浪淹掉纽约，终极宇宙三分之一的主要角色在这本里退场。",
+      "coreOrder": [
+        {
+          "series": "Ultimatum",
+          "issues": "1-5",
+          "note": "主线，2008 年 11 月至 2009 年 7 月"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Ultimate Spider-Man",
+          "issues": "129-133",
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "series": "Ultimate X-Men / Ultimate Fantastic Four / Ultimates (Vol 3)",
+          "issues": "",
+          "note": "各队主刊的同期联动"
+        },
+        {
+          "series": "Ultimatum: Spider-Man Requiem",
+          "issues": "1-2",
+          "note": "悼念特刊"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-power-2006",
+      "title": "Ultimate Power",
+      "titleZh": "终极力量",
+      "tier": "ultimate1610",
+      "year": 2006,
+      "oneLiner": "里德把探测探针送进相邻维度，把至高权力宇宙的中队至尊一起拽了进来，终极宇宙第一次和另一个宇宙全面开战。",
+      "coreOrder": [
+        {
+          "series": "Ultimate Power",
+          "issues": "1-9",
+          "note": "主线，2006 年 10 月至 2007 年 12 月"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Squadron Supreme (Supreme Power)",
+          "issues": "",
+          "note": "交叉的另一半，另一侧的宇宙"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-galactus-trilogy-2004",
+      "title": "Ultimate Galactus Trilogy",
+      "titleZh": "终极行星吞噬者三部曲",
+      "tier": "ultimate1610",
+      "year": 2004,
+      "oneLiner": "代号「Gah Lak Tus」的吞星群向地球逼近，终极宇宙用三部曲把这位宇宙级威胁改写成一整个机械虫群。",
+      "coreOrder": [
+        {
+          "series": "Ultimate Nightmare",
+          "issues": "1-5",
+          "note": "第一部：西伯利亚的异常信号"
+        },
+        {
+          "series": "Ultimate Secret",
+          "issues": "1-4",
+          "note": "第二部：克里人的情报"
+        },
+        {
+          "series": "Ultimate Extinction",
+          "issues": "1-5",
+          "note": "第三部：银色冲浪者与终局"
+        }
+      ],
+      "optionalOrder": [],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-war-2003",
+      "title": "Ultimate War",
+      "titleZh": "终极战争",
+      "tier": "ultimate1610",
+      "year": 2003,
+      "oneLiner": "变种人问题浮上台面后，终极战队奉命去抓 X 战警，昔日的盟友在纽约街头全面开火。",
+      "coreOrder": [
+        {
+          "series": "Ultimate War",
+          "issues": "1-4",
+          "note": "主线，2002 年 12 月至 2003 年 2 月"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Ultimates (Vol 1) / Ultimate X-Men",
+          "issues": "",
+          "note": "事件的直接前因散在两刊的同期连载里"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-endgame-2025",
+      "title": "Ultimate Endgame",
+      "titleZh": "终极终局",
+      "tier": "ultimate6160",
+      "year": 2025,
+      "oneLiner": "造物主在城里等了两千年，屏障一破，终极宇宙所有战线同时点燃，而外面的世界正在打第三次世界大战。",
+      "coreOrder": [
+        {
+          "series": "Ultimates (2024)",
+          "issues": "18",
+          "note": "前置"
+        },
+        {
+          "series": "Ultimate Endgame",
+          "issues": "1-5",
+          "note": "主线，2025 年 12 月至 2026 年 6 月"
+        },
+        {
+          "series": "Ultimate Universe: Finale",
+          "issues": "1",
+          "note": "终章特刊，与主线第 5 期同日"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Ultimates (2024)",
+          "issues": "19-24",
+          "note": "主线同期连载"
+        },
+        {
+          "series": "Ultimate Wolverine (2025)",
+          "issues": "13-16",
+          "note": "同期支线"
+        },
+        {
+          "series": "Ultimate Impact: Reborn",
+          "issues": "1-5",
+          "note": "终局之后的接续，2026 年 5 月起"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-spider-man-incursion-2025",
+      "title": "Ultimate Spider-Man: Incursion",
+      "titleZh": "终极蜘蛛侠：入侵",
+      "tier": "ultimate6160",
+      "year": 2025,
+      "oneLiner": "来自地球-1610 的迈尔斯·莫拉莱斯撞进地球-6160，两代终极蜘蛛侠第一次同框，也把两个终极宇宙的账一起翻开。",
+      "coreOrder": [
+        {
+          "series": "Ultimate Spider-Man: Incursion",
+          "issues": "1-5",
+          "note": "主线，2025 年 6 月至 10 月"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Ultimate Spider-Man (2024)",
+          "issues": "18-22",
+          "note": "6160 侧蜘蛛侠的同期连载"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-universe-two-years-in-2025",
+      "title": "Ultimate Universe: Two Years In",
+      "titleZh": "新终极宇宙：两年之后",
+      "tier": "ultimate6160",
+      "year": 2025,
+      "oneLiner": "第二年的总盘点，终极宇宙版的银河护卫队登场，各条战线在终局开打前全部就位。",
+      "coreOrder": [
+        {
+          "series": "Ultimate Universe: Two Years In",
+          "issues": "1",
+          "note": "年度特刊，2025 年 12 月"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Ultimate Spider-Man (2024) / Ultimate Black Panther (2024) / Ultimate X-Men (2024)",
+          "issues": "各 13-24",
+          "note": "第二年三刊连载（Year Two）"
+        },
+        {
+          "series": "Ultimate Wolverine (2025)",
+          "issues": "1-12",
+          "note": "同期的金刚狼连载"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-universe-one-year-in-2024",
+      "title": "Ultimate Universe: One Year In",
+      "titleZh": "新终极宇宙：一年之后",
+      "tier": "ultimate6160",
+      "year": 2024,
+      "oneLiner": "一年之后的一次总盘点：造物主议会各条战线浮出水面，为新终极宇宙的第二年布好局。",
+      "coreOrder": [
+        {
+          "series": "Ultimate Universe: One Year In",
+          "issues": "1",
+          "note": "年度特刊，2024 年 12 月"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Ultimates (2024)",
+          "issues": "7-18",
+          "note": "紧接其后的第二年主线"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-invasion-2023",
+      "title": "Ultimate Invasion",
+      "titleZh": "终极入侵",
+      "tier": "ultimate6160",
+      "year": 2023,
+      "oneLiner": "造物主逃出终极宇宙的牢笼回到主宇宙，用一台改写历史的机器把地球-6160 从头造了一遍，一个英雄从未真正掌握自己命运的世界。",
+      "coreOrder": [
+        {
+          "series": "Ultimate Invasion",
+          "issues": "1-4",
+          "note": "主线，2023 年 6 月至 9 月"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Ultimate Universe",
+          "issues": "1",
+          "note": "紧接其后的特刊，新终极宇宙正式开场"
+        }
+      ],
+      "imageUrl": null
+    },
+    {
+      "id": "ultimate-universe-2023",
+      "title": "Ultimate Universe",
+      "titleZh": "新终极宇宙",
+      "tier": "ultimate6160",
+      "year": 2023,
+      "oneLiner": "造物主把地球-6160 交到一群反派手里，钢铁小子拉上一群从没当过英雄的人组成新的终极战队，开始把被偷走的历史一寸寸抢回来。",
+      "coreOrder": [
+        {
+          "series": "Ultimate Universe",
+          "issues": "1",
+          "note": "开篇特刊，2023 年 11 月"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Ultimate Spider-Man (2024)",
+          "issues": "1-12",
+          "note": "四刊并行之一：已婚已育的彼得·帕克"
+        },
+        {
+          "series": "Ultimate Black Panther (2024)",
+          "issues": "1-12",
+          "note": "四刊并行之二：瓦坎达对抗造物主议会"
+        },
+        {
+          "series": "Ultimate X-Men (2024)",
+          "issues": "1-12",
+          "note": "四刊并行之三：日本，变种人被当成都市传说"
+        },
+        {
+          "series": "Ultimates (2024)",
+          "issues": "1-6",
+          "note": "四刊并行之四：新终极战队正式组队"
+        },
+        {
+          "series": "Ultimate Wolverine (2025)",
+          "issues": "1-12",
+          "note": "第二年起加入的第五刊"
+        }
+      ],
       "imageUrl": null
     }
   ]

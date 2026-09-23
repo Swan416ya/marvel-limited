@@ -43,7 +43,7 @@ UA = (
 )
 
 
-def http_get(url, timeout=60, tries=3):
+def http_get(url, timeout=25, tries=3):
     """带重试的 GET：图片 CDN 会随机掐断连接（WinError 10054）与 502。"""
     last = None
     for i in range(tries):
@@ -150,39 +150,67 @@ def guide_cover(guides, event, cache):
 # ── wiki 兜底 ───────────────────────────────────────────────────
 
 def wiki_cover(event):
-    """wiki 事件页配图：先直接试几个可能的页面名，再走搜索。"""
+    """wiki 事件页配图，返回**候选列表** [(url, 来源说明), ...] 依次尝试。
+
+    wikia 的 /scale-to-width-down/N 在 N 超过原图宽度时会 404，光靠
+    pageimages 给的 URL 经常下不动；所以再走一次 imageinfo，让 wiki
+    自己算一个合法的缩略图地址，最后才是「去掉缩放拿原图」。
+    """
     title = event['title'].split('/')[0].strip()
     tries = [
         f'{title} ({event["year"]} Event)',
         f'{title} (Event)',
         f'{title} (event)',
+        f'{title} Vol 1',
         title,
     ]
-    # 搜索补几个候选（wiki 对事件页常带 (Event) 后缀）
+    # 搜索补候选：事件页常带 (Event) 后缀，但很多「大事件」在 wiki 上
+    # 根本没有 Event 页，只有一个 Vol 1 卷页（Ultimate Invasion 就是），
+    # 所以只要求标题以事件名开头，不再强求带 Event 字样。
+    key = normalize(title)
     try:
-        s = wiki_api({'action': 'query', 'list': 'search', 'srsearch': title,
-                      'srlimit': 5, 'format': 'json'})
-        for h in s['query']['search']:
-            t = h['title']
-            if t not in tries and ('Event' in t or t == title):
+        r = wiki_api({'action': 'query', 'list': 'search', 'srsearch': title,
+                      'srlimit': 8, 'format': 'json'})
+        hits = [h['title'] for h in r['query']['search']]
+        hits.sort(key=lambda t: (0 if 'Event' in t else 1))
+        for t in hits:
+            nt = normalize(t)
+            if t not in tries and (nt.startswith(key) or key.startswith(nt)):
                 tries.append(t)
     except Exception:
         pass
 
+    out = []
     for page in tries:
         try:
-            # 640 而不是更大：wikia 的 /scale-to-width-down/N 在 N 超过原图宽度时
-            # 会 404，640 基本都能命中
             r = wiki_api({'action': 'query', 'titles': page,
-                          'prop': 'pageimages', 'pithumbsize': 640,
-                          'redirects': 1, 'format': 'json'})
-            for v in r['query']['pages'].values():
-                src = (v.get('thumbnail') or {}).get('source')
-                if src:
-                    return src, f'wiki {v.get("title")!r}'
+                          'prop': 'pageimages', 'piprop': 'name|thumbnail',
+                          'pithumbsize': 640, 'redirects': 1,
+                          'format': 'json'})
         except Exception:
             continue
-    return None, None
+        for v in r['query']['pages'].values():
+            label = v.get('title') or page
+            thumb = (v.get('thumbnail') or {}).get('source')
+            if thumb:
+                out.append((thumb, f'wiki {label!r}'))
+            fname = v.get('pageimage')
+            if fname:
+                try:
+                    fi = wiki_api({'action': 'query',
+                                   'titles': f'File:{fname}',
+                                   'prop': 'imageinfo', 'iiprop': 'url',
+                                   'iiurlwidth': 800, 'format': 'json'})
+                    for fv in fi['query']['pages'].values():
+                        info = (fv.get('imageinfo') or [{}])[0]
+                        for u in (info.get('thumburl'), info.get('url')):
+                            if u and all(u != o[0] for o in out):
+                                out.append((u, f'wiki {label!r} imageinfo'))
+                except Exception:
+                    pass
+            if out:
+                return out
+    return out
 
 
 def wiki_original(url):
@@ -199,7 +227,7 @@ def ext_of(url):
     return 'jpg'
 
 
-def normalize(files):
+def compress_covers(files):
     """统一压成「最长边 900、JPEG q82」。
 
     不压的话 34 张原图合计 16MB+，直接把 APK 撑大；而卡片上显示区域
@@ -247,58 +275,61 @@ def main():
         f'{BIFROST}/v1/catalog/reading-lists/platform/web')['data']['results']
 
     COVER_DIR.mkdir(parents=True, exist_ok=True)
-    manifest = {}
-    ok, miss, issue_cache = 0, 0, {}
-    for ev in events:
-        eid = ev['id']
-        existing = next((p for p in COVER_DIR.glob(f'{eid}.*')), None)
-        if existing is not None:
-            manifest[eid] = existing.name
-            ok += 1
-            continue
+    pending = [ev for ev in events
+               if next((p for p in COVER_DIR.glob(f'{ev["id"]}.*')), None) is None]
+    done = [ev for ev in events if ev not in pending]
+    print(f'已有封面 {len(done)} 条，待抓 {len(pending)} 条（并发 5）')
 
-        cover, why = (ev.get('imageUrl'), '数据集') if ev.get('imageUrl') \
-            else guide_cover(guides, ev, issue_cache)
-        if not cover:
-            cover, why = wiki_cover(ev)
-        # 官方指南的图挂了就退回 wiki，反之亦然
-        alt = wiki_cover(ev) if cover else (None, None)
-        if alt[0] == cover:
-            alt = (None, None)
-        # 缩略图下载失败时，试一次「去掉缩放、拿原图」
-        orig = wiki_original(cover or '') or wiki_original(alt[0] or '')
-        alts = [a for a in (alt, (orig, 'wiki 原图') if orig else (None, None))
-                if a[0]]
-        if not cover:
-            print(f'  ✗ {ev["title"]}: 没找到封面')
-            miss += 1
-            continue
+    ok, miss = len(done), 0
 
-        name = f'{eid}.{ext_of(cover)}'
-        data = None
-        for url, source in ((cover, why), *alts):
+    def handle(ev):
+        """返回 (id, 文件名, 来源) 或 (id, None, 原因)；线程内自用缓存。"""
+        cover, why = (ev.get('imageUrl'), '数据集') if ev.get('imageUrl')             else guide_cover(guides, ev, {})
+        wiki_alts = wiki_cover(ev)
+        if not cover and wiki_alts:
+            cover, why = wiki_alts[0]
+        if not cover:
+            return ev, None, '没找到封面'
+        cands = [(cover, why)]
+        for u, src in wiki_alts:
+            if all(u != c[0] for c in cands):
+                cands.append((u, src))
+        orig = wiki_original(cover)
+        if orig:
+            cands.append((orig, 'wiki 原图'))
+        for url, source in cands:
             if not url:
                 continue
             try:
                 data = http_get(url)
-                why, cover = source, url
-                break
             except Exception as e:
-                print(f'    {source} 下载失败：{str(e)[:70]}')
-        if data is None:
-            print(f'  ✗ {ev["title"]}: 所有来源都失败')
-            miss += 1
-            continue
-        try:
-            (COVER_DIR / name).write_bytes(data)
-            manifest[eid] = name
-            ok += 1
-            print(f'  ✓ {ev["title"]} <- {why} ({len(data) // 1024}KB)')
-        except Exception as e:
-            print(f'  ✗ {ev["title"]}: 写文件失败 {e}')
-            miss += 1
+                print(f'    {ev["id"]} {source} 下载失败：{str(e)[:60]}')
+                continue
+            name = f'{ev["id"]}.{ext_of(url)}'
+            try:
+                (COVER_DIR / name).write_bytes(data)
+            except Exception as e:
+                return ev, None, f'写文件失败 {e}'
+            return ev, name, f'{source} ({len(data) // 1024}KB)'
+        return ev, None, '所有来源都失败'
 
-    normalize([f for f in COVER_DIR.glob('*') if f.is_file()
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=5) as pool:
+        for ev, name, why in pool.map(handle, pending):
+            if name:
+                ok += 1
+                print(f'  ✓ {ev["title"]} <- {why}')
+            else:
+                miss += 1
+                print(f'  ✗ {ev["title"]}: {why}')
+
+    manifest = {}
+    for ev in events:
+        f = next((p for p in COVER_DIR.glob(f'{ev["id"]}.*')), None)
+        if f is not None:
+            manifest[ev['id']] = f.name
+
+    compress_covers([f for f in COVER_DIR.glob('*') if f.is_file()
                and f.name != 'manifest.json'])
     # 压缩可能改了扩展名，manifest 以磁盘上的实际情况为准重建
     manifest = {}
