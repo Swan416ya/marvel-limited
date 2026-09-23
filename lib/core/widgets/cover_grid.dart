@@ -27,10 +27,9 @@ class CoverGrid extends StatelessWidget {
     required double usableWidth,
     required double maxCellWidth,
     double crossSpacing = AppSpacing.sm,
-  }) =>
-      ((usableWidth + crossSpacing) / (maxCellWidth + crossSpacing))
-          .floor()
-          .clamp(1, 12);
+  }) => ((usableWidth + crossSpacing) / (maxCellWidth + crossSpacing))
+      .floor()
+      .clamp(1, 12);
 
   const CoverGrid({
     super.key,
@@ -71,12 +70,13 @@ class CoverGrid extends StatelessWidget {
     return SliverLayoutBuilder(
       builder: (context, constraints) {
         final usable = constraints.crossAxisExtent - padding.horizontal;
-        final cellWidthHint = maxCellWidth;
-        final cols = cellWidthHint == null
+        final cols = maxCellWidth == null
             ? columns
-            : ((usable + crossSpacing) / (cellWidthHint + crossSpacing))
-                .floor()
-                .clamp(1, 12);
+            : columnsFor(
+                usableWidth: usable,
+                maxCellWidth: maxCellWidth!,
+                crossSpacing: crossSpacing,
+              );
         final cellWidth = (usable - crossSpacing * (cols - 1)) / cols;
         return SliverPadding(
           padding: padding,
@@ -87,8 +87,10 @@ class CoverGrid extends StatelessWidget {
               crossAxisSpacing: crossSpacing,
               mainAxisSpacing: mainSpacing,
             ),
-            delegate:
-                SliverChildBuilderDelegate(itemBuilder, childCount: itemCount),
+            delegate: SliverChildBuilderDelegate(
+              itemBuilder,
+              childCount: itemCount,
+            ),
           ),
         );
       },

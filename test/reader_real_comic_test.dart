@@ -86,6 +86,9 @@ void main() {
     // 环境里真文件 IO（读 78MB 的 cbz）不会完成，直接在测试体里做会挂死。
     List<String> realPages = const [];
     setUpAll(() async {
+      // package:test 对被 skip 的用例仍会跑 setUpAll：没有漫画库的
+      // 环境（CI）必须在这里就退出去，否则整组标红，skip 形同虚设
+      if (!available) return;
       // setUpAll 先于 setUp 执行，库在这里自建（真实异步，IO 能完成）
       tmp = await Directory.systemTemp.createTemp('marvel-reader-all-');
       library = await LibraryRepository.load('${tmp.path}/library');
@@ -137,18 +140,19 @@ void main() {
       // 开双页：第 4 页 → 第 3-4 跨页，再翻 → 第 5-6 跨页
       await tester.tap(find.byTooltip('双页拼合'));
       await tester.pump(const Duration(milliseconds: 400));
-      // 开双页：当前页（第 4 页）成为跨页左页 → 第 4-5 页
-      expect(find.text('第 4-5 页 / 共 6 页'), findsOneWidget);
+      // 开双页：锚到第 4 页所在的跨页（3-4）——跨页固定是 (1,2)(3,4)(5,6)
+      expect(find.text('第 3-4 页 / 共 6 页'), findsOneWidget);
       await tester.tap(find.byTooltip('下一页'));
       await tester.pump(const Duration(milliseconds: 80));
       await tester.pump(const Duration(milliseconds: 400));
-      // 最后一跨：第 5-6 页（6 页 → 3 跨）
+      // 再翻到最后一跨：第 5-6 页
       expect(find.text('第 5-6 页 / 共 6 页'), findsOneWidget);
     }, timeout: const Timeout(Duration(minutes: 3)));
 
-    test('进度记忆：重开直接落在上次那页', () async {
+    testWidgets('进度记忆：重开直接落在上次那页', (tester) async {
       final prefs = PreferencesRepository();
       await prefs.load();
+      // 预置进度：读到了第 18 页（0 基 17）
       await prefs.saveProgress(
         ReadingProgress(
           issue: issue,
@@ -158,13 +162,30 @@ void main() {
         ),
       );
 
-      // 直接构造阅读器状态验证 initialPage 逻辑（不起完整 widget，
-      // 这条只测「恢复值换算成视图序号」）
-      // 竖屏单页：第 17 页（0 基）→ initialView 17
-      expect(17 ~/ 1, 17);
-      // 双页视图：第 17 页 → 第 8 个跨页（16-17）
-      expect(17 ~/ 2, 8);
-      expect(prefs.progressFor(issue.id)?.page, 17);
-    }, skip: !available ? '本机没有漫画库' : false);
+      tester.view.physicalSize = const Size(400, 860);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      final state = LibraryState(prefs);
+      await tester.pumpWidget(
+        ChangeNotifierProvider<LibraryState>.value(
+          value: state,
+          child: MaterialApp(
+            theme: ThemeData(brightness: Brightness.dark),
+            home: ReaderPage(
+              issue: issue,
+              // 用 36 个假路径（不解码，只要页数对）
+              pages: [for (var i = 0; i < 36; i++) '/nonexistent/p-$i.jpg'],
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
+      // 重开直接落在第 18 页，而不是第 1 页（修复前 initialPage
+      // 没接恢复值，永远从第一页开始）
+      expect(find.text('第 18 页 / 共 36 页'), findsOneWidget);
+    }, timeout: const Timeout(Duration(minutes: 2)));
   });
 }

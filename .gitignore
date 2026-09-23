@@ -53,3 +53,8 @@ app.*.map.json
 
 # 发布产物（APK 走 GitHub Release，不进仓库）
 dist/
+
+# Android/Gradle 构建产物（根 /build/ 挡不住 android/ 下的）
+android/build/
+android/app/build/
+android/.gradle/

@@ -28,6 +28,11 @@ class GuideWideCard extends StatelessWidget {
   /// 图区宽高比（宽 / 高）。
   final double imageAspect;
 
+  /// 横屏/平板时的卡片高度封顶（视口高度的 42%）。
+  /// banner 与卡片两处共用，改一处漏一处会错位。
+  static double maxCardHeight(BuildContext context) =>
+      MediaQuery.sizeOf(context).height * 0.42;
+
   @override
   Widget build(BuildContext context) {
     final p = context.p;
@@ -36,7 +41,7 @@ class GuideWideCard extends StatelessWidget {
         final w = width.isInfinite ? constraints.maxWidth : width;
         // 横屏限高：外层把卡片高度封顶后，图高不能再按宽度算
         // （16:9 的大图在横屏会把文字顶出屏幕）
-        final maxImage = MediaQuery.sizeOf(context).height * 0.42 - 46;
+        final maxImage = maxCardHeight(context) - 46;
         // 槽位高度是按「图 + 两行标题」估的，标题只有一行时底下会空一截；
         // 用 CardTapArea 让高亮/水波纹只跟着内容，别把那截空白也点亮
         return CardTapArea(

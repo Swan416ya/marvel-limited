@@ -6,8 +6,11 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 /// 设备端 OCR（ML Kit，拉丁字母）。
 ///
 /// 只认文字、不上传图片；识别结果按阅读顺序（上到下）拼成一段文本，
-/// 交给 [TranslateService] 翻译。Web / 测试环境没有 ML Kit，
-/// 会抛一个带说明的异常（调用方 SnackBar 提示）。
+/// 交给 [TranslateService] 翻译。
+///
+/// ML Kit 只提供 Android/iOS 原生实现：Web、桌面、测试环境调用会抛
+/// [MissingPluginException]——阅读器里已转成「这个平台没有 OCR」的
+/// 友好提示（见 _translateCurrentPage）。
 abstract final class OcrService {
   static TextRecognizer? _recognizer;
 

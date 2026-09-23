@@ -351,7 +351,16 @@ class _ReaderPageState extends State<ReaderPage> {
 
   /// 竖屏切换单页/双页拼合。切换后锚回当前内容的起始页。
   void _toggleSpreadMode() {
-    setState(() => _spreadMode = !_spreadMode);
+    setState(() {
+      _spreadMode = !_spreadMode;
+      // 进入双页视图时把 _page 归一化到所在跨页的**左页**（偶数）。
+      // 不归一化的话，从奇数页切进来状态文字会显示一个不存在的
+      // 跨页（比如在第 4 页切双页显示「第 4-5 页」，但 4-5 根本
+      // 不是一对：跨页固定是 (1,2)(3,4)…），进度页码也跟着错。
+      if (_isSpreadView) {
+        _page = _page ~/ 2 * 2;
+      }
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && _pageController.hasClients) {
         _pageController.jumpToPage(_viewIndex);
@@ -372,6 +381,10 @@ class _ReaderPageState extends State<ReaderPage> {
             final landscape = orientation == Orientation.landscape;
             // 旋转后页码语义变了，锚回当前内容的第一页
             if (_lastLandscape != null && _lastLandscape != landscape) {
+              // 旋转后页码语义变了：先归一化到跨页左页再锚回去
+              if (_isSpreadView) {
+                _page = _page ~/ 2 * 2;
+              }
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (mounted && _pageController.hasClients) {
                   _pageController.jumpToPage(_viewIndex);
@@ -560,8 +573,20 @@ class _ReaderPageState extends State<ReaderPage> {
     }
     setState(() => _translating = true);
     try {
-      // 1) OCR：设备端识别（不联网）
-      final ocr = await OcrService.recognize(File(widget.pages[_page]));
+      // 1) OCR：设备端识别（不联网）。双页视图把当前跨页的
+      //    左右两页都识别了拼在一起——之前只翻左页，右半屏的对白全丢。
+      final pageIndices = _isSpreadView
+          ? [_page, if (_page + 1 < _total) _page + 1]
+          : [_page];
+      final texts = <String>[];
+      for (final i in pageIndices) {
+        try {
+          texts.add(await OcrService.recognize(File(widget.pages[i])));
+        } on MissingPluginException {
+          throw UnsupportedError('这个平台没有 OCR（ML Kit 只支持 Android/iOS）');
+        }
+      }
+      final ocr = texts.where((t) => t.trim().isNotEmpty).join('\n\n');
       if (ocr.trim().isEmpty) {
         messenger.showSnackBar(const SnackBar(content: Text('这一页没有识别到文字')));
         return;
@@ -833,36 +858,49 @@ class _BookFlip extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: controller,
-      builder: (context, page) {
-        if (!controller.hasClients) return child;
+      builder: (context, child) {
+        if (!controller.hasClients) return child!;
         final pos = controller.page ?? index.toDouble();
         // 本页离视口的偏移：-1（正在翻入）到 1（正在翻出）
         final delta = (pos - index).clamp(-1.0, 1.0);
-        if (delta == 0) return child;
+        if (delta.abs() < 0.001) return child!;
 
-        // 翻出的那半程做旋转；翻入的页面保持平的从右侧滑进来
-        final angle = delta > 0 ? delta : 0.0;
+        // 前翻（delta>0）：绕书脊转出；回翻（delta<0）：镜像——绕右侧
+        // 转入，两个方向都有翻页动作，回翻不再是一块平板滑回来。
+        final forward = delta > 0;
+        final angle = delta.abs();
+        final isSpread =
+            MediaQuery.sizeOf(context).width >
+            MediaQuery.sizeOf(context).height;
+        // 双页视图的「书脊」在跨页**中间**（两页的接缝），
+        // 单页视图在屏幕左缘
+        final spine = isSpread ? Alignment.center : Alignment.centerLeft;
+
         return Stack(
           children: [
-            // 翻转的页面本体
             Transform(
               transform: Matrix4.identity()
                 ..setEntry(3, 2, 0.0015) // 透视
-                ..rotateY(-angle * math.pi / 2),
-              alignment: Alignment.centerLeft, // 书脊在左
-              child: child,
-            ),
-            // 翻页时的投影：转得越多越暗
-            if (angle > 0)
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: angle * 0.35),
-                    ),
+                ..rotateY((forward ? -1 : 1) * angle * math.pi / 2),
+              alignment: spine,
+              // 阴影跟着翻动的那一页走（之前压在槽位上，页面转走后
+              // 阴影留在原地盖住来页）
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: forward
+                        ? Alignment.centerLeft
+                        : Alignment.centerRight,
+                    end: forward ? Alignment.centerRight : Alignment.centerLeft,
+                    colors: [
+                      Colors.black.withValues(alpha: angle * 0.45),
+                      Colors.black.withValues(alpha: angle * 0.05),
+                    ],
                   ),
                 ),
+                child: child,
               ),
+            ),
           ],
         );
       },

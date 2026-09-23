@@ -14,7 +14,9 @@ class TranslateService {
     required this.apiKey,
     required this.model,
     http.Client? client,
-  }) : _client = client ?? http.Client();
+  }) : _client = client ?? http.Client(),
+       // 自己创建的客户端用完要关；外部注入的不关（调用方负责）
+       _createdClient = client == null;
 
   /// 接口基地址，如 `https://api.openai.com/v1`。
   final String baseUrl;
@@ -25,6 +27,8 @@ class TranslateService {
   final String model;
 
   final http.Client _client;
+
+  final bool _createdClient;
 
   bool get isConfigured =>
       baseUrl.trim().isNotEmpty &&
@@ -46,6 +50,26 @@ class TranslateService {
     final uri = Uri.parse(
       '${baseUrl.replaceAll(RegExp(r'/+$'), '')}/chat/completions',
     );
+    // 阅读器里点一次翻译 new 一个 service：自己创建的连接用完就关，
+    // 不关的话每次翻译漏一条 keep-alive 连接。
+    try {
+      return await _postAndParse(
+        uri,
+        ocrText: ocrText,
+        context: context,
+        seriesTitle: seriesTitle,
+      );
+    } finally {
+      if (_createdClient) _client.close();
+    }
+  }
+
+  Future<String> _postAndParse(
+    Uri uri, {
+    required String ocrText,
+    String? context,
+    String? seriesTitle,
+  }) async {
     final resp = await _client.post(
       uri,
       headers: {

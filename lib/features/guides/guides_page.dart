@@ -183,7 +183,8 @@ class _HeroStripState extends State<_HeroStrip> {
             final pageWidth = constraints.maxWidth * 0.88;
             // 横屏/平板：banner 高度封顶为视口高度的 42%，
             // 不然一道横屏整屏都是 banner，往下翻不到内容
-            final maxCard = MediaQuery.sizeOf(context).height * 0.42 - 50;
+            // 与 guide_cards.dart 的图高封顶同源（横屏限高），别手抄两份
+            final maxCard = GuideWideCard.maxCardHeight(context) - 50;
             final cardHeight = (pageWidth / (16 / 9) + 50).clamp(0.0, maxCard);
             return SizedBox(
               height: cardHeight,
