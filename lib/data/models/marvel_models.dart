@@ -45,9 +45,11 @@ class ComicIssue {
       coverUrl: imageBase.isEmpty
           ? null
           : imageBase.startsWith('http')
-              ? '$imageBase/portrait_uncanny.$ext'
-              : 'https://cdn.marvel.com/u/prod/marvel$imageBase/portrait_uncanny.$ext',
-      creators: ((json['creators'] ?? []) as List).map((e) => e.toString()).toList(),
+          ? '$imageBase/portrait_uncanny.$ext'
+          : 'https://cdn.marvel.com/u/prod/marvel$imageBase/portrait_uncanny.$ext',
+      creators: ((json['creators'] ?? []) as List)
+          .map((e) => e.toString())
+          .toList(),
       isVariant: json['is_variant'].toString() == '1',
       inMu: digital?['in_mu'] == true || digital?['in_mu'].toString() == 'true',
     );
@@ -68,6 +70,29 @@ class ComicIssue {
     'localPath': localPath,
   };
 
+  /// 换个别字段用（字段一多，手抄必漏）。
+  ComicIssue copyWith({
+    String? title,
+    String? seriesTitle,
+    String? issueNumber,
+    String? releaseDate,
+    String? description,
+    String? coverUrl,
+  }) => ComicIssue(
+    id: id,
+    title: title ?? this.title,
+    seriesTitle: seriesTitle ?? this.seriesTitle,
+    seriesId: seriesId,
+    issueNumber: issueNumber ?? this.issueNumber,
+    releaseDate: releaseDate ?? this.releaseDate,
+    description: description ?? this.description,
+    coverUrl: coverUrl ?? this.coverUrl,
+    creators: creators,
+    isVariant: isVariant,
+    inMu: inMu,
+    localPath: localPath,
+  );
+
   factory ComicIssue.fromJson(Map json) => ComicIssue(
     id: json['id'],
     title: json['title'],
@@ -77,7 +102,9 @@ class ComicIssue {
     releaseDate: json['releaseDate'] ?? '',
     description: json['description'] ?? '',
     coverUrl: json['coverUrl'],
-    creators: (json['creators'] as List? ?? []).map((e) => e.toString()).toList(),
+    creators: (json['creators'] as List? ?? [])
+        .map((e) => e.toString())
+        .toList(),
     isVariant: json['isVariant'] == true,
     inMu: json['inMu'] == true,
     localPath: json['localPath'],
@@ -127,16 +154,16 @@ class ReadingGuide {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'description': description,
-        'coverUrl': coverUrl,
-      };
+    'id': id,
+    'title': title,
+    'description': description,
+    'coverUrl': coverUrl,
+  };
 
   factory ReadingGuide.fromJson(Map json) => ReadingGuide(
-        id: json['id']?.toString() ?? '',
-        title: json['title']?.toString() ?? '',
-        description: json['description']?.toString() ?? '',
-        coverUrl: json['coverUrl']?.toString(),
-      );
+    id: json['id']?.toString() ?? '',
+    title: json['title']?.toString() ?? '',
+    description: json['description']?.toString() ?? '',
+    coverUrl: json['coverUrl']?.toString(),
+  );
 }

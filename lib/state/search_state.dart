@@ -59,6 +59,19 @@ class SearchHit {
     SearchHitKind.event => '事件',
   };
 
+  /// 换封面用（字段一多，手抄必漏）。
+  SearchHit withCover(String? url) => SearchHit(
+    kind: kind,
+    title: title,
+    subtitle: subtitle,
+    coverUrl: url,
+    issue: issue?.copyWith(coverUrl: url),
+    seriesId: seriesId,
+    guide: guide,
+    wikiPageName: wikiPageName,
+    event: event,
+  );
+
   /// 去重键。
   String get key => switch (kind) {
     SearchHitKind.issue => 'issue:${issue?.id}',
@@ -277,32 +290,12 @@ class SearchState extends ChangeNotifier {
       for (final h in hits.values.toList()) {
         if (h.kind == SearchHitKind.series &&
             h.seriesId != null &&
-            seriesCovers[h.seriesId] != null) {
-          hits[h.key] = SearchHit(
-            kind: SearchHitKind.series,
-            title: h.title,
-            subtitle: h.subtitle,
-            coverUrl: seriesCovers[h.seriesId],
-            seriesId: h.seriesId,
-          );
+            seriesCovers[h.seriesId!] != null) {
+          hits[h.key] = h.withCover(seriesCovers[h.seriesId!]);
         } else if (h.kind == SearchHitKind.issue &&
             h.issue != null &&
             issueCoverById[h.issue!.id] != null) {
-          hits[h.key] = SearchHit(
-            kind: SearchHitKind.issue,
-            title: h.title,
-            subtitle: h.subtitle,
-            coverUrl: issueCoverById[h.issue!.id],
-            issue: ComicIssue(
-              id: h.issue!.id,
-              title: h.issue!.title,
-              seriesTitle: h.issue!.seriesTitle,
-              issueNumber: h.issue!.issueNumber,
-              releaseDate: '',
-              description: '',
-              coverUrl: issueCoverById[h.issue!.id],
-            ),
-          );
+          hits[h.key] = h.withCover(issueCoverById[h.issue!.id]);
         }
       }
     } catch (_) {

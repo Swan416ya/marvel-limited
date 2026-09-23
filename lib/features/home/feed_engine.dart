@@ -38,6 +38,21 @@ class FeedCard {
 
   /// 打分结果，仅用于调试/测试断言。
   final double score;
+
+  /// 换分数用（字段一多，手抄必漏）。
+  FeedCard withScore(double value) => FeedCard(
+    id: id,
+    kind: kind,
+    title: title,
+    subtitle: subtitle,
+    coverUrl: coverUrl,
+    progress: progress,
+    series: series,
+    event: event,
+    guide: guide,
+    issue: issue,
+    score: value,
+  );
 }
 
 /// 推荐用的用户信号：搜索记录、收藏、追更。
@@ -60,7 +75,14 @@ class FeedSignals {
 
   /// 匹配时忽略的英文虚词（出现在标题里也没信息量）。
   static const _stopWords = {
-    'the', 'and', 'for', 'with', 'from', 'vol', 'comic', 'comics',
+    'the',
+    'and',
+    'for',
+    'with',
+    'from',
+    'vol',
+    'comic',
+    'comics',
   };
 
   /// 从一堆标题里抽出可匹配的关键词：去符号、去无意义的短词。
@@ -95,7 +117,7 @@ class FeedSignals {
 /// 之前不会重复（给完了自动开新一轮，于是可以无限往下翻）。
 class FeedEngine {
   FeedEngine({Random? random, this.batchSize = 12})
-      : _random = random ?? Random(DateTime.now().microsecondsSinceEpoch);
+    : _random = random ?? Random(DateTime.now().microsecondsSinceEpoch);
 
   final Random _random;
   final int batchSize;
@@ -204,19 +226,7 @@ class FeedEngine {
       // 抖动 ±1.4：和基础分同量级，让横图/竖图交错出现，
       // 两列高度自然就不齐——要的就是这种不整齐
       score += _random.nextDouble() * 1.4;
-      out.add(FeedCard(
-        id: c.id,
-        kind: c.kind,
-        title: c.title,
-        subtitle: c.subtitle,
-        coverUrl: c.coverUrl,
-        progress: c.progress,
-        series: c.series,
-        event: c.event,
-        guide: c.guide,
-        issue: c.issue,
-        score: score,
-      ));
+      out.add(c.withScore(score));
     }
     return out;
   }
@@ -241,39 +251,39 @@ class FeedPool {
   const FeedPool._();
 
   static FeedCard fromEvent(MarvelEvent e, String? coverUrl) => FeedCard(
-        id: 'event:${e.id}',
-        kind: FeedKind.event,
-        title: e.title,
-        subtitle: '${e.tierLabel} · ${e.year}',
-        coverUrl: coverUrl,
-        event: e,
-      );
+    id: 'event:${e.id}',
+    kind: FeedKind.event,
+    title: e.title,
+    subtitle: '${e.tierLabel} · ${e.year}',
+    coverUrl: coverUrl,
+    event: e,
+  );
 
   static FeedCard fromSeries(SeriesSummary s) => FeedCard(
-        id: 'series:${s.seriesId ?? s.title}',
-        kind: FeedKind.series,
-        title: s.title,
-        subtitle: s.latestIssue != null ? '最新 #${s.latestIssue}' : '系列',
-        coverUrl: s.coverUrl,
-        series: s,
-      );
+    id: 'series:${s.seriesId ?? s.title}',
+    kind: FeedKind.series,
+    title: s.title,
+    subtitle: s.latestIssue != null ? '最新 #${s.latestIssue}' : '系列',
+    coverUrl: s.coverUrl,
+    series: s,
+  );
 
   static FeedCard fromGuide(ReadingGuide g) => FeedCard(
-        id: 'guide:${g.id}',
-        kind: FeedKind.guide,
-        title: g.title,
-        subtitle: '官方阅读指南',
-        coverUrl: g.coverUrl,
-        guide: g,
-      );
+    id: 'guide:${g.id}',
+    kind: FeedKind.guide,
+    title: g.title,
+    subtitle: '官方阅读指南',
+    coverUrl: g.coverUrl,
+    guide: g,
+  );
 
   static FeedCard fromProgress(ReadingProgress p) => FeedCard(
-        id: 'issue:${p.issue.id}',
-        kind: FeedKind.continueReading,
-        title: p.issue.title,
-        subtitle: '第 ${p.page + 1} / ${p.totalPages} 页',
-        coverUrl: p.issue.coverUrl,
-        progress: p,
-        issue: p.issue,
-      );
+    id: 'issue:${p.issue.id}',
+    kind: FeedKind.continueReading,
+    title: p.issue.title,
+    subtitle: '第 ${p.page + 1} / ${p.totalPages} 页',
+    coverUrl: p.issue.coverUrl,
+    progress: p,
+    issue: p.issue,
+  );
 }

@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_palette.dart';
 
-/// 毛玻璃面板。底部导航栏、阅读器悬浮工具条、浮层共用一套参数。
+/// 毛玻璃面板（阅读器悬浮工具条、详情页浮层等）。
 ///
-/// 传了 `borderRadius` 就按圆角裁剪，否则用 `ClipRect` 裁掉模糊溢出
-/// （底部导航栏整条贴边时必须走这个分支）。
+/// **注意**：底部导航栏**不用**这个组件——圆角裁剪 + BackdropFilter 在
+/// Flutter Web(CanvasKit) 上会让整页 body 的图片停止绘制（详见
+/// root_shell.dart 的注释和 README「已知取舍」）。本组件目前只用于
+/// 工具条/浮层这类小面积、且实测没触发问题的场合；在封面网格上方
+/// 新增使用前，务必先在浏览器里确认封面还画得出来。
+///
+/// 传了 `borderRadius` 就按圆角裁剪，否则用 `ClipRect` 裁掉模糊溢出。
 class GlassPanel extends StatelessWidget {
   const GlassPanel({
     super.key,

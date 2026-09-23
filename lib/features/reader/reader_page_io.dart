@@ -39,9 +39,14 @@ class _ReaderPageState extends State<ReaderPage> {
   /// 左右各 35% 是翻页区，中间 30% 呼出工具栏。
   static const _sideZone = 0.35;
 
-  final _pageController = PageController();
   final _zoomController = TransformationController();
   final _focusNode = FocusNode();
+
+  /// 拿到恢复的进度后才创建：`initialPage` 要落在上次读到的那一页，
+  /// 提前建好控制器就只能在第 1 页开局了。
+  late final PageController _pageController = PageController(
+    initialPage: _initialView,
+  );
 
   late final LibraryState _library = context.read<LibraryState>();
 
@@ -88,6 +93,11 @@ class _ReaderPageState extends State<ReaderPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _precacheNeighbors());
   }
 
+  /// 初始「视图序号」：恢复出来的页码在双页视图下要折半。
+  /// _page 已在 initState 的 _restoreProgress() 里设好。
+  /// 控制器是 late final，首次访问发生在 build 里，context 可用。
+  int get _initialView => _isSpreadView ? _page ~/ 2 : _page;
+
   void _restoreProgress() {
     if (_total == 0) return;
     final saved = _library.progressFor(widget.issue.id);
@@ -113,11 +123,11 @@ class _ReaderPageState extends State<ReaderPage> {
   // ── 进度 ─────────────────────────────────────────────────────
 
   ReadingProgress _snapshot() => ReadingProgress(
-        issue: widget.issue,
-        page: _page,
-        totalPages: _total,
-        updatedAt: DateTime.now(),
-      );
+    issue: widget.issue,
+    page: _page,
+    totalPages: _total,
+    updatedAt: DateTime.now(),
+  );
 
   void _saveProgress() {
     // 触发一次即可，state 内部会广播给首页「继续阅读」
@@ -137,7 +147,9 @@ class _ReaderPageState extends State<ReaderPage> {
 
   void _onPageChanged(int view) {
     setState(() {
-      _page = _isLandscape ? view * 2 : view;
+      // 一屏两页的场合（横屏或手动双页）都要乘 2，之前只判了横屏，
+      // 竖屏开双页后进度/书签页码会错位
+      _page = _isSpreadView ? view * 2 : view;
       if (_zoomed) _zoomController.value = Matrix4.identity();
     });
     _saveProgress();
@@ -157,12 +169,15 @@ class _ReaderPageState extends State<ReaderPage> {
         ),
       );
     }
-    // 横屏一次看两页，多备一张
+    // 一屏两页的视图多备一张
     final extra = _page + 2;
-    if (_isLandscape && extra < _total) {
+    if (_isSpreadView && extra < _total) {
       unawaited(
-        precacheImage(FileImage(File(widget.pages[extra])), context,
-            onError: (_, _) {}),
+        precacheImage(
+          FileImage(File(widget.pages[extra])),
+          context,
+          onError: (_, _) {},
+        ),
       );
     }
   }
@@ -171,9 +186,7 @@ class _ReaderPageState extends State<ReaderPage> {
   /// 漫画原图往往 2000px 宽，全尺寸解码很吃内存。
   int _cacheWidth() {
     final media = MediaQuery.of(context);
-    final perView = _isLandscape
-        ? media.size.width / 2
-        : media.size.width;
+    final perView = _isSpreadView ? media.size.width / 2 : media.size.width;
     return (perView * media.devicePixelRatio * 2).round();
   }
 
@@ -238,9 +251,7 @@ class _ReaderPageState extends State<ReaderPage> {
     final now = _library.toggleBookmark(widget.issue.id, _page);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(now
-            ? '已在第 ${_page + 1} 页加书签'
-            : '已移除第 ${_page + 1} 页的书签'),
+        content: Text(now ? '已在第 ${_page + 1} 页加书签' : '已移除第 ${_page + 1} 页的书签'),
         duration: const Duration(milliseconds: 1200),
       ),
     );
@@ -277,7 +288,10 @@ class _ReaderPageState extends State<ReaderPage> {
             if (bookmarks.isEmpty)
               Padding(
                 padding: const EdgeInsets.only(
-                    left: AppSpacing.lg, right: AppSpacing.lg, bottom: AppSpacing.lg),
+                  left: AppSpacing.lg,
+                  right: AppSpacing.lg,
+                  bottom: AppSpacing.lg,
+                ),
                 child: Text(
                   '还没有书签。工具栏的书签图标可以在当前页加一个。',
                   style: TextStyle(color: p.textFaint, fontSize: 13),
@@ -292,10 +306,11 @@ class _ReaderPageState extends State<ReaderPage> {
                     final b = bookmarks[i];
                     return ListTile(
                       dense: true,
-                      leading: Icon(Icons.bookmark,
-                          size: 18, color: p.brand),
-                      title: Text('第 ${b.page + 1} 页',
-                          style: const TextStyle(fontSize: 14)),
+                      leading: Icon(Icons.bookmark, size: 18, color: p.brand),
+                      title: Text(
+                        '第 ${b.page + 1} 页',
+                        style: const TextStyle(fontSize: 14),
+                      ),
                       trailing: GestureDetector(
                         onTap: () {
                           _library.toggleBookmark(widget.issue.id, b.page);
@@ -304,8 +319,11 @@ class _ReaderPageState extends State<ReaderPage> {
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(6),
-                          child: Icon(Icons.close,
-                              size: 16, color: p.textGhost),
+                          child: Icon(
+                            Icons.close,
+                            size: 16,
+                            color: p.textGhost,
+                          ),
                         ),
                       ),
                       onTap: () {
@@ -364,9 +382,8 @@ class _ReaderPageState extends State<ReaderPage> {
                     controller: _pageController,
                     itemCount: _viewCount,
                     onPageChanged: _onPageChanged,
-                    itemBuilder: (context, i) => _isSpreadView
-                        ? _buildSpread(i)
-                        : _buildSinglePage(i),
+                    itemBuilder: (context, i) =>
+                        _isSpreadView ? _buildSpread(i) : _buildSinglePage(i),
                   ),
                 ),
                 _statusPill(landscape),
@@ -414,10 +431,7 @@ class _ReaderPageState extends State<ReaderPage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.black.withValues(alpha: 0.7),
-              Colors.transparent,
-            ],
+            colors: [Colors.black.withValues(alpha: 0.7), Colors.transparent],
           ),
         ),
         child: AppBar(
@@ -469,8 +483,11 @@ class _ReaderPageState extends State<ReaderPage> {
                 // 书签列表：点开跳页
                 IconButton(
                   visualDensity: VisualDensity.compact,
-                  icon: Icon(Icons.bookmarks_outlined,
-                      size: 19, color: context.p.textStrong),
+                  icon: Icon(
+                    Icons.bookmarks_outlined,
+                    size: 19,
+                    color: context.p.textStrong,
+                  ),
                   tooltip: '书签列表',
                   onPressed: _showBookmarks,
                 ),
@@ -479,7 +496,9 @@ class _ReaderPageState extends State<ReaderPage> {
                   IconButton(
                     visualDensity: VisualDensity.compact,
                     icon: Icon(
-                      _spreadMode ? Icons.import_contacts : Icons.menu_book_outlined,
+                      _spreadMode
+                          ? Icons.import_contacts
+                          : Icons.menu_book_outlined,
                       size: 20,
                       color: context.p.textStrong,
                     ),
@@ -584,10 +603,7 @@ class _BrokenPage extends StatelessWidget {
         children: [
           Icon(Icons.broken_image_outlined, color: p.textGhost, size: 48),
           const SizedBox(height: AppSpacing.md),
-          Text(
-            '这一页读不出来',
-            style: TextStyle(color: p.textMuted, fontSize: 13),
-          ),
+          Text('这一页读不出来', style: TextStyle(color: p.textMuted, fontSize: 13)),
         ],
       ),
     );

@@ -42,7 +42,7 @@ abstract final class RouteNames {
 
 /// 全应用路由表。
 ///
-/// 底部是五个 tab：指南 / 系列 / 首页（中间大按钮）/ 事件 / 收藏，
+/// 底部是五个 tab：指南 / 系列 / 首页（最左侧、默认 tab）/ 事件 / 收藏，
 /// 用 `StatefulShellRoute.indexedStack` 保留各自状态。
 /// 搜索不再是 tab，从各页右上角推入。
 class AppRouter {

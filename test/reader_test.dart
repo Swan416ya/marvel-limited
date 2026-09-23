@@ -17,13 +17,13 @@ void main() {
   late LibraryState library;
 
   ComicIssue issue() => ComicIssue(
-        id: 'reader-test',
-        title: 'Reader Test #1',
-        seriesTitle: 'Reader Test',
-        issueNumber: '1',
-        releaseDate: '',
-        description: '',
-      );
+    id: 'reader-test',
+    title: 'Reader Test #1',
+    seriesTitle: 'Reader Test',
+    issueNumber: '1',
+    releaseDate: '',
+    description: '',
+  );
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
@@ -53,8 +53,10 @@ void main() {
       library.toggleBookmark('reader-test', 2);
       library.toggleBookmark('reader-test', 6);
 
-      final pages =
-          library.bookmarksFor('reader-test').map((b) => b.page).toList();
+      final pages = library
+          .bookmarksFor('reader-test')
+          .map((b) => b.page)
+          .toList();
       expect(pages, [2, 6, 10]);
     });
 
@@ -91,13 +93,15 @@ void main() {
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
 
-      await tester.pumpWidget(ChangeNotifierProvider<LibraryState>.value(
-        value: library,
-        child: MaterialApp(
-          theme: ThemeData(brightness: Brightness.dark),
-          home: ReaderPage(issue: issue(), pages: fakePages),
+      await tester.pumpWidget(
+        ChangeNotifierProvider<LibraryState>.value(
+          value: library,
+          child: MaterialApp(
+            theme: ThemeData(brightness: Brightness.dark),
+            home: ReaderPage(issue: issue(), pages: fakePages),
+          ),
         ),
-      ));
+      );
       await tester.pump();
 
       expect(find.text('第 1 页 / 共 3 页'), findsOneWidget);
@@ -136,6 +140,45 @@ void main() {
       await tester.tap(find.byTooltip('双页拼合'));
       await tester.pumpAndSettle();
       expect(find.text('第 1-2 页 / 共 3 页'), findsOneWidget);
+    }, timeout: const Timeout(Duration(minutes: 2)));
+
+    // 回归：竖屏手动开双页后，翻页页码要按「一屏两页」折算
+    // （之前 _onPageChanged 只判了横屏，竖屏双页会把页码记错、
+    // 「下一页」在奇数跨页上空转）。见 reader_page_io.dart 的注释。
+    testWidgets('竖屏双页模式下的页码与翻页', (tester) async {
+      final fakePages = [
+        for (var i = 0; i < 5; i++) '/nonexistent/page-$i.jpg',
+      ];
+      tester.view.physicalSize = const Size(489, 914);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(
+        ChangeNotifierProvider<LibraryState>.value(
+          value: library,
+          child: MaterialApp(
+            theme: ThemeData(brightness: Brightness.dark),
+            home: ReaderPage(issue: issue(), pages: fakePages),
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(find.text('第 1 页 / 共 5 页'), findsOneWidget);
+
+      // 开双页：5 页 → 3 个跨页，当前锚在第 1-2 页
+      await tester.tap(find.byTooltip('双页拼合'));
+      await tester.pumpAndSettle();
+      expect(find.text('第 1-2 页 / 共 5 页'), findsOneWidget);
+
+      // 下一页 → 第 2 个跨页 = 第 3-4 页（修 bug 前这里会卡住不动）
+      await tester.tap(find.byTooltip('下一页'));
+      await tester.pumpAndSettle();
+      expect(find.text('第 3-4 页 / 共 5 页'), findsOneWidget);
+
+      // 再下一页 → 最后一个跨页 = 第 5 页
+      await tester.tap(find.byTooltip('下一页'));
+      await tester.pumpAndSettle();
+      expect(find.text('第 5 页 / 共 5 页'), findsOneWidget);
     }, timeout: const Timeout(Duration(minutes: 2)));
   });
 }
