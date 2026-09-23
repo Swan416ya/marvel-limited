@@ -111,9 +111,7 @@ class _SeriesHubPageState extends State<SeriesHubPage> {
       }
     }
 
-    await Future.wait(
-      List.generate(todo.length.clamp(1, 4), (_) => worker()),
-    );
+    await Future.wait(List.generate(todo.length.clamp(1, 4), (_) => worker()));
   }
 
   @override
@@ -126,93 +124,92 @@ class _SeriesHubPageState extends State<SeriesHubPage> {
       body: _loading
           ? const LoadingView(label: '正在拉最近更新的系列')
           : _error != null
-              ? ErrorView(
-                  message: '系列加载失败',
-                  detail: _error,
-                  onRetry: _load,
-                )
-              : RefreshIndicator(
-                  onRefresh: _load,
-                  child: CustomScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    slivers: [
-                      // 英雄头像行
-                      SliverToBoxAdapter(
-                        child: _HeroAvatarRow(
-                          avatars: _avatars,
-                          onTap: (hero) => context.pushNamed(
-                            RouteNames.hero,
-                            pathParameters: {'id': hero.id},
+          ? ErrorView(message: '系列加载失败', detail: _error, onRetry: _load)
+          : RefreshIndicator(
+              onRefresh: _load,
+              child: CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  // 英雄头像行
+                  SliverToBoxAdapter(
+                    child: _HeroAvatarRow(
+                      avatars: _avatars,
+                      onTap: (hero) => context.pushNamed(
+                        RouteNames.hero,
+                        pathParameters: {'id': hero.id},
+                      ),
+                    ),
+                  ),
+                  if (follows.isNotEmpty) ...[
+                    const SliverToBoxAdapter(child: _SectionLabel('我的追更')),
+                    SliverToBoxAdapter(
+                      child: ShelfList(
+                        // 118 宽的封面按 2:3 是 177 高，加标题两行约 28、
+                        // 间距 4 ≈ 209。槽位给足，封面才是精确 2:3
+                        height: 209,
+                        itemCount: follows.length,
+                        itemWidth: 118,
+                        itemBuilder: (context, i) => _SeriesCard(
+                          series: SeriesSummary(
+                            title: follows[i].title,
+                            seriesId: follows[i].seriesId,
+                            coverUrl: follows[i].coverUrl,
+                          ),
+                          onTap: () => AppRouter.openSeries(
+                            context,
+                            follows[i].seriesId,
+                            follows[i].title,
                           ),
                         ),
                       ),
-                      if (follows.isNotEmpty) ...[
-                        const SliverToBoxAdapter(child: _SectionLabel('我的追更')),
-                        SliverToBoxAdapter(
-                          child: ShelfList(
-                            // 118 宽的封面按 2:3 是 177 高，加标题两行约 28、
-                            // 间距 4 ≈ 209。槽位给足，封面才是精确 2:3
-                            height: 209,
-                            itemCount: follows.length,
-                            itemWidth: 118,
-                            itemBuilder: (context, i) => _SeriesCard(
-                              series: SeriesSummary(
-                                title: follows[i].title,
-                                seriesId: follows[i].seriesId,
-                                coverUrl: follows[i].coverUrl,
-                              ),
-                              onTap: () => AppRouter.openSeries(
-                                context,
-                                follows[i].seriesId,
-                                follows[i].title,
-                              ),
-                            ),
+                    ),
+                  ],
+                  if (_featured != null && _featured!.isNotEmpty) ...[
+                    const SliverToBoxAdapter(child: _SectionLabel('编辑精选')),
+                    SliverToBoxAdapter(
+                      child: ShelfList(
+                        height: 196,
+                        itemCount: _featured!.length,
+                        itemWidth: 220,
+                        itemBuilder: (context, i) => _WideSeriesCard(
+                          series: _featured![i],
+                          onTap: () => AppRouter.openSeries(
+                            context,
+                            _featured![i].seriesId!,
+                            _featured![i].title,
                           ),
                         ),
-                      ],
-                      if (_featured != null && _featured!.isNotEmpty) ...[
-                        const SliverToBoxAdapter(child: _SectionLabel('编辑精选')),
-                        SliverToBoxAdapter(
-                          child: ShelfList(
-                            height: 196,
-                            itemCount: _featured!.length,
-                            itemWidth: 220,
-                            itemBuilder: (context, i) => _WideSeriesCard(
-                              series: _featured![i],
-                              onTap: () => AppRouter.openSeries(
-                                context,
-                                _featured![i].seriesId!,
-                                _featured![i].title,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                      SliverToBoxAdapter(child: _SectionLabel('最近更新 · ${latest.length} 个系列')),
-                      if (latest.isEmpty)
-                        const SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: EmptyView(
-                            icon: Icons.auto_stories_outlined,
-                            title: '最近没有已上架的新刊',
-                            subtitle: '下拉刷新试试',
-                          ),
-                        )
-                      else
-                        CoverGrid(
-                          itemCount: latest.length,
-                          padding: const EdgeInsets.fromLTRB(
-                            AppSpacing.md,
-                            0,
-                            AppSpacing.md,
-                            AppSpacing.navBarClearance,
-                          ),
-                          itemBuilder: (context, i) =>
-                              _SeriesCard(series: latest[i]),
-                        ),
-                    ],
+                      ),
+                    ),
+                  ],
+                  SliverToBoxAdapter(
+                    child: _SectionLabel('最近更新 · ${latest.length} 个系列'),
                   ),
-                ),
+                  if (latest.isEmpty)
+                    const SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: EmptyView(
+                        icon: Icons.auto_stories_outlined,
+                        title: '最近没有已上架的新刊',
+                        subtitle: '下拉刷新试试',
+                      ),
+                    )
+                  else
+                    CoverGrid(
+                      maxCellWidth: 150,
+                      itemCount: latest.length,
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.md,
+                        0,
+                        AppSpacing.md,
+                        AppSpacing.navBarClearance,
+                      ),
+                      itemBuilder: (context, i) =>
+                          _SeriesCard(series: latest[i]),
+                    ),
+                ],
+              ),
+            ),
     );
   }
 }
@@ -378,9 +375,9 @@ class _SeriesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = context.p;
-    final following = context
-        .watch<FollowsState>()
-        .isFollowing(series.seriesId ?? series.title);
+    final following = context.watch<FollowsState>().isFollowing(
+      series.seriesId ?? series.title,
+    );
     return InkWell(
       onTap: onTap ?? () => _defaultOpen(context),
       onLongPress: () => _toggleFollow(context),

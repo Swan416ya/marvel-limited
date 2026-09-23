@@ -202,7 +202,11 @@ class _EventDetailPageState extends State<EventDetailPage> {
         slivers: [
           SliverAppBar(
             pinned: true,
-            expandedHeight: 250,
+            // 横屏时 hero 封顶视口一半，标题区不再被顶到看不见
+            expandedHeight: (MediaQuery.sizeOf(context).height * 0.55).clamp(
+              220.0,
+              320.0,
+            ),
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 fit: StackFit.expand,
@@ -400,7 +404,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               ),
             ),
             CoverGrid(
-              columns: 4,
+              maxCellWidth: 118,
               itemCount: _visibleIssues(event).length,
               textBlockHeight: 30,
               padding: const EdgeInsets.fromLTRB(

@@ -32,19 +32,20 @@ class ReadingProgress {
   bool get isReading => !isFinished && page > 0;
 
   Map<String, dynamic> toJson() => {
-        'issue': issue.toJson(),
-        'page': page,
-        'totalPages': totalPages,
-        'updatedAt': updatedAt.toIso8601String(),
-      };
+    'issue': issue.toJson(),
+    'page': page,
+    'totalPages': totalPages,
+    'updatedAt': updatedAt.toIso8601String(),
+  };
 
   factory ReadingProgress.fromJson(Map json) => ReadingProgress(
-        issue: ComicIssue.fromJson(json['issue'] as Map),
-        page: (json['page'] as num?)?.toInt() ?? 0,
-        totalPages: (json['totalPages'] as num?)?.toInt() ?? 0,
-        updatedAt: DateTime.tryParse(json['updatedAt']?.toString() ?? '') ??
-            DateTime.fromMillisecondsSinceEpoch(0),
-      );
+    issue: ComicIssue.fromJson(json['issue'] as Map),
+    page: (json['page'] as num?)?.toInt() ?? 0,
+    totalPages: (json['totalPages'] as num?)?.toInt() ?? 0,
+    updatedAt:
+        DateTime.tryParse(json['updatedAt']?.toString() ?? '') ??
+        DateTime.fromMillisecondsSinceEpoch(0),
+  );
 }
 
 /// 收藏条目的种类。
@@ -57,10 +58,10 @@ enum FavoriteKind {
   final String label;
 
   static FavoriteKind fromName(String? name) => switch (name) {
-        'series' => FavoriteKind.series,
-        'guide' => FavoriteKind.guide,
-        _ => FavoriteKind.issue,
-      };
+    'series' => FavoriteKind.series,
+    'guide' => FavoriteKind.guide,
+    _ => FavoriteKind.issue,
+  };
 }
 
 /// 一条收藏。不同种类共用这个壳，点击行为由 kind 决定：
@@ -92,64 +93,67 @@ class FavoriteEntry {
   final DateTime? addedAt;
 
   factory FavoriteEntry.fromIssue(ComicIssue issue) => FavoriteEntry(
-        kind: FavoriteKind.issue,
-        id: issue.id,
-        title: issue.title,
-        subtitle: issue.seriesTitle,
-        coverUrl: issue.coverUrl,
-        issueJson: issue.toJson(),
-        addedAt: DateTime.now(),
-      );
+    kind: FavoriteKind.issue,
+    id: issue.id,
+    title: issue.title,
+    subtitle: issue.seriesTitle,
+    coverUrl: issue.coverUrl,
+    issueJson: issue.toJson(),
+    addedAt: DateTime.now(),
+  );
 
-  factory FavoriteEntry.fromSeries(String seriesId, String title,
-          {String? coverUrl}) =>
-      FavoriteEntry(
-        kind: FavoriteKind.series,
-        id: seriesId,
-        title: title,
-        coverUrl: coverUrl,
-        addedAt: DateTime.now(),
-      );
+  factory FavoriteEntry.fromSeries(
+    String seriesId,
+    String title, {
+    String? coverUrl,
+  }) => FavoriteEntry(
+    kind: FavoriteKind.series,
+    id: seriesId,
+    title: title,
+    coverUrl: coverUrl,
+    addedAt: DateTime.now(),
+  );
 
   factory FavoriteEntry.fromGuide(ReadingGuide guide) => FavoriteEntry(
-        kind: FavoriteKind.guide,
-        id: guide.id,
-        title: guide.title,
-        subtitle: '官方阅读指南',
-        coverUrl: guide.coverUrl,
-        addedAt: DateTime.now(),
-      );
+    kind: FavoriteKind.guide,
+    id: guide.id,
+    title: guide.title,
+    subtitle: '官方阅读指南',
+    coverUrl: guide.coverUrl,
+    addedAt: DateTime.now(),
+  );
 
   /// 还原成 ComicIssue（仅 issue 类）。
-  ComicIssue? get asIssue => issueJson == null ? null : ComicIssue.fromJson(issueJson!);
+  ComicIssue? get asIssue =>
+      issueJson == null ? null : ComicIssue.fromJson(issueJson!);
 
   /// 还原成指南的最小快照（够详情页首屏用）。
   ReadingGuide get asGuide => ReadingGuide(
-        id: id,
-        title: title,
-        description: subtitle == '官方阅读指南' ? '' : (subtitle ?? ''),
-        coverUrl: coverUrl,
-      );
+    id: id,
+    title: title,
+    description: subtitle == '官方阅读指南' ? '' : (subtitle ?? ''),
+    coverUrl: coverUrl,
+  );
 
   Map<String, dynamic> toJson() => {
-        'kind': kind.name,
-        'id': id,
-        'title': title,
-        'subtitle': subtitle,
-        'coverUrl': coverUrl,
-        'issueJson': issueJson,
-        'addedAt': addedAt?.toIso8601String(),
-      };
+    'kind': kind.name,
+    'id': id,
+    'title': title,
+    'subtitle': subtitle,
+    'coverUrl': coverUrl,
+    'issueJson': issueJson,
+    'addedAt': addedAt?.toIso8601String(),
+  };
 
   factory FavoriteEntry.fromJson(Map json) => FavoriteEntry(
-        kind: FavoriteKind.fromName(json['kind']?.toString()),
-        id: json['id']?.toString() ?? '',
-        title: json['title']?.toString() ?? '',
-        subtitle: json['subtitle']?.toString(),
-        coverUrl: json['coverUrl']?.toString(),
-        issueJson: json['issueJson'] as Map<String, dynamic>?,
-        addedAt: DateTime.tryParse(json['addedAt']?.toString() ?? ''),
-      );
+    kind: FavoriteKind.fromName(json['kind']?.toString()),
+    id: json['id']?.toString() ?? '',
+    title: json['title']?.toString() ?? '',
+    subtitle: json['subtitle']?.toString(),
+    coverUrl: json['coverUrl']?.toString(),
+    issueJson: json['issueJson'] as Map<String, dynamic>?,
+    addedAt: DateTime.tryParse(json['addedAt']?.toString() ?? ''),
+  );
 }
 
 /// 用户自建书单。
@@ -167,29 +171,29 @@ class UserList {
   final List<FavoriteEntry> items;
 
   UserList copyWith({String? name, List<FavoriteEntry>? items}) => UserList(
-        id: id,
-        name: name ?? this.name,
-        createdAt: createdAt,
-        items: items ?? this.items,
-      );
+    id: id,
+    name: name ?? this.name,
+    createdAt: createdAt,
+    items: items ?? this.items,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'createdAt': createdAt.toIso8601String(),
-        'items': items.map((e) => e.toJson()).toList(),
-      };
+    'id': id,
+    'name': name,
+    'createdAt': createdAt.toIso8601String(),
+    'items': items.map((e) => e.toJson()).toList(),
+  };
 
   factory UserList.fromJson(Map json) => UserList(
-        id: json['id']?.toString() ?? '',
-        name: json['name']?.toString() ?? '未命名书单',
-        createdAt:
-            DateTime.tryParse(json['createdAt']?.toString() ?? '') ??
-                DateTime.now(),
-        items: (json['items'] as List? ?? [])
-            .map((e) => FavoriteEntry.fromJson(e as Map))
-            .toList(),
-      );
+    id: json['id']?.toString() ?? '',
+    name: json['name']?.toString() ?? '未命名书单',
+    createdAt:
+        DateTime.tryParse(json['createdAt']?.toString() ?? '') ??
+        DateTime.now(),
+    items: (json['items'] as List? ?? [])
+        .map((e) => FavoriteEntry.fromJson(e as Map))
+        .toList(),
+  );
 }
 
 /// 追更的系列快照。
@@ -207,18 +211,18 @@ class FollowedSeries {
   final DateTime? followedAt;
 
   Map<String, dynamic> toJson() => {
-        'seriesId': seriesId,
-        'title': title,
-        'coverUrl': coverUrl,
-        'followedAt': followedAt?.toIso8601String(),
-      };
+    'seriesId': seriesId,
+    'title': title,
+    'coverUrl': coverUrl,
+    'followedAt': followedAt?.toIso8601String(),
+  };
 
   factory FollowedSeries.fromJson(Map json) => FollowedSeries(
-        seriesId: json['seriesId']?.toString() ?? '',
-        title: json['title']?.toString() ?? '',
-        coverUrl: json['coverUrl']?.toString(),
-        followedAt: DateTime.tryParse(json['followedAt']?.toString() ?? ''),
-      );
+    seriesId: json['seriesId']?.toString() ?? '',
+    title: json['title']?.toString() ?? '',
+    coverUrl: json['coverUrl']?.toString(),
+    followedAt: DateTime.tryParse(json['followedAt']?.toString() ?? ''),
+  );
 }
 
 /// 一枚书签（在某期的某一页）。
@@ -236,16 +240,17 @@ class IssueBookmark {
   final DateTime createdAt;
 
   Map<String, dynamic> toJson() => {
-        'page': page,
-        'createdAt': createdAt.toIso8601String(),
-      };
+    'page': page,
+    'createdAt': createdAt.toIso8601String(),
+  };
 
   factory IssueBookmark.fromJson(String issueId, Map json) => IssueBookmark(
-        issueId: issueId,
-        page: (json['page'] as num?)?.toInt() ?? 0,
-        createdAt: DateTime.tryParse(json['createdAt']?.toString() ?? '') ??
-            DateTime.fromMillisecondsSinceEpoch(0),
-      );
+    issueId: issueId,
+    page: (json['page'] as num?)?.toInt() ?? 0,
+    createdAt:
+        DateTime.tryParse(json['createdAt']?.toString() ?? '') ??
+        DateTime.fromMillisecondsSinceEpoch(0),
+  );
 }
 
 /// 本地偏好仓库：收藏（四类）、追更、自建书单、搜索历史、阅读进度、主题。
@@ -262,6 +267,9 @@ class PreferencesRepository {
   static const _keyProgress = 'reading_progress_v1';
   static const _keyThemeMode = 'theme_mode_v1';
   static const _keyBookmarks = 'bookmarks_v1';
+  static const _keyLlmBaseUrl = 'llm_base_url_v1';
+  static const _keyLlmApiKey = 'llm_api_key_v1';
+  static const _keyLlmModel = 'llm_model_v1';
 
   /// 搜索历史最多留这么多条。
   static const _historyLimit = 12;
@@ -275,8 +283,31 @@ class PreferencesRepository {
   final Map<String, ReadingProgress> _progress = {};
   final Map<String, List<IssueBookmark>> _bookmarks = {};
   String _themeMode = 'system';
+  String _llmBaseUrl = '';
+  String _llmApiKey = '';
+  String _llmModel = '';
 
   bool get isReady => _prefs != null;
+
+  /// 翻译模型配置（阅读器里长按「翻译」进入填写）。
+  String get llmBaseUrl => _llmBaseUrl;
+  String get llmApiKey => _llmApiKey;
+  String get llmModel => _llmModel;
+  bool get llmConfigured =>
+      _llmBaseUrl.isNotEmpty && _llmApiKey.isNotEmpty && _llmModel.isNotEmpty;
+
+  Future<void> saveLlmConfig({
+    required String baseUrl,
+    required String apiKey,
+    required String model,
+  }) async {
+    _llmBaseUrl = baseUrl.trim();
+    _llmApiKey = apiKey.trim();
+    _llmModel = model.trim();
+    await _prefs?.setString(_keyLlmBaseUrl, _llmBaseUrl);
+    await _prefs?.setString(_keyLlmApiKey, _llmApiKey);
+    await _prefs?.setString(_keyLlmModel, _llmModel);
+  }
 
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
@@ -288,13 +319,19 @@ class PreferencesRepository {
 
     _follows
       ..clear()
-      ..addAll((prefs.getStringList(_keyFollows) ?? const [])
-          .map((r) => _decode(r, FollowedSeries.fromJson)));
+      ..addAll(
+        (prefs.getStringList(_keyFollows) ?? const []).map(
+          (r) => _decode(r, FollowedSeries.fromJson),
+        ),
+      );
 
     _userLists
       ..clear()
-      ..addAll((prefs.getStringList(_keyUserLists) ?? const [])
-          .map((r) => _decode(r, UserList.fromJson)));
+      ..addAll(
+        (prefs.getStringList(_keyUserLists) ?? const []).map(
+          (r) => _decode(r, UserList.fromJson),
+        ),
+      );
 
     _history
       ..clear()
@@ -326,6 +363,9 @@ class PreferencesRepository {
     }
 
     _themeMode = prefs.getString(_keyThemeMode) ?? 'system';
+    _llmBaseUrl = prefs.getString(_keyLlmBaseUrl) ?? '';
+    _llmApiKey = prefs.getString(_keyLlmApiKey) ?? '';
+    _llmModel = prefs.getString(_keyLlmModel) ?? '';
   }
 
   /// 读 v2；没有 v2 就把 v1 的 issue 收藏迁过来（迁完写回 v2）。
@@ -379,8 +419,7 @@ class PreferencesRepository {
   }
 
   int removeFavorite(FavoriteKind kind, String id) {
-    final index =
-        _favorites.indexWhere((e) => e.kind == kind && e.id == id);
+    final index = _favorites.indexWhere((e) => e.kind == kind && e.id == id);
     if (index >= 0) _favorites.removeAt(index);
     return index;
   }
@@ -445,16 +484,16 @@ class PreferencesRepository {
     if (i >= 0) _userLists[i] = _userLists[i].copyWith(name: name);
   }
 
-  void deleteUserList(String id) =>
-      _userLists.removeWhere((l) => l.id == id);
+  void deleteUserList(String id) => _userLists.removeWhere((l) => l.id == id);
 
   /// 把条目加进书单（已存在则移除，返回「现在是否在单里」）。
   bool toggleUserListItem(String listId, FavoriteEntry entry) {
     final i = _userLists.indexWhere((l) => l.id == listId);
     if (i < 0) return false;
     final list = _userLists[i];
-    final existed =
-        list.items.any((e) => e.kind == entry.kind && e.id == entry.id);
+    final existed = list.items.any(
+      (e) => e.kind == entry.kind && e.id == entry.id,
+    );
     final items = [...list.items];
     if (existed) {
       items.removeWhere((e) => e.kind == entry.kind && e.id == entry.id);
@@ -529,7 +568,9 @@ class PreferencesRepository {
   /// 某期的全部书签，按页码排序。
   List<IssueBookmark> bookmarksFor(String issueId) {
     final list = _bookmarks[issueId] ?? const [];
-    return List.unmodifiable([...list]..sort((a, b) => a.page.compareTo(b.page)));
+    return List.unmodifiable(
+      [...list]..sort((a, b) => a.page.compareTo(b.page)),
+    );
   }
 
   /// 当前页是否已有书签。
@@ -543,11 +584,9 @@ class PreferencesRepository {
     if (existing >= 0) {
       list.removeAt(existing);
     } else {
-      list.add(IssueBookmark(
-        issueId: issueId,
-        page: page,
-        createdAt: DateTime.now(),
-      ));
+      list.add(
+        IssueBookmark(issueId: issueId, page: page, createdAt: DateTime.now()),
+      );
     }
     unawaited(_persistBookmarks());
     return existing < 0;
@@ -559,8 +598,9 @@ class PreferencesRepository {
   }
 
   Future<void> _persistBookmarks() async {
-    final map = _bookmarks.map((k, v) =>
-        MapEntry(k, v.map((b) => b.toJson()).toList()));
+    final map = _bookmarks.map(
+      (k, v) => MapEntry(k, v.map((b) => b.toJson()).toList()),
+    );
     await _prefs?.setString(_keyBookmarks, jsonEncode(map));
   }
 

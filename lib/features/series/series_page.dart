@@ -33,8 +33,8 @@ class SeriesPage extends StatefulWidget {
   }) : fandomName = null;
 
   const SeriesPage.fandom({super.key, required this.fandomName})
-      : seriesId = null,
-        seriesTitle = '';
+    : seriesId = null,
+      seriesTitle = '';
 
   final String? seriesId;
   final String? fandomName;
@@ -75,12 +75,13 @@ class _SeriesPageState extends State<SeriesPage> {
           final List<ComicIssue> issues;
           if (_isFandom) {
             issues = await context.read<WikiRepository>().seriesIssues(
-                  widget.fandomName!,
-                  onProgress: _updateProgress,
-                );
+              widget.fandomName!,
+              onProgress: _updateProgress,
+            );
           } else {
-            issues =
-                await context.read<CatalogState>().seriesIssues(widget.seriesId!);
+            issues = await context.read<CatalogState>().seriesIssues(
+              widget.seriesId!,
+            );
           }
           if (!mounted) return;
           setState(() => _issues = issues);
@@ -89,9 +90,9 @@ class _SeriesPageState extends State<SeriesPage> {
       // 官网系列顺带拉详情（描述、年份）
       if (!_isFandom) {
         futures.add(() async {
-          final detail = await context
-              .read<CatalogRepository>()
-              .seriesDetail(widget.seriesId!);
+          final detail = await context.read<CatalogRepository>().seriesDetail(
+            widget.seriesId!,
+          );
           if (!mounted) return;
           if (detail != null) setState(() => _detail = detail);
         }());
@@ -126,26 +127,26 @@ class _SeriesPageState extends State<SeriesPage> {
     setState(() => _wikiProgress = (done: 0, total: 0));
     try {
       final found = await context.read<WikiRepository>().supplementMissing(
-            issues,
-            seriesTitle: _title,
-            onProgress: _updateProgress,
-          );
+        issues,
+        seriesTitle: _title,
+        onProgress: _updateProgress,
+      );
       if (!mounted) return;
       setState(() {
         _supplement = found;
         _wikiProgress = null;
       });
       if (found.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('wiki 上没有找到缺失的期数')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('wiki 上没有找到缺失的期数')));
       }
     } catch (e) {
       if (!mounted) return;
       setState(() => _wikiProgress = null);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('补全失败：$e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('补全失败：$e')));
     }
   }
 
@@ -178,8 +179,10 @@ class _SeriesPageState extends State<SeriesPage> {
     final canSupplement = !_isFandom && !_loading && _error == null;
     final detail = _detail;
     final seriesKey = widget.seriesId ?? widget.fandomName ?? '';
-    final isFav =
-        context.watch<FavoritesState>().isFavorite(FavoriteKind.series, seriesKey);
+    final isFav = context.watch<FavoritesState>().isFavorite(
+      FavoriteKind.series,
+      seriesKey,
+    );
     final isFollowing = context.watch<FollowsState>().isFollowing(seriesKey);
 
     final issues = [...?_issues, ..._supplement];
@@ -189,175 +192,181 @@ class _SeriesPageState extends State<SeriesPage> {
       body: _loading
           ? const LoadingView()
           : _error != null
-              ? AsyncView(
-                  isLoading: false,
-                  error: _error,
-                  isEmpty: false,
-                  onRetry: _load,
-                  errorMessage: '系列加载失败',
-                  builder: (context) => const SizedBox.shrink(),
-                )
-              : CustomScrollView(
-                  slivers: [
-                    // 右上角动作放进 app bar 区（收藏/追更/补全）
-                    _actionsBar(
-                        p, isFav, isFollowing, canSupplement, library),
-                    // 头部：#1 封面 + 名字 + 简介 + 年份
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          AppSpacing.lg,
-                          AppSpacing.sm,
-                          AppSpacing.lg,
-                          0,
+          ? AsyncView(
+              isLoading: false,
+              error: _error,
+              isEmpty: false,
+              onRetry: _load,
+              errorMessage: '系列加载失败',
+              builder: (context) => const SizedBox.shrink(),
+            )
+          : CustomScrollView(
+              slivers: [
+                // 右上角动作放进 app bar 区（收藏/追更/补全）
+                _actionsBar(p, isFav, isFollowing, canSupplement, library),
+                // 头部：#1 封面 + 名字 + 简介 + 年份
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.lg,
+                      AppSpacing.sm,
+                      AppSpacing.lg,
+                      0,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 110,
+                          height: 165,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(AppRadius.md),
+                            border: Border.all(color: p.border),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(AppRadius.md),
+                            child: _coverUrl == null
+                                ? ColoredBox(
+                                    color: p.fill,
+                                    child: Icon(
+                                      Icons.auto_stories,
+                                      size: 36,
+                                      color: p.iconOnCover,
+                                    ),
+                                  )
+                                : ComicCover(url: _coverUrl),
+                          ),
                         ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 110,
-                              height: 165,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(AppRadius.md),
-                                border: Border.all(color: p.border),
+                        const SizedBox(width: AppSpacing.lg),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _title,
+                                style: TextStyle(
+                                  color: p.textPrimary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: -0.3,
+                                  height: 1.2,
+                                ),
                               ),
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.circular(AppRadius.md),
-                                child: _coverUrl == null
-                                    ? ColoredBox(
-                                        color: p.fill,
-                                        child: Icon(Icons.auto_stories,
-                                            size: 36, color: p.iconOnCover),
-                                      )
-                                    : ComicCover(url: _coverUrl),
-                              ),
-                            ),
-                            const SizedBox(width: AppSpacing.lg),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _title,
+                              if (detail != null &&
+                                  (detail.startYear != null ||
+                                      detail.comicsCount > 0)) ...[
+                                const SizedBox(height: AppSpacing.xs),
+                                Text(
+                                  [
+                                    if (detail.startYear != null)
+                                      '${detail.startYear}'
+                                          '${detail.endYear != null ? ' - ${detail.endYear}' : ' - 至今'}',
+                                    if (detail.comicsCount > 0)
+                                      '${detail.comicsCount} 本',
+                                    '${issues.length} 期',
+                                  ].join(' · '),
+                                  style: TextStyle(
+                                    color: p.textFaint,
+                                    fontSize: 12.5,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                              if (detail != null &&
+                                  detail.description.isNotEmpty) ...[
+                                const SizedBox(height: AppSpacing.sm),
+                                GestureDetector(
+                                  onTap: () => setState(
+                                    () => _descExpanded = !_descExpanded,
+                                  ),
+                                  child: Text(
+                                    detail.description,
+                                    maxLines: _descExpanded ? null : 4,
+                                    overflow: _descExpanded
+                                        ? TextOverflow.visible
+                                        : TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      color: p.textPrimary,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w800,
-                                      letterSpacing: -0.3,
-                                      height: 1.2,
+                                      color: p.textMuted,
+                                      fontSize: 13,
+                                      height: 1.5,
                                     ),
                                   ),
-                                  if (detail != null &&
-                                      (detail.startYear != null ||
-                                          detail.comicsCount > 0)) ...[
-                                    const SizedBox(height: AppSpacing.xs),
-                                    Text(
-                                      [
-                                        if (detail.startYear != null)
-                                          '${detail.startYear}'
-                                              '${detail.endYear != null ? ' - ${detail.endYear}' : ' - 至今'}',
-                                        if (detail.comicsCount > 0)
-                                          '${detail.comicsCount} 本',
-                                        '${issues.length} 期',
-                                      ].join(' · '),
-                                      style: TextStyle(
-                                        color: p.textFaint,
-                                        fontSize: 12.5,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                  if (detail != null &&
-                                      detail.description.isNotEmpty) ...[
-                                    const SizedBox(height: AppSpacing.sm),
-                                    GestureDetector(
-                                      onTap: () => setState(
-                                          () => _descExpanded = !_descExpanded),
-                                      child: Text(
-                                        detail.description,
-                                        maxLines: _descExpanded ? null : 4,
-                                        overflow: _descExpanded
-                                            ? TextOverflow.visible
-                                            : TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: p.textMuted,
-                                          fontSize: 13,
-                                          height: 1.5,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    if (_wikiProgress != null && _wikiProgress!.total > 0)
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            AppSpacing.lg,
-                            AppSpacing.md,
-                            AppSpacing.lg,
-                            0,
-                          ),
-                          child: Row(
-                            children: [
-                              const SizedBox(
-                                width: 14,
-                                height: 14,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              ),
-                              const SizedBox(width: AppSpacing.sm),
-                              Text(
-                                '正在从 wiki 补全 '
-                                '${_wikiProgress!.done}/${_wikiProgress!.total}'
-                                '（结果会缓存，下次秒开）',
-                                style: TextStyle(
-                                    color: p.textFaint, fontSize: 12),
-                              ),
+                                ),
+                              ],
                             ],
                           ),
                         ),
-                      ),
-                    // issue 封面网格
-                    if (issues.isEmpty)
-                      const SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: EmptyView(
-                          icon: Icons.library_books_outlined,
-                          title: '该系列暂无数据',
-                          subtitle: '官网可能已下架，试试右上角从 wiki 补全',
-                        ),
-                      )
-                    else
-                      CoverGrid(
-                        itemCount: issues.length,
-                        textBlockHeight: 18, // 只有期号一行
-                        padding: const EdgeInsets.fromLTRB(
-                          AppSpacing.md,
-                          AppSpacing.md,
-                          AppSpacing.md,
-                          AppSpacing.navBarClearance,
-                        ),
-                        itemBuilder: (context, i) => _IssueTile(
-                          issue: issues[i],
-                          imported: library.isImported(issues[i].id),
-                          progress: library.progressFor(issues[i].id),
-                        ),
-                      ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
+                if (_wikiProgress != null && _wikiProgress!.total > 0)
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.lg,
+                        AppSpacing.md,
+                        AppSpacing.lg,
+                        0,
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 14,
+                            height: 14,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                          const SizedBox(width: AppSpacing.sm),
+                          Text(
+                            '正在从 wiki 补全 '
+                            '${_wikiProgress!.done}/${_wikiProgress!.total}'
+                            '（结果会缓存，下次秒开）',
+                            style: TextStyle(color: p.textFaint, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                // issue 封面网格
+                if (issues.isEmpty)
+                  const SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: EmptyView(
+                      icon: Icons.library_books_outlined,
+                      title: '该系列暂无数据',
+                      subtitle: '官网可能已下架，试试右上角从 wiki 补全',
+                    ),
+                  )
+                else
+                  CoverGrid(
+                    maxCellWidth: 140,
+                    itemCount: issues.length,
+                    textBlockHeight: 18, // 只有期号一行
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.md,
+                      AppSpacing.md,
+                      AppSpacing.md,
+                      AppSpacing.navBarClearance,
+                    ),
+                    itemBuilder: (context, i) => _IssueTile(
+                      issue: issues[i],
+                      imported: library.isImported(issues[i].id),
+                      progress: library.progressFor(issues[i].id),
+                    ),
+                  ),
+              ],
+            ),
     );
   }
 
   /// app bar 下的一条动作栏（收藏 / 追更 / wiki 补全）。
-  Widget _actionsBar(AppPalette p, bool isFav, bool isFollowing,
-      bool canSupplement, LibraryState library) {
+  Widget _actionsBar(
+    AppPalette p,
+    bool isFav,
+    bool isFollowing,
+    bool canSupplement,
+    LibraryState library,
+  ) {
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
@@ -382,9 +391,7 @@ class _SeriesPageState extends State<SeriesPage> {
               onTap: () => _toggleFavorite(isFav),
             ),
             const Spacer(),
-            if (canSupplement &&
-                _wikiProgress == null &&
-                _supplement.isEmpty)
+            if (canSupplement && _wikiProgress == null && _supplement.isEmpty)
               _ActionButton(
                 icon: Icons.auto_fix_high,
                 label: 'wiki 补全',
@@ -405,11 +412,13 @@ class _SeriesPageState extends State<SeriesPage> {
 
   void _toggleFavorite(bool isFav) {
     final favorites = context.read<FavoritesState>();
-    final now = favorites.toggle(FavoriteEntry.fromSeries(
-      widget.seriesId ?? widget.fandomName ?? '',
-      _detail?.title ?? _title,
-      coverUrl: _coverUrl,
-    ));
+    final now = favorites.toggle(
+      FavoriteEntry.fromSeries(
+        widget.seriesId ?? widget.fandomName ?? '',
+        _detail?.title ?? _title,
+        coverUrl: _coverUrl,
+      ),
+    );
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(now ? '已收藏系列《$_title》' : '已取消收藏《$_title》'),
@@ -471,8 +480,7 @@ class _ActionButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon,
-                size: 15, color: highlight ? p.brand : p.textMuted),
+            Icon(icon, size: 15, color: highlight ? p.brand : p.textMuted),
             const SizedBox(width: 5),
             Text(
               label,
@@ -538,12 +546,12 @@ class _IssueTile extends StatelessWidget {
                   child: isWiki
                       ? CoverBadge(label: 'Wiki')
                       : (progress != null && progress!.page > 0)
-                          ? CoverBadge(
-                              label: progress!.isFinished
-                                  ? '已读完'
-                                  : 'P${progress!.page + 1}',
-                            )
-                          : const SizedBox.shrink(),
+                      ? CoverBadge(
+                          label: progress!.isFinished
+                              ? '已读完'
+                              : 'P${progress!.page + 1}',
+                        )
+                      : const SizedBox.shrink(),
                 ),
                 // 右上角：本地导入打勾
                 if (imported)
@@ -556,8 +564,11 @@ class _IssueTile extends StatelessWidget {
                         color: p.success,
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.check,
-                          size: 11, color: const Color(0xFFFFFFFF)),
+                      child: Icon(
+                        Icons.check,
+                        size: 11,
+                        color: const Color(0xFFFFFFFF),
+                      ),
                     ),
                   ),
               ],

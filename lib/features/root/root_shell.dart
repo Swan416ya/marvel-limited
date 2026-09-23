@@ -45,18 +45,25 @@ class RootShell extends StatelessWidget {
     return Scaffold(
       extendBody: true,
       body: navigationShell,
-      bottomNavigationBar: Padding(
-        // 悬浮胶囊：左右留边、离底部留一点，内容从玻璃下面透出来
-        padding: EdgeInsets.fromLTRB(
-          AppSpacing.lg,
-          0,
-          AppSpacing.lg,
-          safeBottom + AppSpacing.sm,
-        ),
-        child: _LiquidGlassBar(
-          index: navigationShell.currentIndex,
-          onSelect: _goBranch,
-          items: _destinations,
+      bottomNavigationBar: Center(
+        // 平板/横屏时限宽：一条胶囊拉满 1200px 宽会非常诡异，
+        // 五个图标各占 240px 也点不准。手机上 640 上限等于没限。
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 640),
+          child: Padding(
+            // 悬浮胶囊：左右留边、离底部留一点，内容从玻璃下面透出来
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              0,
+              AppSpacing.lg,
+              safeBottom + AppSpacing.sm,
+            ),
+            child: _LiquidGlassBar(
+              index: navigationShell.currentIndex,
+              onSelect: _goBranch,
+              items: _destinations,
+            ),
+          ),
         ),
       ),
     );

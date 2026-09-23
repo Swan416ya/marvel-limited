@@ -196,11 +196,13 @@ class _HomePageState extends State<HomePage> {
       });
     }
 
-    // 按奇偶分两列
-    final left = <FeedCard>[];
-    final right = <FeedCard>[];
+    // 分列：手机两列，横屏/平板按宽度多列（240 一列，封顶 6 列）。
+    // 之前写死两列，横屏时每列 600px 宽，卡片巨大还只能竖着排。
+    final width = MediaQuery.sizeOf(context).width;
+    final columns = (width / 240).floor().clamp(2, 6);
+    final cols = List.generate(columns, (_) => <FeedCard>[]);
     for (var i = 0; i < _cards.length; i++) {
-      (i.isEven ? left : right).add(_cards[i]);
+      cols[i % columns].add(_cards[i]);
     }
 
     return Scaffold(
@@ -234,21 +236,17 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            for (final c in left) _FeedCardView(card: c),
-                          ],
+                      for (var c = 0; c < cols.length; c++) ...[
+                        if (c > 0) const SizedBox(width: AppSpacing.sm),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              for (final card in cols[c])
+                                _FeedCardView(card: card),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            for (final c in right) _FeedCardView(card: c),
-                          ],
-                        ),
-                      ),
+                      ],
                     ],
                   ),
                 ),

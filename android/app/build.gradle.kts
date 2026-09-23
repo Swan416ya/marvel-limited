@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.marvellimited.marvel_limited"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36 // ML Kit(lStar 资源) 与 androidx.browser 都要求 34+/36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -35,6 +35,11 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            // ML Kit 可选脚本识别器的 -dontwarn 规则（见 proguard-rules.pro）
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }

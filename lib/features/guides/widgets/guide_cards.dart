@@ -31,44 +31,49 @@ class GuideWideCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = context.p;
-    return LayoutBuilder(builder: (context, constraints) {
-      final w = width.isInfinite ? constraints.maxWidth : width;
-      // 槽位高度是按「图 + 两行标题」估的，标题只有一行时底下会空一截；
-      // 用 CardTapArea 让高亮/水波纹只跟着内容，别把那截空白也点亮
-      return CardTapArea(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        child: SizedBox(
-          width: w,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: w / imageAspect,
-                child: ComicCover(
-                  url: guide.coverUrl,
-                  borderRadius: BorderRadius.circular(AppRadius.lg),
-                  placeholderIcon: Icons.menu_book,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final w = width.isInfinite ? constraints.maxWidth : width;
+        // 横屏限高：外层把卡片高度封顶后，图高不能再按宽度算
+        // （16:9 的大图在横屏会把文字顶出屏幕）
+        final maxImage = MediaQuery.sizeOf(context).height * 0.42 - 46;
+        // 槽位高度是按「图 + 两行标题」估的，标题只有一行时底下会空一截；
+        // 用 CardTapArea 让高亮/水波纹只跟着内容，别把那截空白也点亮
+        return CardTapArea(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          child: SizedBox(
+            width: w,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: (w / imageAspect).clamp(0.0, maxImage),
+                  child: ComicCover(
+                    url: guide.coverUrl,
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                    placeholderIcon: Icons.menu_book,
+                  ),
                 ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Text(
-                guide.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: p.textSecondary,
-                  fontSize: 13,
-                  height: 1.25,
-                  fontWeight: FontWeight.w600,
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  guide.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: p.textSecondary,
+                    fontSize: 13,
+                    height: 1.25,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
 
@@ -98,8 +103,7 @@ class GuideWideTile extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorWidget: (_, _, _) => ColoredBox(
                   color: p.fillStrong,
-                  child: Icon(Icons.menu_book,
-                      size: 36, color: p.iconOnCover),
+                  child: Icon(Icons.menu_book, size: 36, color: p.iconOnCover),
                 ),
               ),
               // 底部渐变保证文字可读

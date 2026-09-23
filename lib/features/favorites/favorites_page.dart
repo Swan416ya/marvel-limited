@@ -99,7 +99,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
       builder: (context, c) {
         // 比例按真实宽度算：固定值在窄屏会差几像素，标题被 overflow 顶掉
         final usable = c.maxWidth - AppInsets.page.horizontal;
-        const cols = 4;
+        final cols = CoverGrid.columnsFor(
+          usableWidth: usable,
+          maxCellWidth: 118,
+          crossSpacing: AppSpacing.sm,
+        );
         return GridView.builder(
           padding: AppInsets.page,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

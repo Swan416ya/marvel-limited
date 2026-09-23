@@ -114,10 +114,7 @@ class _GuidesPageState extends State<GuidesPage> {
         ),
       ),
       SliverToBoxAdapter(
-        child: SectionHeader(
-          title: '全部指南',
-          subtitle: '共 ${guides.length} 个专题',
-        ),
+        child: SectionHeader(title: '全部指南', subtitle: '共 ${guides.length} 个专题'),
       ),
       SliverPadding(
         padding: const EdgeInsets.fromLTRB(
@@ -158,8 +155,9 @@ class _HeroStrip extends StatefulWidget {
 }
 
 class _HeroStripState extends State<_HeroStrip> {
-  late final PageController _controller =
-      PageController(viewportFraction: 0.88);
+  late final PageController _controller = PageController(
+    viewportFraction: 0.88,
+  );
   int _index = 0;
 
   List<ReadingGuide> get _items => widget.guides.take(6).toList();
@@ -180,26 +178,33 @@ class _HeroStripState extends State<_HeroStrip> {
       children: [
         // 高度由实际宽度计算（图 16:9 + 标题两行），窗口宽度变化时
         // 自动重排，写死高度会在窄屏溢出、宽屏留白。
-        LayoutBuilder(builder: (context, constraints) {
-          final pageWidth = constraints.maxWidth * 0.88;
-          final cardHeight = pageWidth / (16 / 9) + 50;
-          return SizedBox(
-            height: cardHeight,
-            child: PageView.builder(
-              controller: _controller,
-              itemCount: items.length,
-              onPageChanged: (i) => setState(() => _index = i),
-              itemBuilder: (context, i) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
-                child: GuideWideCard(
-                  guide: items[i],
-                  width: double.infinity,
-                  onTap: () => widget.onOpen(items[i]),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final pageWidth = constraints.maxWidth * 0.88;
+            // 横屏/平板：banner 高度封顶为视口高度的 42%，
+            // 不然一道横屏整屏都是 banner，往下翻不到内容
+            final maxCard = MediaQuery.sizeOf(context).height * 0.42 - 50;
+            final cardHeight = (pageWidth / (16 / 9) + 50).clamp(0.0, maxCard);
+            return SizedBox(
+              height: cardHeight,
+              child: PageView.builder(
+                controller: _controller,
+                itemCount: items.length,
+                onPageChanged: (i) => setState(() => _index = i),
+                itemBuilder: (context, i) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.xs,
+                  ),
+                  child: GuideWideCard(
+                    guide: items[i],
+                    width: double.infinity,
+                    onTap: () => widget.onOpen(items[i]),
+                  ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          },
+        ),
         if (items.length > 1) ...[
           const SizedBox(height: AppSpacing.md),
           Row(
@@ -212,9 +217,7 @@ class _HeroStripState extends State<_HeroStrip> {
                 width: active ? 16 : 6,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: active
-                      ? context.p.brand
-                      : context.p.border,
+                  color: active ? context.p.brand : context.p.border,
                   borderRadius: BorderRadius.circular(AppRadius.pill),
                 ),
               );

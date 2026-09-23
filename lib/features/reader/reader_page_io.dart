@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -7,9 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/theme/app_palette.dart';
+import '../../data/translate_service.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/glass_panel.dart';
 import '../../data/models/marvel_models.dart';
+import '../../data/ocr_service.dart';
 import '../../data/repository/preferences_repository.dart';
 import '../../state/library_state.dart';
 import 'widgets/reader_toolbar.dart';
@@ -53,6 +56,12 @@ class _ReaderPageState extends State<ReaderPage> {
   /// 当前单页索引（0 基）。
   int _page = 0;
   bool _toolbarVisible = true;
+
+  /// 翻译中（工具栏按钮转圈/置灰用）。
+  bool _translating = false;
+
+  /// 前一页的 OCR 文本，翻译时当上下文传给模型。
+  String? _lastOcr;
   bool? _lastLandscape;
   Offset _lastDoubleTapPoint = Offset.zero;
 
@@ -382,8 +391,15 @@ class _ReaderPageState extends State<ReaderPage> {
                     controller: _pageController,
                     itemCount: _viewCount,
                     onPageChanged: _onPageChanged,
-                    itemBuilder: (context, i) =>
-                        _isSpreadView ? _buildSpread(i) : _buildSinglePage(i),
+                    // 仿真翻页：绕书脊（左缘）的 3D 转轴 + 背面阴影，
+                    // 手指拖动时页面跟着转，松手继续滑完成整页
+                    itemBuilder: (context, i) => _BookFlip(
+                      controller: _pageController,
+                      index: i,
+                      child: _isSpreadView
+                          ? _buildSpread(i)
+                          : _buildSinglePage(i),
+                    ),
                   ),
                 ),
                 _statusPill(landscape),
@@ -491,6 +507,20 @@ class _ReaderPageState extends State<ReaderPage> {
                   tooltip: '书签列表',
                   onPressed: _showBookmarks,
                 ),
+                // 翻译当前页：点=OCR+翻译；长按=配置大模型接口
+                IconButton(
+                  visualDensity: VisualDensity.compact,
+                  icon: Icon(
+                    Icons.translate,
+                    size: 20,
+                    color: _translating
+                        ? context.p.brand
+                        : context.p.textStrong,
+                  ),
+                  tooltip: '翻译（长按配置模型）',
+                  onPressed: _translating ? null : _translateCurrentPage,
+                  onLongPress: _showLlmConfig,
+                ),
                 // 竖屏时的双页拼合切换（横屏天然双页，不显示）
                 if (!landscape)
                   IconButton(
@@ -513,6 +543,180 @@ class _ReaderPageState extends State<ReaderPage> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  /// 翻译当前页：设备端 OCR → 大模型翻译 → 底部弹译文。
+  Future<void> _translateCurrentPage() async {
+    if (_page >= widget.pages.length) return;
+    final messenger = ScaffoldMessenger.of(context);
+    final prefs = context.read<PreferencesRepository>();
+    if (!prefs.llmConfigured) {
+      _showLlmConfig();
+      messenger.showSnackBar(const SnackBar(content: Text('先长按「翻译」按钮配置大模型接口')));
+      return;
+    }
+    setState(() => _translating = true);
+    try {
+      // 1) OCR：设备端识别（不联网）
+      final ocr = await OcrService.recognize(File(widget.pages[_page]));
+      if (ocr.trim().isEmpty) {
+        messenger.showSnackBar(const SnackBar(content: Text('这一页没有识别到文字')));
+        return;
+      }
+      // 2) 翻译：带上前一页的文本当上下文
+      final service = TranslateService(
+        baseUrl: prefs.llmBaseUrl,
+        apiKey: prefs.llmApiKey,
+        model: prefs.llmModel,
+      );
+      final translated = await service.translate(
+        ocr,
+        context: _lastOcr,
+        seriesTitle: widget.issue.seriesTitle,
+      );
+      _lastOcr = ocr;
+      if (!mounted) return;
+      await _showTranslation(ocr, translated);
+    } catch (e) {
+      if (!mounted) return;
+      messenger.showSnackBar(SnackBar(content: Text('翻译失败：$e')));
+    } finally {
+      if (mounted) setState(() => _translating = false);
+    }
+  }
+
+  Future<void> _showTranslation(String original, String translated) {
+    return showModalBottomSheet(
+      context: context,
+      backgroundColor: context.p.surface,
+      isScrollControlled: true,
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.45,
+        maxChildSize: 0.85,
+        builder: (context, scrollController) => ListView(
+          controller: scrollController,
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+          children: [
+            Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    '译文',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close, size: 20),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+            Text(translated, style: const TextStyle(fontSize: 15, height: 1.7)),
+            const SizedBox(height: 16),
+            Text(
+              '—— 原文（OCR）——',
+              style: TextStyle(
+                fontSize: 11,
+                color: Theme.of(context).hintColor,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              original,
+              style: TextStyle(
+                fontSize: 12,
+                height: 1.5,
+                color: Theme.of(context).hintColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 长按「翻译」进入的模型配置：接口地址 / API Key / 模型名。
+  Future<void> _showLlmConfig() {
+    final prefs = context.read<PreferencesRepository>();
+    final baseUrl = TextEditingController(text: prefs.llmBaseUrl);
+    final apiKey = TextEditingController(text: prefs.llmApiKey);
+    final model = TextEditingController(text: prefs.llmModel);
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: context.p.surface,
+      builder: (sheetContext) => Padding(
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 12,
+          bottom: MediaQuery.of(sheetContext).viewInsets.bottom + 24,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '翻译模型配置',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '接 OpenAI 兼容接口（OpenAI / DeepSeek / Gemini 兼容层等）。'
+              '只在翻译时调用，OCR 在本机完成、图片不上传。',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(sheetContext).hintColor,
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: baseUrl,
+              decoration: const InputDecoration(
+                labelText: '接口地址（如 https://api.openai.com/v1）',
+                isDense: true,
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: apiKey,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'API Key',
+                isDense: true,
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: model,
+              decoration: const InputDecoration(
+                labelText: '模型名（如 gpt-4o-mini / deepseek-chat）',
+                isDense: true,
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () async {
+                  await prefs.saveLlmConfig(
+                    baseUrl: baseUrl.text,
+                    apiKey: apiKey.text,
+                    model: model.text,
+                  );
+                  if (sheetContext.mounted) Navigator.of(sheetContext).pop();
+                },
+                child: const Text('保存'),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -606,6 +810,63 @@ class _BrokenPage extends StatelessWidget {
           Text('这一页读不出来', style: TextStyle(color: p.textMuted, fontSize: 13)),
         ],
       ),
+    );
+  }
+}
+
+/// 仿真翻页：页面绕书脊（左缘）做 3D 旋转，翻过去的同时压一层阴影。
+///
+/// 用 PageController 的滚动位置驱动——手指拖到一半页面就转到一半，
+/// 不是翻页结束后播一段动画。视觉近似书页绕装订线翻动。
+class _BookFlip extends StatelessWidget {
+  const _BookFlip({
+    required this.controller,
+    required this.index,
+    required this.child,
+  });
+
+  final PageController controller;
+  final int index;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, page) {
+        if (!controller.hasClients) return child;
+        final pos = controller.page ?? index.toDouble();
+        // 本页离视口的偏移：-1（正在翻入）到 1（正在翻出）
+        final delta = (pos - index).clamp(-1.0, 1.0);
+        if (delta == 0) return child;
+
+        // 翻出的那半程做旋转；翻入的页面保持平的从右侧滑进来
+        final angle = delta > 0 ? delta : 0.0;
+        return Stack(
+          children: [
+            // 翻转的页面本体
+            Transform(
+              transform: Matrix4.identity()
+                ..setEntry(3, 2, 0.0015) // 透视
+                ..rotateY(-angle * math.pi / 2),
+              alignment: Alignment.centerLeft, // 书脊在左
+              child: child,
+            ),
+            // 翻页时的投影：转得越多越暗
+            if (angle > 0)
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: angle * 0.35),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+      child: child,
     );
   }
 }
