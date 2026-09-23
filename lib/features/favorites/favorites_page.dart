@@ -30,40 +30,43 @@ class FavoritesPage extends StatefulWidget {
 }
 
 enum _Filter {
-  all('全部'),
-  issue('漫画'),
   series('系列'),
+  issue('漫画'),
   guide('指南'),
-  list('书单');
+  list('书单'),
+  local('本地');
 
   const _Filter(this.label);
   final String label;
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  _Filter _filter = _Filter.all;
+  /// 书架从「系列」开始（收藏的主体），不是「全部」大杂烩。
+  _Filter _filter = _Filter.series;
 
   @override
   Widget build(BuildContext context) {
     final favorites = context.watch<FavoritesState>();
     final entries = favorites.entries;
     final lists = favorites.lists;
+    final library = context.watch<LibraryState>();
+    final imported = library.importedIssues;
 
     final counts = {
-      _Filter.all: entries.length + lists.length,
+      _Filter.series: entries
+          .where((e) => e.kind == FavoriteKind.series)
+          .length,
       _Filter.issue: entries.where((e) => e.kind == FavoriteKind.issue).length,
-      _Filter.series: entries.where((e) => e.kind == FavoriteKind.series).length,
       _Filter.guide: entries.where((e) => e.kind == FavoriteKind.guide).length,
       _Filter.list: lists.length,
+      _Filter.local: imported.length,
     };
 
     final filtered = switch (_filter) {
-      _Filter.all => entries,
       _Filter.list => const <FavoriteEntry>[],
+      _Filter.local => const <FavoriteEntry>[],
       _ => entries.where((e) => e.kind.name == _filter.name).toList(),
     };
-
-    final showShelf = _filter == _Filter.all || _filter == _Filter.issue;
 
     return Scaffold(
       appBar: const TabAppBar(word: 'COLLECTION'),
@@ -71,55 +74,54 @@ class _FavoritesPageState extends State<FavoritesPage> {
         children: [
           _filters(counts),
           Expanded(
-            // 书架式：漫画封面一行一行排列，「+」是最后一本的下一本——
-            // 灰色、和封面同尺寸的方块，点击导入本地漫画。
-            child: _filter == _Filter.list || !showShelf
-                ? ListView(
-                    padding: AppInsets.page,
-                    children: [
-                      if (_filter == _Filter.list) ..._listSection(lists),
-                      if (_filter == _Filter.series || _filter == _Filter.guide)
-                        ...filtered.map((e) => _swipeable(e)),
-                    ],
-                  )
-                : LayoutBuilder(
-                    builder: (context, c) {
-                      // 比例按真实宽度算：固定 0.55 在窄屏会差几像素，
-                      // 卡片标题就被 overflow 顶掉
-                      final usable = c.maxWidth - AppInsets.page.horizontal;
-                      final cols = CoverGrid.columnsFor(
-                        usableWidth: usable,
-                        maxCellWidth: 150,
-                        crossSpacing: AppSpacing.md,
-                      );
-                      return GridView.builder(
-                        padding: AppInsets.page,
-                        gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: cols,
-                          childAspectRatio: CoverGrid.aspectFor(
-                            usableWidth: usable,
-                            columns: cols,
-                            textBlockHeight: 32, // 标题两行
-                            crossSpacing: AppSpacing.md,
-                          ),
-                          crossAxisSpacing: AppSpacing.md,
-                          mainAxisSpacing: AppSpacing.md,
-                        ),
-                        itemCount: filtered.length + 1,
-                        itemBuilder: (context, i) {
-                          // 最后一格永远是「+」导入卡
-                          if (i == filtered.length) {
-                            return const _ImportBookCard();
-                          }
-                          return _ShelfBookTile(entry: filtered[i]);
-                        },
-                      );
-                    },
-                  ),
+            // 书架：漫画/系列/指南/本地都是封面网格；书单是列表。
+            // 「+」导入卡只在「本地」出现——上传本地漫画是本地库的事。
+            child: switch (_filter) {
+              _Filter.list => ListView(
+                padding: AppInsets.page,
+                children: _listSection(lists),
+              ),
+              _Filter.local => _shelfGrid([
+                for (final i in imported) FavoriteEntry.fromIssue(i),
+              ], importCard: true),
+              _Filter.guide => _shelfGrid(filtered),
+              _ => _shelfGrid(filtered),
+            },
           ),
         ],
       ),
+    );
+  }
+
+  /// 封面书架网格：一行 4 本。
+  Widget _shelfGrid(List<FavoriteEntry> items, {bool importCard = false}) {
+    return LayoutBuilder(
+      builder: (context, c) {
+        // 比例按真实宽度算：固定值在窄屏会差几像素，标题被 overflow 顶掉
+        final usable = c.maxWidth - AppInsets.page.horizontal;
+        const cols = 4;
+        return GridView.builder(
+          padding: AppInsets.page,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: cols,
+            childAspectRatio: CoverGrid.aspectFor(
+              usableWidth: usable,
+              columns: cols,
+              textBlockHeight: 32, // 标题两行
+              crossSpacing: AppSpacing.sm,
+            ),
+            crossAxisSpacing: AppSpacing.sm,
+            mainAxisSpacing: AppSpacing.md,
+          ),
+          itemCount: items.length + (importCard ? 1 : 0),
+          itemBuilder: (context, i) {
+            if (importCard && i == items.length) {
+              return const _ImportBookCard();
+            }
+            return _ShelfBookTile(entry: items[i]);
+          },
+        );
+      },
     );
   }
 
@@ -197,8 +199,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 
-  Future<String?> _promptName(BuildContext context,
-      {required String title, String initial = ''}) {
+  Future<String?> _promptName(
+    BuildContext context, {
+    required String title,
+    String initial = '',
+  }) {
     final controller = TextEditingController(text: initial);
     return showDialog<String>(
       context: context,
@@ -225,38 +230,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
   }
 
   // ── 收藏条目 ─────────────────────────────────────────────────
-
-  Widget _swipeable(FavoriteEntry entry) {
-    return Dismissible(
-      key: ValueKey('fav-${entry.kind.name}-${entry.id}'),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: AppSpacing.xl),
-        margin: const EdgeInsets.only(bottom: AppSpacing.xs),
-        decoration: BoxDecoration(
-          color: context.p.like.withValues(alpha: 0.18),
-          borderRadius: BorderRadius.circular(AppRadius.md),
-        ),
-        child: Icon(Icons.heart_broken_outlined, color: context.p.like),
-      ),
-      onDismissed: (_) {
-        final favorites = context.read<FavoritesState>();
-        final messenger = ScaffoldMessenger.of(context);
-        final index = favorites.remove(entry);
-        messenger.showSnackBar(
-          SnackBar(
-            content: Text('已移除《${entry.title}》'),
-            action: SnackBarAction(
-              label: '撤销',
-              onPressed: () => favorites.restore(entry, index),
-            ),
-          ),
-        );
-      },
-      child: _ShelfBookTile(entry: entry),
-    );
-  }
 }
 
 /// 书架末尾的「+」导入卡：作为最后一本书的下一本——灰色、
@@ -277,7 +250,8 @@ class _ImportBookCard extends StatelessWidget {
       allowedExtensions: ['cbz', 'zip', 'cbr'],
       allowMultiple: batch,
     );
-    final paths = result?.files
+    final paths =
+        result?.files
             .where((f) => f.path != null)
             .map((f) => f.path!)
             .toList() ??
@@ -302,17 +276,10 @@ class _ImportBookCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: p.fillStrong,
                 borderRadius: BorderRadius.circular(AppRadius.md),
-                border: Border.all(
-                  color: p.textFaint,
-                  width: 1.4,
-                ),
+                border: Border.all(color: p.textFaint, width: 1.4),
               ),
               child: Center(
-                child: Icon(
-                  Icons.add,
-                  size: 40,
-                  color: p.textMuted,
-                ),
+                child: Icon(Icons.add, size: 40, color: p.textMuted),
               ),
             ),
           ),
@@ -401,7 +368,9 @@ class _ShelfBookTile extends StatelessWidget {
                       FavoriteKind.guide => '指南',
                     },
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 5, vertical: 1),
+                      horizontal: 5,
+                      vertical: 1,
+                    ),
                   ),
                 ),
                 // 在读进度条压在封面底部

@@ -158,35 +158,63 @@ class SearchState extends ChangeNotifier {
 
     final hits = <String, SearchHit>{};
 
-    // 1) 本地事件库（秒出）
+    // 四路来源**并行**拉（之前是串行等完一路再下一路，网络慢时
+    // 每一路的耗时累加，搜索要转好几秒）。本地两路是同步的，
+    // 网络两路并发；每路各自 try/catch，谁挂了都不拖累别人。
+    final futures = await Future.wait([
+      _searchLocalEvents(q),
+      _searchLocalIndex(q),
+      _searchOfficial(q),
+      _searchWiki(q),
+    ]);
+
+    for (final source in futures) {
+      for (final h in source) {
+        hits.putIfAbsent(h.key, () => h);
+      }
+    }
+
+    // 先把结果亮出来（无封面版），封面在后台补——搜索的「快」
+    // 主要就卡在给前几个结果补封面的那几次系列请求上。
+    results = hits.values.toList();
+    notifyListeners();
+
+    final enriched = await _enrichCovers(hits);
+    if (enriched != null) {
+      results = enriched;
+      notifyListeners();
+    }
+    loading = false;
+    notifyListeners();
+  }
+
+  /// 本地事件库（同步，秒出）。
+  Future<List<SearchHit>> _searchLocalEvents(String q) async {
     try {
       final events = await _events.all();
       final lower = q.toLowerCase();
-      for (final e in events) {
-        if (!e.title.toLowerCase().contains(lower) && !e.titleZh.contains(q)) {
-          continue;
-        }
-        hits.putIfAbsent(
-          'event:${e.id}',
-          () => SearchHit(
-            kind: SearchHitKind.event,
-            title: e.titleZh.isEmpty ? e.title : e.titleZh,
-            subtitle: '事件 · ${e.tierLabel} · ${e.year}',
-            event: e,
-          ),
-        );
-      }
+      return [
+        for (final e in events)
+          if (e.title.toLowerCase().contains(lower) || e.titleZh.contains(q))
+            SearchHit(
+              kind: SearchHitKind.event,
+              title: e.titleZh.isEmpty ? e.title : e.titleZh,
+              subtitle: '事件 · ${e.tierLabel} · ${e.year}',
+              event: e,
+            ),
+      ];
     } catch (_) {
-      // 事件库读失败不影响其它来源
+      return const [];
     }
-    notifyListeners();
+  }
 
-    // 2) 本地索引
+  /// 本地索引：已导入/收藏/缓存过的 issue 与指南（同步）。
+  Future<List<SearchHit>> _searchLocalIndex(String q) async {
+    final out = <SearchHit>[];
     for (final issue in _localIssues()) {
       if (!_matches(q, [issue.title, issue.seriesTitle])) continue;
-      hits.putIfAbsent(
-        'issue:${issue.id}',
-        () => SearchHit(
+      out.add(
+        SearchHit(
           kind: SearchHitKind.issue,
           title: issue.title,
           subtitle: _issueSubtitle(issue),
@@ -197,9 +225,8 @@ class SearchState extends ChangeNotifier {
     }
     for (final guide in _catalog.cachedGuides ?? const <ReadingGuide>[]) {
       if (!_matches(q, [guide.title, guide.description])) continue;
-      hits.putIfAbsent(
-        'guide:${guide.id}',
-        () => SearchHit(
+      out.add(
+        SearchHit(
           kind: SearchHitKind.guide,
           title: guide.title,
           subtitle: '官方阅读指南',
@@ -208,124 +235,131 @@ class SearchState extends ChangeNotifier {
         ),
       );
     }
-    notifyListeners();
+    return out;
+  }
 
-    // 3) 官网 lockjaw 标题搜索：系列 + 单期（带封面）
+  /// 官网 lockjaw：系列 + 单期。
+  Future<List<SearchHit>> _searchOfficial(String q) async {
     try {
       final official = await _catalog
           .searchOfficial(q)
-          .timeout(const Duration(seconds: 15));
-      final seriesHits = official
-          .where((h) => h.kind == 'series')
-          .take(8)
-          .toList();
-      final issueHits = official
-          .where((h) => h.kind == 'issue')
-          .take(12)
-          .toList();
-
-      for (final s in seriesHits) {
-        hits.putIfAbsent(
-          'series:${s.id}',
-          () => SearchHit(
-            kind: SearchHitKind.series,
-            title: s.title,
-            subtitle: '官网系列',
-            seriesId: s.id,
-          ),
-        );
-      }
-      // 单期：标题形如 "Ultimate Invasion (2023) #1"，拆成系列名 + 期号
-      for (final it in issueHits) {
-        final m = RegExp(r'^(.*)\s+#([^#]+)$').firstMatch(it.title);
-        final series = m?.group(1)?.trim() ?? it.title;
-        final number = m?.group(2)?.trim() ?? '';
-        hits.putIfAbsent(
-          'issue:${it.id}',
-          () => SearchHit(
-            kind: SearchHitKind.issue,
-            title: it.title,
-            subtitle: '漫画期${number.isEmpty ? '' : ' · #$number'}',
-            issue: ComicIssue(
-              id: it.id,
-              title: it.title,
-              seriesTitle: series,
-              issueNumber: number,
-              releaseDate: '',
-              description: '',
+          .timeout(const Duration(seconds: 8));
+      return [
+        for (final h in official.take(20))
+          if (h.kind == 'series')
+            SearchHit(
+              kind: SearchHitKind.series,
+              title: h.title,
+              subtitle: '官网系列',
+              seriesId: h.id,
+            )
+          else
+            SearchHit(
+              kind: SearchHitKind.issue,
+              title: h.title,
+              subtitle: _issueSubtitleOfTitle(h.title),
+              issue: _issueFromTitle(h.id, h.title),
             ),
-          ),
-        );
-      }
-      // 封面：前几个系列详情 + 这些系列的全部期数（一次请求拿一整卷）
-      final topSeries = seriesHits.take(3).map((h) => h.id).toList();
-      final issueCoverById = <String, String>{};
-      await Future.wait(
-        topSeries.map(
-          (sid) => _catalog
-              .seriesIssues(sid)
-              .timeout(const Duration(seconds: 10))
-              .catchError((_) => const <ComicIssue>[])
-              .then((list) {
-                for (final i in list) {
-                  final c = i.coverUrl;
-                  if (c != null) issueCoverById[i.id] = c;
-                }
-              }),
-        ),
-      );
-      final seriesCovers = <String, String>{};
-      await Future.wait(
-        topSeries.map(
-          (sid) => _catalog
-              .seriesDetail(sid)
-              .timeout(const Duration(seconds: 10))
-              .catchError((_) => null)
-              .then((d) {
-                final c = d?.coverUrl;
-                if (c != null) seriesCovers[sid] = c;
-              }),
-        ),
-      );
-      for (final h in hits.values.toList()) {
-        if (h.kind == SearchHitKind.series &&
-            h.seriesId != null &&
-            seriesCovers[h.seriesId!] != null) {
-          hits[h.key] = h.withCover(seriesCovers[h.seriesId!]);
-        } else if (h.kind == SearchHitKind.issue &&
-            h.issue != null &&
-            issueCoverById[h.issue!.id] != null) {
-          hits[h.key] = h.withCover(issueCoverById[h.issue!.id]);
-        }
-      }
+      ];
     } catch (_) {
-      // lockjaw 挂了不影响其它来源
+      return const [];
     }
-    notifyListeners();
+  }
 
-    // 4) wiki 系列
+  /// wiki（Fandom opensearch）的系列页。
+  Future<List<SearchHit>> _searchWiki(String q) async {
     try {
       final wiki = await _wiki.searchSeries(q);
-      for (final s in wiki) {
-        final title = s['title'] ?? '';
-        hits.putIfAbsent(
-          'wiki:$title',
-          () => SearchHit(
+      return [
+        for (final s in wiki)
+          SearchHit(
             kind: SearchHitKind.wikiSeries,
-            title: title,
+            title: s['title'] ?? '',
             subtitle: 'Marvel Database',
-            wikiPageName: title,
+            wikiPageName: s['title'] ?? '',
           ),
-        );
-      }
-    } catch (e) {
-      // wiki 挂了不影响本地结果，只是少一块
-      if (hits.isEmpty) error = e.toString();
+      ];
+    } catch (_) {
+      return const [];
     }
+  }
 
-    loading = false;
-    results = hits.values.toList();
-    notifyListeners();
+  /// 后台补封面：给系列结果取系列封面，给单期取所在系列的期数封面。
+  /// 返回 null 表示没什么可补的（结果原样保留）。
+  Future<List<SearchHit>?> _enrichCovers(Map<String, SearchHit> hits) async {
+    final seriesIds = <String>[];
+    for (final h in hits.values) {
+      if (h.kind == SearchHitKind.series && h.seriesId != null) {
+        seriesIds.add(h.seriesId!);
+      }
+    }
+    if (seriesIds.isEmpty &&
+        !hits.values.any((h) => h.kind == SearchHitKind.issue)) {
+      return null;
+    }
+    final topSeries = seriesIds.take(3).toList();
+
+    final seriesCovers = <String, String>{};
+    final issueCoverById = <String, String>{};
+    await Future.wait([
+      ...topSeries.map(
+        (sid) => _catalog
+            .seriesDetail(sid)
+            .timeout(const Duration(seconds: 8))
+            .catchError((_) => null)
+            .then((d) {
+              final c = d?.coverUrl;
+              if (c != null) seriesCovers[sid] = c;
+            }),
+      ),
+      ...topSeries.map(
+        (sid) => _catalog
+            .seriesIssues(sid)
+            .timeout(const Duration(seconds: 8))
+            .catchError((_) => const <ComicIssue>[])
+            .then((list) {
+              for (final i in list) {
+                final c = i.coverUrl;
+                if (c != null) issueCoverById[i.id] = c;
+              }
+            }),
+      ),
+    ]);
+
+    var changed = false;
+    for (final h in hits.values.toList()) {
+      if (h.kind == SearchHitKind.series &&
+          h.seriesId != null &&
+          seriesCovers[h.seriesId!] != null) {
+        hits[h.key] = h.withCover(seriesCovers[h.seriesId!]);
+        changed = true;
+      } else if (h.kind == SearchHitKind.issue &&
+          h.issue != null &&
+          issueCoverById[h.issue!.id] != null) {
+        hits[h.key] = h.withCover(issueCoverById[h.issue!.id]);
+        changed = true;
+      }
+    }
+    return changed ? hits.values.toList() : null;
+  }
+
+  /// "Ultimate Invasion (2023) #1" → "漫画期 · #1"。
+  static String _issueSubtitleOfTitle(String title) {
+    final m = RegExp(r'^(.*)\s+#([^#]+)$').firstMatch(title);
+    return '漫画期${m == null ? '' : ' · #${m.group(2)!.trim()}'}';
+  }
+
+  /// 把官网标题拆成系列名 + 期号，凑一个可点的 issue。
+  static ComicIssue _issueFromTitle(String id, String title) {
+    final m = RegExp(r'^(.*)\s+#([^#]+)$').firstMatch(title);
+    return ComicIssue(
+      id: id,
+      title: title,
+      seriesTitle: m?.group(1)?.trim() ?? title,
+      issueNumber: m?.group(2)?.trim() ?? '',
+      releaseDate: '',
+      description: '',
+    );
   }
 
   Future<void> retry() => search(query);

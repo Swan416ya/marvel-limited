@@ -136,8 +136,14 @@ class _LiquidGlassBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // 高亮胶囊：跟随着选中项**平移**过去（不是就地闪现）
-                  Positioned.fill(
+                  // 高亮胶囊：跟随着选中项**平移**过去（不是就地闪现）。
+                  // 两端各内缩 8：药丸两端是圆角，胶囊不内缩的话
+                  // 直边贴着曲率，看着像顶到边上了。
+                  Positioned(
+                    left: AppSpacing.sm,
+                    right: AppSpacing.sm,
+                    top: 0,
+                    bottom: 0,
                     child: IgnorePointer(
                       child: AnimatedAlign(
                         duration: AppDuration.page,
@@ -170,11 +176,16 @@ class _LiquidGlassBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      for (var i = 0; i < items.length; i++)
-                        Expanded(child: _slot(context, i, p)),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.sm,
+                    ),
+                    child: Row(
+                      children: [
+                        for (var i = 0; i < items.length; i++)
+                          Expanded(child: _slot(context, i, p)),
+                      ],
+                    ),
                   ),
                 ],
               ),

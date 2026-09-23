@@ -90,7 +90,10 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
                     children: [
                       Icon(
                         favorites.containsInList(
-                                list.id, FavoriteKind.issue, _issue.id)
+                              list.id,
+                              FavoriteKind.issue,
+                              _issue.id,
+                            )
                             ? Icons.check_box
                             : Icons.check_box_outline_blank,
                         size: 18,
@@ -133,12 +136,16 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(_issue.title,
-                        style: Theme.of(context).textTheme.titleLarge),
+                    Text(
+                      _issue.title,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                     const SizedBox(height: AppSpacing.sm),
                     if (_issue.releaseDate.isNotEmpty)
-                      Text(_issue.releaseDate,
-                          style: TextStyle(color: p.textFaint, fontSize: 12)),
+                      Text(
+                        _issue.releaseDate,
+                        style: TextStyle(color: p.textFaint, fontSize: 12),
+                      ),
                     // 系列名做成醒目的可点入口。指南来源的 issue 没有
                     // seriesId，点的时候用 lockjaw 按系列名现查再跳。
                     if (_issue.seriesTitle.isNotEmpty) ...[
@@ -153,8 +160,7 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
                           ),
                           decoration: BoxDecoration(
                             color: p.brand.withValues(alpha: 0.14),
-                            borderRadius:
-                                BorderRadius.circular(AppRadius.pill),
+                            borderRadius: BorderRadius.circular(AppRadius.pill),
                             border: Border.all(
                               color: p.brand.withValues(alpha: 0.4),
                             ),
@@ -167,11 +173,15 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
                                   width: 13,
                                   height: 13,
                                   child: CircularProgressIndicator(
-                                      strokeWidth: 2),
+                                    strokeWidth: 2,
+                                  ),
                                 )
                               else
-                                Icon(Icons.library_books,
-                                    size: 15, color: p.brand),
+                                Icon(
+                                  Icons.library_books,
+                                  size: 15,
+                                  color: p.brand,
+                                ),
                               const SizedBox(width: 6),
                               Flexible(
                                 child: Text(
@@ -186,7 +196,11 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
                                 ),
                               ),
                               const SizedBox(width: 4),
-                              Icon(Icons.chevron_right, size: 15, color: p.brand),
+                              Icon(
+                                Icons.chevron_right,
+                                size: 15,
+                                color: p.brand,
+                              ),
                             ],
                           ),
                         ),
@@ -199,12 +213,14 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
           ),
           if (_issue.creators.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.lg),
-            Text('创作者',
-                style: TextStyle(
-                  color: p.textMuted,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                )),
+            Text(
+              '创作者',
+              style: TextStyle(
+                color: p.textMuted,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: AppSpacing.sm),
             // 每位创作者可点：跳搜索定位这个人的作品
             Wrap(
@@ -223,8 +239,10 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
           ],
           if (_issue.description.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.lg),
-            Text(_issue.description,
-                style: Theme.of(context).textTheme.bodyMedium),
+            Text(
+              _issue.description,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ],
           const SizedBox(height: AppSpacing.xxl),
           if (_error != null)
@@ -267,7 +285,9 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
               label: const Text('去 GetComics 搜索下载'),
               onPressed: () => GetComicsService.open(
                 GetComicsService.searchUrl(
-                    _issue.seriesTitle, _issue.issueNumber),
+                  _issue.seriesTitle,
+                  _issue.issueNumber,
+                ),
               ),
             ),
           ],
@@ -276,8 +296,12 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
     );
   }
 
-  /// 跳到所属系列。有 seriesId 直接跳；没有（指南来源）就按系列名
-  /// 用 lockjaw 现查官网系列 id，查不到退回搜索。
+  /// 跳到所属系列。有 seriesId 直接跳；没有（指南来源的 issue 只有标题）
+  /// 用 lockjaw 现查官网系列 id。
+  ///
+  /// 匹配规则和官网 issue 页跳系列一致：标题里的括号年份用来锁定卷
+  /// （"Secret Wars (2015)" 不能落到 1984 那卷），归一化后要求候选以
+  /// 系列名开头——不能像之前那样取第一个结果，联想搜索前排全是变体封面。
   Future<void> _openSeries() async {
     final seriesId = _issue.seriesId;
     if (seriesId != null) {
@@ -288,26 +312,56 @@ class _IssueDetailPageState extends State<IssueDetailPage> {
     final messenger = ScaffoldMessenger.of(context);
     setState(() => _resolvingSeries = true);
     try {
+      final raw = _issue.seriesTitle; // 形如 "Secret Wars (2015)"
+      final year = RegExp(r'[(（](\d{4})').firstMatch(raw)?.group(1);
+      final base = raw.replaceAll(RegExp(r'\s*[(（]\d{4}.*?[)）]'), '').trim();
+      final query = base.isEmpty ? raw : base;
+      final norm = _normalizeTitle(query);
       final results = await context
           .read<CatalogRepository>()
-          .searchOfficialSeries(_issue.seriesTitle)
+          .searchOfficialSeries(query)
           .timeout(const Duration(seconds: 12));
       if (!mounted) return;
-      if (results.isNotEmpty) {
-        final best = results.first;
-        AppRouter.openSeries(context, best.id, best.title);
+
+      // 变体封面/复刻版在官网是独立「系列」，先滤掉
+      final noise = RegExp(
+        r'variant|homage|facsimile|print|cover\s*[a-z]|tbd|blank',
+        caseSensitive: false,
+      );
+      String? exact;
+      String? prefix;
+      for (final r in results) {
+        final rn = _normalizeTitle(r.title);
+        if (!rn.startsWith(norm) && !rn.contains(norm)) continue;
+        if (noise.hasMatch(r.title)) continue;
+        final rYear = RegExp(r'[(（](\d{4})').firstMatch(r.title)?.group(1);
+        if (year != null && rYear == year) {
+          exact = r.id;
+          break;
+        }
+        prefix ??= r.id;
+      }
+      final hit = exact ?? prefix;
+      if (hit != null) {
+        AppRouter.openSeries(context, hit, base.isEmpty ? raw : base);
       } else {
         AppRouter.openSearch(context, query: _issue.seriesTitle);
       }
     } catch (_) {
       if (!mounted) return;
-      messenger.showSnackBar(
-        const SnackBar(content: Text('没查到这个系列，试试搜索')),
-      );
+      messenger.showSnackBar(const SnackBar(content: Text('没查到这个系列，试试搜索')));
     } finally {
       if (mounted) setState(() => _resolvingSeries = false);
     }
   }
+
+  /// 标题归一化：小写、去年份括号、去符号——比对用。
+  static String _normalizeTitle(String s) => s
+      .toLowerCase()
+      .replaceAll(RegExp(r'[(（][^)）]*[)）]'), ' ')
+      .replaceAll(RegExp(r'[^a-z0-9 ]'), ' ')
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .trim();
 
   Future<void> _createListAndAdd(FavoritesState favorites) async {
     final name = await _promptListName();

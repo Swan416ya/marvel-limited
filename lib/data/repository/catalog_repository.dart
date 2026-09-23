@@ -24,6 +24,34 @@ class CatalogRepository {
   final DiskCache _cache;
 
   List<ReadingGuide>? _guides;
+
+  /// 打包进应用的目录快照（`tool/build_catalog_snapshot.py` 生成）。
+  ///
+  /// 用途是 stale-while-revalidate：磁盘缓存还没有的时候先用快照顶上
+  /// （页面立即出内容），同时后台拉网络数据写进缓存，下次打开就是新的。
+  /// 快照会旧——但它只会在「第一次打开」时被用到，且下拉刷新永远走网络。
+  Map<String, dynamic>? _snapshot;
+  Future<Map<String, dynamic>?>? _snapshotLoading;
+
+  Future<Map<String, dynamic>?> _loadSnapshot() {
+    return _snapshotLoading ??= () async {
+      if (_snapshot != null) return _snapshot;
+      try {
+        final raw = await rootBundle.loadString(
+          'assets/data/catalog_snapshot.json',
+        );
+        final data = json.decode(raw);
+        if (data is Map<String, dynamic>) {
+          _snapshot = data;
+          return data;
+        }
+      } catch (_) {
+        // 快照读不到（老包/损坏）就当没有，走网络
+      }
+      return null;
+    }();
+  }
+
   final Map<String, List<ComicIssue>> _guideIssues = {};
   final Map<String, List<ComicIssue>> _seriesIssues = {};
   final Map<String, SeriesDetail> _seriesDetails = {};
@@ -50,24 +78,81 @@ class CatalogRepository {
         }
       }
     }
+    // 磁盘缓存没有：先看看打包的快照能不能顶上（首次打开秒出），
+    // 同时后台拉网络数据进缓存——下次打开就是新的。
+    final snapshot = await _loadSnapshot();
+    final snapGuides = snapshot?['guides'];
+    if (snapGuides is List && snapGuides.isNotEmpty) {
+      final seeded = snapGuides
+          .map((e) => ReadingGuide.fromJson(e as Map))
+          .toList();
+      _guides = seeded;
+      unawaited(_refreshGuidesInBackground());
+      return seeded;
+    }
+
     final list = await _client.fetchReadingGuides();
     _guides = list;
     unawaited(_cache.write('guides', list.map((g) => g.toJson()).toList()));
     return list;
   }
 
+  /// 后台刷新指南列表（快照顶上之后悄悄干，不打扰界面）。
+  Future<void> _refreshGuidesInBackground() async {
+    try {
+      final list = await _client.fetchReadingGuides();
+      _guides = list;
+      unawaited(_cache.write('guides', list.map((g) => g.toJson()).toList()));
+    } catch (_) {
+      // 网络不行就算了，快照继续用
+    }
+  }
+
   Future<List<ComicIssue>> readingGuideIssues(
     String guideId, {
     bool force = false,
-  }) {
+  }) async {
     if (!force) {
       final cached = _guideIssues[guideId];
-      if (cached != null) return Future.value(cached);
+      if (cached != null) return cached;
+      // 磁盘缓存（7 天）：指南详情是用户反复进的页面，别每次都走网络
+      final disk = await _cache.read(
+        'guideIssues:$guideId',
+        ttl: const Duration(days: 7),
+      );
+      if (disk is List && disk.isNotEmpty) {
+        final list = disk.map((e) => ComicIssue.fromJson(e as Map)).toList();
+        _guideIssues[guideId] = list;
+        return list;
+      }
+      // 预取过的指南：打包快照里有逐期清单，直接用
+      final snapshot = await _loadSnapshot();
+      final snapIssues =
+          (snapshot?['guideIssues'] as Map<String, dynamic>?)?[guideId];
+      if (snapIssues is List && snapIssues.isNotEmpty) {
+        final list = snapIssues
+            .map((e) => ComicIssue.fromJson(e as Map))
+            .toList();
+        _guideIssues[guideId] = list;
+        unawaited(
+          _cache.write(
+            'guideIssues:$guideId',
+            list.map((i) => i.toJson()).toList(),
+          ),
+        );
+        return list;
+      }
     }
     return _inflight.putIfAbsent('guide:$guideId', () async {
       try {
         final list = await _client.fetchReadingGuideIssues(guideId);
         _guideIssues[guideId] = list;
+        unawaited(
+          _cache.write(
+            'guideIssues:$guideId',
+            list.map((i) => i.toJson()).toList(),
+          ),
+        );
         return list;
       } finally {
         _inflight.remove('guide:$guideId');
