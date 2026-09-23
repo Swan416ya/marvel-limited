@@ -156,9 +156,9 @@ class FeedEngine {
     final jittered = <FeedCard>[];
     var i = 0;
     while (i < list.length) {
-      final tier = list[i].score.floor();
+      final tier = (list[i].score * 2).floor();
       final bucket = <FeedCard>[];
-      while (i < list.length && list[i].score.floor() == tier) {
+      while (i < list.length && (list[i].score * 2).floor() == tier) {
         bucket.add(list[i]);
         i++;
       }
@@ -167,9 +167,12 @@ class FeedEngine {
     }
     // 档与档之间再小概率交换，制造「偶尔冒出个冷门」的手感
     for (var k = 0; k + 1 < jittered.length; k++) {
-      if (_random.nextDouble() < 0.18) {
+      // 「在读」那几张钉在最前面，不参与跨档交换
+      if (jittered[k].kind == FeedKind.continueReading) continue;
+      if (_random.nextDouble() < 0.32) {
         final swapWith =
-            k + 1 + _random.nextInt(min(3, jittered.length - k - 1));
+            k + 1 + _random.nextInt(min(6, jittered.length - k - 1));
+        if (jittered[swapWith].kind == FeedKind.continueReading) continue;
         final tmp = jittered[k];
         jittered[k] = jittered[swapWith];
         jittered[swapWith] = tmp;
@@ -185,18 +188,22 @@ class FeedEngine {
     for (final c in pool) {
       if (!seen.add(c.id)) continue;
       final haystack = c.title.toLowerCase();
+      // 基础分只差一点点，主要靠「用户信号 + 抖动」决定顺序。
+      // 事件/指南的底分刻意压低（它们本来数量最多、又是横图），
+      // 不然首页前几屏全是横版大卡，看着太整齐。
       var score = switch (c.kind) {
-        FeedKind.continueReading => 10.0, // 在读的永远最前
-        FeedKind.event => 4.0,
-        FeedKind.series => 3.0,
-        FeedKind.guide => 2.0,
+        FeedKind.continueReading => 8.0, // 在读的永远最前
+        FeedKind.series => 1.6,
+        FeedKind.event => 1.1,
+        FeedKind.guide => 1.0,
       };
       if (c.progress != null) score += 1.0;
       score += _hits(haystack, signals.followTerms) * 3.0;
       score += _hits(haystack, signals.favoriteTerms) * 2.0;
       score += _hits(haystack, signals.searchTerms) * 1.5;
-      // 抖动 ±0.9：够让同档内容每次换序，又不会顶掉高一档的
-      score += _random.nextDouble() * 0.9;
+      // 抖动 ±1.4：和基础分同量级，让横图/竖图交错出现，
+      // 两列高度自然就不齐——要的就是这种不整齐
+      score += _random.nextDouble() * 1.4;
       out.add(FeedCard(
         id: c.id,
         kind: c.kind,
@@ -236,7 +243,7 @@ class FeedPool {
   static FeedCard fromEvent(MarvelEvent e, String? coverUrl) => FeedCard(
         id: 'event:${e.id}',
         kind: FeedKind.event,
-        title: e.titleZh.isEmpty ? e.title : e.titleZh,
+        title: e.title,
         subtitle: '${e.tierLabel} · ${e.year}',
         coverUrl: coverUrl,
         event: e,

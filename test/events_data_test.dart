@@ -48,4 +48,31 @@ void main() {
       }
     }
   });
+
+  test('逐期导读：条目齐全、日期合法、按发行日期排序', () {
+    var withOrder = 0;
+    for (final e in events) {
+      if (e.readingOrder.isEmpty) continue;
+      withOrder++;
+      String? prev;
+      for (final it in e.readingOrder) {
+        expect(it.id, isNotEmpty, reason: '${e.title} 的导读条目缺 id');
+        expect(it.series, isNotEmpty, reason: '${e.title} 的导读条目缺系列名');
+        expect(it.number, isNotEmpty, reason: '${e.title} 的导读条目缺期号');
+        if (it.date.isNotEmpty) {
+          expect(RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(it.date), isTrue,
+              reason: '${e.title} 日期格式异常: ${it.date}');
+          if (prev != null) {
+            expect(it.date.compareTo(prev) >= 0, isTrue,
+                reason: '${e.title} 的逐期清单没按发行日期排序：'
+                    '$prev -> ${it.date}');
+          }
+          prev = it.date;
+        }
+      }
+    }
+    // 官方阅读指南只覆盖一部分事件，剩下的必须由本地逐期清单兜底
+    expect(withOrder, greaterThanOrEqualTo(10),
+        reason: '带逐期导读的事件太少，缺官方指南的会没有详细阅读顺序');
+  });
 }

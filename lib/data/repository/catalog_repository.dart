@@ -17,8 +17,8 @@ import 'disk_cache.dart';
 /// 3. 磁盘缓存——官网大响应经常被 CDN 掐断，命中缓存时离线也能秒开。
 class CatalogRepository {
   CatalogRepository({BifrostClient? client, DiskCache? cache})
-      : _client = client ?? BifrostClient(),
-        _cache = cache ?? DiskCache();
+    : _client = client ?? BifrostClient(),
+      _cache = cache ?? DiskCache();
 
   final BifrostClient _client;
   final DiskCache _cache;
@@ -39,11 +39,11 @@ class CatalogRepository {
   Future<List<ReadingGuide>> readingGuides({bool force = false}) async {
     if (!force && _guides != null) return _guides!;
     if (!force) {
-      final cached = await _cache.read('guides',
-          ttl: const Duration(days: 1));
+      final cached = await _cache.read('guides', ttl: const Duration(days: 1));
       if (cached is List) {
-        final list =
-            cached.map((e) => ReadingGuide.fromJson(e as Map)).toList();
+        final list = cached
+            .map((e) => ReadingGuide.fromJson(e as Map))
+            .toList();
         if (list.isNotEmpty) {
           _guides = list;
           return list;
@@ -52,13 +52,14 @@ class CatalogRepository {
     }
     final list = await _client.fetchReadingGuides();
     _guides = list;
-    unawaited(_cache.write(
-        'guides', list.map((g) => g.toJson()).toList()));
+    unawaited(_cache.write('guides', list.map((g) => g.toJson()).toList()));
     return list;
   }
 
-  Future<List<ComicIssue>> readingGuideIssues(String guideId,
-      {bool force = false}) {
+  Future<List<ComicIssue>> readingGuideIssues(
+    String guideId, {
+    bool force = false,
+  }) {
     if (!force) {
       final cached = _guideIssues[guideId];
       if (cached != null) return Future.value(cached);
@@ -74,8 +75,7 @@ class CatalogRepository {
     });
   }
 
-  Future<List<ComicIssue>> seriesIssues(String seriesId,
-      {bool force = false}) {
+  Future<List<ComicIssue>> seriesIssues(String seriesId, {bool force = false}) {
     if (!force) {
       final cached = _seriesIssues[seriesId];
       if (cached != null) return Future.value(cached);
@@ -96,25 +96,28 @@ class CatalogRepository {
 
   /// 所有缓存过的 issue（指南里的 + 系列里的），供本地搜索用。
   List<ComicIssue> get cachedIssues => [
-        for (final list in _guideIssues.values) ...list,
-        for (final list in _seriesIssues.values) ...list,
-      ];
+    for (final list in _guideIssues.values) ...list,
+    for (final list in _seriesIssues.values) ...list,
+  ];
 
   /// 全站最新**已上架**的 issue。「最近更新的系列」从这里聚合（带磁盘缓存）。
-  Future<List<ComicIssue>> latestIssues({int limit = 50, int offset = 0}) async {
+  Future<List<ComicIssue>> latestIssues({
+    int limit = 50,
+    int offset = 0,
+  }) async {
     final key = 'latest:$limit:$offset';
-    final cached = await _cache.read(key,
-        ttl: const Duration(hours: 12));
+    final cached = await _cache.read(key, ttl: const Duration(hours: 12));
     if (cached is List) {
       final list = cached.map((e) => ComicIssue.fromJson(e as Map)).toList();
       if (list.isNotEmpty) return list;
     }
     return _inflight.putIfAbsent(key, () async {
       try {
-        final list =
-            await _client.fetchLatestIssues(limit: limit, offset: offset);
-        unawaited(_cache.write(
-            key, list.map((i) => i.toJson()).toList()));
+        final list = await _client.fetchLatestIssues(
+          limit: limit,
+          offset: offset,
+        );
+        unawaited(_cache.write(key, list.map((i) => i.toJson()).toList()));
         return list;
       } finally {
         _inflight.remove(key);
@@ -127,11 +130,9 @@ class CatalogRepository {
     final cachedMem = _characterSeries[characterId];
     if (cachedMem != null) return cachedMem;
     final key = 'characterSeries:$characterId';
-    final cached = await _cache.read(key,
-        ttl: const Duration(days: 7));
+    final cached = await _cache.read(key, ttl: const Duration(days: 7));
     if (cached is List) {
-      final list =
-          cached.map((e) => SeriesSummary.fromJson(e as Map)).toList();
+      final list = cached.map((e) => SeriesSummary.fromJson(e as Map)).toList();
       if (list.isNotEmpty) {
         _characterSeries[characterId] = list;
         return list;
@@ -141,8 +142,7 @@ class CatalogRepository {
       try {
         final list = await _client.fetchCharacterSeries(characterId);
         _characterSeries[characterId] = list;
-        unawaited(_cache.write(
-            key, list.map((s) => s.toJson()).toList()));
+        unawaited(_cache.write(key, list.map((s) => s.toJson()).toList()));
         return list;
       } finally {
         _characterSeriesInflight.remove(characterId);
@@ -156,7 +156,8 @@ class CatalogRepository {
   /// `assets/data/hero_avatars/` 里打包的本地图（`tool/fetch_hero_avatars.py`
   /// 生成），没有本地图才走网络。
   Future<({String id, String name, String? image})> characterDetail(
-      String characterId) async {
+    String characterId,
+  ) async {
     final cached = _characters[characterId];
     if (cached != null) return cached;
 
@@ -182,8 +183,9 @@ class CatalogRepository {
   Future<String?> _localAvatar(String characterId) async {
     _heroAvatarManifest ??= await () async {
       try {
-        final raw = await rootBundle
-            .loadString('assets/data/hero_avatars/manifest.json');
+        final raw = await rootBundle.loadString(
+          'assets/data/hero_avatars/manifest.json',
+        );
         final map = json.decode(raw) as Map<String, dynamic>;
         return map.map((k, v) => MapEntry(k, v.toString()));
       } catch (_) {
@@ -211,9 +213,18 @@ class CatalogRepository {
   }
 
   /// 官网 lockjaw 标题搜索（系列）。
+  /// 官网标题联想（lockjaw）：系列与单期都返回，kind 为 'series' / 'issue'。
+  Future<List<({String id, String title, String kind})>> searchOfficial(
+    String query,
+  ) => _client.searchOfficial(query);
+
+  /// 兼容旧调用：只取系列结果。
   Future<List<({String id, String title})>> searchOfficialSeries(
-          String query) =>
-      _client.searchOfficialSeries(query);
+    String query,
+  ) async => [
+    for (final h in await _client.searchOfficial(query))
+      if (h.kind == 'series') (id: h.id, title: h.title),
+  ];
 
   /// 官方编辑精选系列，带缓存。
   Future<List<SeriesSummary>> featuredSeries() {

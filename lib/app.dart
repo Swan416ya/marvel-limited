@@ -27,6 +27,7 @@ class MarvelApp extends StatefulWidget {
     required this.preferences,
     this.bifrost,
     this.fandom,
+    this.eventsRepository,
   });
 
   /// 已在 `main()` 里加载完的本地偏好（收藏 / 追更 / 书单 / 进度 / 主题）。
@@ -36,6 +37,11 @@ class MarvelApp extends StatefulWidget {
   /// 避免 fake-async 里留下挂起的 Timer）。
   final BifrostClient? bifrost;
   final FandomClient? fandom;
+
+  /// 可注入的静态事件仓库。默认实现要从资产里读两百多 KB 的 JSON，
+  /// 而 widget 测试的 fake-async 里那读操作不会完成——测试需要的是
+  /// 「首页把事件渲染出来」这条逻辑，所以直接从测试注入数据。
+  final EventsRepository? eventsRepository;
 
   @override
   State<MarvelApp> createState() => _MarvelAppState();
@@ -51,7 +57,8 @@ class _MarvelAppState extends State<MarvelApp> {
     client: widget.fandom,
     cache: _cache,
   );
-  late final EventsRepository _eventsRepo = EventsRepository();
+  late final EventsRepository _eventsRepo =
+      widget.eventsRepository ?? EventsRepository();
 
   late final CatalogState _catalog = CatalogState(_catalogRepo);
   late final FavoritesState _favorites = FavoritesState(widget.preferences);

@@ -10,6 +10,7 @@ class MarvelEvent {
     required this.oneLiner,
     this.coreOrder = const [],
     this.optionalOrder = const [],
+    this.readingOrder = const [],
     this.imageUrl,
   });
 
@@ -37,11 +38,18 @@ class MarvelEvent {
   /// 可选延伸（配角线 / tie-in）。
   final List<EventReadingItem> optionalOrder;
 
+  /// 逐期导读（本地整理、按发行日期排序）。
+  ///
+  /// 官方阅读指南只覆盖一部分事件，剩下的靠这份数据：一本一本列出来，
+  /// 每期都带发行日期与可打开的 id。由 `tool/build_reading_orders.py`
+  /// 从 Marvel Database 生成。
+  final List<EventIssue> readingOrder;
+
   /// 主视觉图（漫威 CDN 或 fandom wiki 直链），可能为空。
   final String? imageUrl;
 
   static const tierLabels = {
-    'company': '全公司级大事件',
+    'company': '主线',
     'cosmic': '宇宙线',
     'earth': '地球线',
     'spider': '蜘蛛侠线',
@@ -57,20 +65,23 @@ class MarvelEvent {
   bool get isCompanyWide => tier == 'company';
 
   factory MarvelEvent.fromJson(Map json) => MarvelEvent(
-        id: json['id']?.toString() ?? '',
-        title: json['title']?.toString() ?? '',
-        titleZh: json['titleZh']?.toString() ?? '',
-        tier: json['tier']?.toString() ?? 'earth',
-        year: (json['year'] as num?)?.toInt() ?? 0,
-        oneLiner: json['oneLiner']?.toString() ?? '',
-        coreOrder: (json['coreOrder'] as List? ?? [])
-            .map((e) => EventReadingItem.fromJson(e as Map))
-            .toList(),
-        optionalOrder: (json['optionalOrder'] as List? ?? [])
-            .map((e) => EventReadingItem.fromJson(e as Map))
-            .toList(),
-        imageUrl: json['imageUrl']?.toString(),
-      );
+    id: json['id']?.toString() ?? '',
+    title: json['title']?.toString() ?? '',
+    titleZh: json['titleZh']?.toString() ?? '',
+    tier: json['tier']?.toString() ?? 'earth',
+    year: (json['year'] as num?)?.toInt() ?? 0,
+    oneLiner: json['oneLiner']?.toString() ?? '',
+    coreOrder: (json['coreOrder'] as List? ?? [])
+        .map((e) => EventReadingItem.fromJson(e as Map))
+        .toList(),
+    optionalOrder: (json['optionalOrder'] as List? ?? [])
+        .map((e) => EventReadingItem.fromJson(e as Map))
+        .toList(),
+    readingOrder: (json['readingOrder'] as List? ?? [])
+        .map((e) => EventIssue.fromJson(e as Map))
+        .toList(),
+    imageUrl: json['imageUrl']?.toString(),
+  );
 }
 
 /// 阅读顺序里的一项：某系列的哪些期。
@@ -94,8 +105,66 @@ class EventReadingItem {
   String get searchableTitle => '$series #$issues';
 
   factory EventReadingItem.fromJson(Map json) => EventReadingItem(
-        series: json['series']?.toString() ?? '',
-        issues: json['issues']?.toString() ?? '',
-        note: json['note']?.toString(),
-      );
+    series: json['series']?.toString() ?? '',
+    issues: json['issues']?.toString() ?? '',
+    note: json['note']?.toString(),
+  );
+}
+
+/// 逐期导读里的一期。
+class EventIssue {
+  const EventIssue({
+    required this.id,
+    required this.series,
+    required this.number,
+    this.date = '',
+    this.title = '',
+    this.cover,
+    this.core = true,
+    this.note,
+  });
+
+  /// 打开详情用的 id（`fandom:<wiki 页面名>`）。
+  final String id;
+
+  final String series;
+
+  /// 期号（"3" / "65.DEATHS"）。
+  final String number;
+
+  /// 发行日期（YYYY-MM-DD，可能为空）。
+  final String date;
+
+  /// 故事标题（wiki 的 StoryTitle，可能为空）。
+  final String title;
+
+  /// wiki 上的封面文件名（用 Special:FilePath 取图）。
+  final String? cover;
+
+  /// 是否主线（false = 可选延伸）。
+  final bool core;
+
+  final String? note;
+
+  /// 展示用标题。
+  String get label => title.isNotEmpty ? title : '$series #$number';
+
+  /// 封面直链（wiki 的 Special:FilePath，带宽度参数）。
+  String? get coverUrl {
+    final c = cover;
+    if (c == null || c.isEmpty) return null;
+    return 'https://marvel.fandom.com/wiki/Special:FilePath/'
+        '${Uri.encodeComponent(c)}?width=400';
+  }
+
+  factory EventIssue.fromJson(Map json) => EventIssue(
+    id: json['id']?.toString() ?? '',
+    series: json['series']?.toString() ?? '',
+    number: json['number']?.toString() ?? '',
+    date: json['date']?.toString() ?? '',
+    title: json['title']?.toString() ?? '',
+    cover: json['cover']?.toString(),
+    core: json['core'] != false,
+    note: json['note']?.toString(),
+  );
 }

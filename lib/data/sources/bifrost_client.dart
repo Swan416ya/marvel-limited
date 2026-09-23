@@ -67,8 +67,10 @@ class BifrostClient {
   }
 
   /// 官网标题联想搜索（lockjaw typeahead）。注意 host 是 www.marvel.com
-  /// 而不是 bifrost，而且是 POST 表单。返回的系列结果带官网系列 id。
-  Future<List<({String id, String title})>> searchOfficialSeries(
+  /// 而不是 bifrost，而且是 POST 表单。系列和单期都会返回，
+  /// [kind] 为 'series' 或 'issue'（链接分别是 /comics/series/ 和
+  /// /comics/issue/）。
+  Future<List<({String id, String title, String kind})>> searchOfficial(
       String query) async {
     final url = 'https://www.marvel.com/v1/typeahead';
     final target = kIsWeb ? '$_proxy${Uri.encodeFull(url)}' : url;
@@ -95,20 +97,30 @@ class BifrostClient {
         final body =
             json.decode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
         final results = (body['data']?['results'] as List? ?? const []);
-        final out = <({String id, String title})>[];
+        final out = <({String id, String title, String kind})>[];
         for (final r in results) {
           final map = r as Map;
-          if (map['content_type']?.toString() != 'comic-series') continue;
           final link =
               ((map['link'] as Map?)?['link'] ?? '').toString();
-          // link 形如 https://www.marvel.com/comics/series/<id>/<slug>
-          final m = RegExp(r'/comics/series/(\d+)').firstMatch(link);
+          // 系列链接形如 /comics/series/<id>/<slug>，单期是 /comics/issue/<id>/<slug>
+          final ms = RegExp(r'/comics/series/(\d+)').firstMatch(link);
+          final mi = RegExp(r'/comics/issue/(\d+)').firstMatch(link);
+          final kind = ms != null
+              ? 'series'
+              : mi != null
+                  ? 'issue'
+                  : null;
+          if (kind == null) continue;
           final title = ((map['link'] as Map?)?['title'] ??
                   map['headline'] ??
                   '')
               .toString();
-          if (m != null && title.isNotEmpty) {
-            out.add((id: m.group(1)!, title: title));
+          if (title.isNotEmpty) {
+            out.add((
+              id: (ms ?? mi)!.group(1)!,
+              title: title,
+              kind: kind
+            ));
           }
         }
         return out;

@@ -170,7 +170,99 @@
           "note": "变种人侧延伸"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:A.X.E.: Judgment Day Vol 1 1",
+          "series": "A.X.E.: Judgment Day",
+          "number": "1",
+          "date": "2022-07-20",
+          "title": "",
+          "cover": "A.X.E.-_JUDGMENT_DAY_-1_Trailer_-_Marvel_Comics-2",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:A.X.E.: Judgment Day Vol 1 2",
+          "series": "A.X.E.: Judgment Day",
+          "number": "2",
+          "date": "2022-08-10",
+          "title": "",
+          "cover": "A.X.E._Judgment_Day_Vol_1_2_Andrews_Variant.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:A.X.E.: Death to the Mutants Vol 1 1",
+          "series": "A.X.E.: Death to the Mutants",
+          "number": "1",
+          "date": "2022-08-17",
+          "title": "",
+          "cover": "A.X.E._Death_to_the_Mutants_Vol_1_1_Yu_Variant.jpg",
+          "core": false,
+          "note": "变种人侧延伸"
+        },
+        {
+          "id": "fandom:A.X.E.: Judgment Day Vol 1 3",
+          "series": "A.X.E.: Judgment Day",
+          "number": "3",
+          "date": "2022-08-24",
+          "title": "",
+          "cover": "A.X.E._Judgment_Day_Vol_1_3_Horley_Variant.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:A.X.E.: Death to the Mutants Vol 1 2",
+          "series": "A.X.E.: Death to the Mutants",
+          "number": "2",
+          "date": "2022-09-07",
+          "title": "",
+          "cover": "A.X.E._Death_to_the_Mutants_Vol_1_2_Ramos_Variant.jpg",
+          "core": false,
+          "note": "变种人侧延伸"
+        },
+        {
+          "id": "fandom:A.X.E.: Judgment Day Vol 1 4",
+          "series": "A.X.E.: Judgment Day",
+          "number": "4",
+          "date": "2022-09-14",
+          "title": "",
+          "cover": "A.X.E._Judgment_Day_Vol_1_4_Cat_Variant.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:A.X.E.: Judgment Day Vol 1 5",
+          "series": "A.X.E.: Judgment Day",
+          "number": "5",
+          "date": "2022-09-21",
+          "title": "",
+          "cover": "A.X.E._Judgment_Day_Vol_1_5_Dodson_Variant.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:A.X.E.: Death to the Mutants Vol 1 3",
+          "series": "A.X.E.: Death to the Mutants",
+          "number": "3",
+          "date": "2022-10-12",
+          "title": "",
+          "cover": "A.X.E._Death_to_the_Mutants_Vol_1_3_Bianchi_Variant.jpg",
+          "core": false,
+          "note": "变种人侧延伸"
+        },
+        {
+          "id": "fandom:A.X.E.: Judgment Day Vol 1 6",
+          "series": "A.X.E.: Judgment Day",
+          "number": "6",
+          "date": "2022-10-26",
+          "title": "",
+          "cover": "A.X.E._Judgment_Day_Vol_1_6_Artgerm_Variant.jpg",
+          "core": true,
+          "note": "主线"
+        }
+      ]
     },
     {
       "id": "empyre-2020",
@@ -265,7 +357,279 @@
         }
       ],
       "optionalOrder": [],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 1",
+          "series": "Captain America: Steve Rogers",
+          "number": "1",
+          "date": "2016-05-25",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 2",
+          "series": "Captain America: Steve Rogers",
+          "number": "2",
+          "date": "2016-06-29",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 3",
+          "series": "Captain America: Steve Rogers",
+          "number": "3",
+          "date": "2016-07-27",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 4",
+          "series": "Captain America: Steve Rogers",
+          "number": "4",
+          "date": "2016-08-24",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 5",
+          "series": "Captain America: Steve Rogers",
+          "number": "5",
+          "date": "2016-09-28",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 6",
+          "series": "Captain America: Steve Rogers",
+          "number": "6",
+          "date": "2016-10-26",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_6_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 7",
+          "series": "Captain America: Steve Rogers",
+          "number": "7",
+          "date": "2016-11-09",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_7_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 8",
+          "series": "Captain America: Steve Rogers",
+          "number": "8",
+          "date": "2016-12-28",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_8_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 9",
+          "series": "Captain America: Steve Rogers",
+          "number": "9",
+          "date": "2017-01-11",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_9_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 10",
+          "series": "Captain America: Steve Rogers",
+          "number": "10",
+          "date": "2017-01-25",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_10_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 11",
+          "series": "Captain America: Steve Rogers",
+          "number": "11",
+          "date": "2017-02-15",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_11_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 12",
+          "series": "Captain America: Steve Rogers",
+          "number": "12",
+          "date": "2017-02-22",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_12_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 13",
+          "series": "Captain America: Steve Rogers",
+          "number": "13",
+          "date": "2017-03-08",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_13_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 14",
+          "series": "Captain America: Steve Rogers",
+          "number": "14",
+          "date": "2017-03-22",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_14_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 15",
+          "series": "Captain America: Steve Rogers",
+          "number": "15",
+          "date": "2017-04-05",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_15_Textless.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Captain America: Steve Rogers Vol 1 16",
+          "series": "Captain America: Steve Rogers",
+          "number": "16",
+          "date": "2017-04-19",
+          "title": "",
+          "cover": "Captain_America_Steve_Rogers_Vol_1_16_R.B._Silva_Connecting_Variant.jpg",
+          "core": true,
+          "note": "前置：队长如何被改写"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 0",
+          "series": "Secret Empire",
+          "number": "0",
+          "date": "2017-04-19",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_0_Frenz_Variant.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 1",
+          "series": "Secret Empire",
+          "number": "1",
+          "date": "2017-05-03",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_1_Action_Figure_Variant.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 2",
+          "series": "Secret Empire",
+          "number": "2",
+          "date": "2017-05-17",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 3",
+          "series": "Secret Empire",
+          "number": "3",
+          "date": "2017-05-31",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_3_Action_Figure_Variant.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 4",
+          "series": "Secret Empire",
+          "number": "4",
+          "date": "2017-06-14",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 5",
+          "series": "Secret Empire",
+          "number": "5",
+          "date": "2017-06-28",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 6",
+          "series": "Secret Empire",
+          "number": "6",
+          "date": "2017-07-19",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_6_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 7",
+          "series": "Secret Empire",
+          "number": "7",
+          "date": "2017-07-26",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_7_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 8",
+          "series": "Secret Empire",
+          "number": "8",
+          "date": "2017-08-09",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_8_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 9",
+          "series": "Secret Empire",
+          "number": "9",
+          "date": "2017-08-23",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_9_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Secret Empire Vol 1 10",
+          "series": "Secret Empire",
+          "number": "10",
+          "date": "2017-08-30",
+          "title": "",
+          "cover": "Secret_Empire_Vol_1_10_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        }
+      ]
     },
     {
       "id": "secret-wars-2015",
@@ -426,7 +790,159 @@
           "note": "平民视角"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Fear Itself: Book of the Skull Vol 1 1",
+          "series": "Fear Itself: Book of the Skull",
+          "number": "1",
+          "date": "2011-03-16",
+          "title": "Book of the Skull",
+          "cover": "Fear_Itself_Book_of_the_Skull_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "前置短篇"
+        },
+        {
+          "id": "fandom:Fear Itself Vol 1 1",
+          "series": "Fear Itself",
+          "number": "1",
+          "date": "2011-04-06",
+          "title": "The Serpent",
+          "cover": "Fear_Itself_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Fear Itself: The Home Front Vol 1 1",
+          "series": "Fear Itself: The Home Front",
+          "number": "1",
+          "date": "2011-04-06",
+          "title": "Lurker  (Part 1)",
+          "cover": "Fear_Itself_The_Home_Front_Vol_1_1_Textless.jpg",
+          "core": false,
+          "note": "平民视角"
+        },
+        {
+          "id": "fandom:Fear Itself Vol 1 2",
+          "series": "Fear Itself",
+          "number": "2",
+          "date": "2011-05-04",
+          "title": "The Worthy",
+          "cover": "Fear_Itself_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Fear Itself: The Home Front Vol 1 2",
+          "series": "Fear Itself: The Home Front",
+          "number": "2",
+          "date": "2011-05-04",
+          "title": "Scapegoat  (Part 2)",
+          "cover": "Fear_Itself_The_Home_Front_Vol_1_2_Textless.jpg",
+          "core": false,
+          "note": "平民视角"
+        },
+        {
+          "id": "fandom:Fear Itself Vol 1 3",
+          "series": "Fear Itself",
+          "number": "3",
+          "date": "2011-06-01",
+          "title": "The Hammer that Fell on Yancy Street",
+          "cover": "Fear_Itself_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Fear Itself: The Home Front Vol 1 3",
+          "series": "Fear Itself: The Home Front",
+          "number": "3",
+          "date": "2011-06-15",
+          "title": "Going Viral, part 3 of 7",
+          "cover": "Fear_Itself_The_Home_Front_Vol_1_3_Textless.jpg",
+          "core": false,
+          "note": "平民视角"
+        },
+        {
+          "id": "fandom:Fear Itself Vol 1 4",
+          "series": "Fear Itself",
+          "number": "4",
+          "date": "2011-07-06",
+          "title": "World on Fire",
+          "cover": "Fear_Itself_Vol_1_4_Dodson_Variant.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Fear Itself: The Home Front Vol 1 4",
+          "series": "Fear Itself: The Home Front",
+          "number": "4",
+          "date": "2011-07-20",
+          "title": "Fatal Errors, part 4 of 7",
+          "cover": "Fear_Itself_The_Home_Front_Vol_1_4_Textless.jpg",
+          "core": false,
+          "note": "平民视角"
+        },
+        {
+          "id": "fandom:Fear Itself Vol 1 5",
+          "series": "Fear Itself",
+          "number": "5",
+          "date": "2011-08-10",
+          "title": "Brawl",
+          "cover": "Fear_Itself_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Fear Itself: The Home Front Vol 1 5",
+          "series": "Fear Itself: The Home Front",
+          "number": "5",
+          "date": "2011-08-17",
+          "title": "Hope Itself, part 5 of 7",
+          "cover": "Fear_Itself_The_Home_Front_Vol_1_5_Textless.jpg",
+          "core": false,
+          "note": "平民视角"
+        },
+        {
+          "id": "fandom:Fear Itself Vol 1 6",
+          "series": "Fear Itself",
+          "number": "6",
+          "date": "2011-09-14",
+          "title": "Blood-Tied & Doomed",
+          "cover": "Fear_Itself_Vol_1_6_Textless.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Fear Itself: The Home Front Vol 1 6",
+          "series": "Fear Itself: The Home Front",
+          "number": "6",
+          "date": "2011-09-21",
+          "title": "The Sisters of Sin, Part 6 of 7",
+          "cover": "Fear_Itself_The_Home_Front_Vol_1_6_Textless.jpg",
+          "core": false,
+          "note": "平民视角"
+        },
+        {
+          "id": "fandom:Fear Itself Vol 1 7",
+          "series": "Fear Itself",
+          "number": "7",
+          "date": "2011-10-19",
+          "title": "Thor's Day",
+          "cover": "Fear_Itself_Vol_1_7_Textless.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Fear Itself: The Home Front Vol 1 7",
+          "series": "Fear Itself: The Home Front",
+          "number": "7",
+          "date": "2011-10-19",
+          "title": "Hope Like Fire, Part 7 of 7",
+          "cover": "Fear_Itself_The_Home_Front_Vol_1_7_Textless.jpg",
+          "core": false,
+          "note": "平民视角"
+        }
+      ]
     },
     {
       "id": "siege-2010",
@@ -454,7 +970,119 @@
           "note": "仙宫战线"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Thor Vol 3 604",
+          "series": "Thor",
+          "number": "604",
+          "date": "2009-12-03",
+          "title": "Latverian Prometheus (Part 1)",
+          "cover": "Thor_Vol_3_604_Textless.jpg",
+          "core": false,
+          "note": "仙宫战线"
+        },
+        {
+          "id": "fandom:Thor Vol 3 605",
+          "series": "Thor",
+          "number": "605",
+          "date": "2009-12-23",
+          "title": "Latverian Prometheus (Part 2)",
+          "cover": "Thor_Vol_3_605_Textless.jpg",
+          "core": false,
+          "note": "仙宫战线"
+        },
+        {
+          "id": "fandom:Siege Vol 1 1",
+          "series": "Siege",
+          "number": "1",
+          "date": "2010-01-06",
+          "title": "",
+          "cover": "Siege_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "主线，短平快"
+        },
+        {
+          "id": "fandom:Dark Avengers Vol 1 13",
+          "series": "Dark Avengers",
+          "number": "13",
+          "date": "2010-01-20",
+          "title": "",
+          "cover": "Dark_Avengers_Vol_1_13_Textless.jpg",
+          "core": false,
+          "note": "奥斯本阵营视角"
+        },
+        {
+          "id": "fandom:Thor Vol 3 606",
+          "series": "Thor",
+          "number": "606",
+          "date": "2010-01-27",
+          "title": "Latverian Prometheus, Conclusion",
+          "cover": "Thor_Vol_3_606_Textless.jpg",
+          "core": false,
+          "note": "仙宫战线"
+        },
+        {
+          "id": "fandom:Siege Vol 1 2",
+          "series": "Siege",
+          "number": "2",
+          "date": "2010-02-03",
+          "title": "\"Siege\" Chapter Two",
+          "cover": "Siege_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "主线，短平快"
+        },
+        {
+          "id": "fandom:Dark Avengers Vol 1 14",
+          "series": "Dark Avengers",
+          "number": "14",
+          "date": "2010-02-17",
+          "title": "",
+          "cover": "Dark_Avengers_Vol_1_14_Textless.jpg",
+          "core": false,
+          "note": "奥斯本阵营视角"
+        },
+        {
+          "id": "fandom:Dark Avengers Vol 1 15",
+          "series": "Dark Avengers",
+          "number": "15",
+          "date": "2010-03-17",
+          "title": "",
+          "cover": "Dark_Avengers_Vol_1_15_Textless.jpg",
+          "core": false,
+          "note": "奥斯本阵营视角"
+        },
+        {
+          "id": "fandom:Siege Vol 1 3",
+          "series": "Siege",
+          "number": "3",
+          "date": "2010-03-17",
+          "title": "The Siege of Asgard-Intercepted",
+          "cover": "Siege_Vol_1_3_Dell'otto_Variant.jpg",
+          "core": true,
+          "note": "主线，短平快"
+        },
+        {
+          "id": "fandom:Dark Avengers Vol 1 16",
+          "series": "Dark Avengers",
+          "number": "16",
+          "date": "2010-05-12",
+          "title": "",
+          "cover": "Dark_Avengers_Vol_1_16_Textless.jpg",
+          "core": false,
+          "note": "奥斯本阵营视角"
+        },
+        {
+          "id": "fandom:Siege Vol 1 4",
+          "series": "Siege",
+          "number": "4",
+          "date": "2010-05-12",
+          "title": "The Fallen",
+          "cover": "Siege_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "主线，短平快"
+        }
+      ]
     },
     {
       "id": "secret-invasion-2008",
@@ -647,7 +1275,89 @@
           "note": "银影侠视角的前后铺垫"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Silver Surfer Vol 4 1",
+          "series": "Silver Surfer",
+          "number": "1",
+          "date": "1988-08-09",
+          "title": "Parable",
+          "cover": "Silver_Surfer_Vol_4_1.jpg",
+          "core": false,
+          "note": "银影侠视角的前后铺垫"
+        },
+        {
+          "id": "fandom:Silver Surfer Vol 4 2",
+          "series": "Silver Surfer",
+          "number": "2",
+          "date": "1988-09-13",
+          "title": "Parable Part 2",
+          "cover": "Silver_Surfer_Vol_4_2.jpg",
+          "core": false,
+          "note": "银影侠视角的前后铺垫"
+        },
+        {
+          "id": "fandom:Infinity Gauntlet Vol 1 1",
+          "series": "Infinity Gauntlet",
+          "number": "1",
+          "date": "1991-05-21",
+          "title": "God",
+          "cover": null,
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Infinity Gauntlet Vol 1 2",
+          "series": "Infinity Gauntlet",
+          "number": "2",
+          "date": "1991-06-18",
+          "title": "From Bad to Worse",
+          "cover": "Infinity_Gauntlet_Vol_1_2.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Infinity Gauntlet Vol 1 3",
+          "series": "Infinity Gauntlet",
+          "number": "3",
+          "date": "1991-07-16",
+          "title": "Preparations for War",
+          "cover": "Infinity_Gauntlet_Vol_1_3.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Infinity Gauntlet Vol 1 4",
+          "series": "Infinity Gauntlet",
+          "number": "4",
+          "date": "1991-08-20",
+          "title": "Cosmic Battle on the Edge of the Universe!",
+          "cover": "Infinity_Gauntlet_Vol_1_4.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Infinity Gauntlet Vol 1 5",
+          "series": "Infinity Gauntlet",
+          "number": "5",
+          "date": "1991-09-17",
+          "title": "Astral Conflagration",
+          "cover": "Infinity_Gauntlet_Vol_1_5.jpg",
+          "core": true,
+          "note": "主线必读"
+        },
+        {
+          "id": "fandom:Infinity Gauntlet Vol 1 6",
+          "series": "Infinity Gauntlet",
+          "number": "6",
+          "date": "1991-10-15",
+          "title": "The Final Confrontation",
+          "cover": "Infinity_Gauntlet_Vol_1_6.jpg",
+          "core": true,
+          "note": "主线必读"
+        }
+      ]
     },
     {
       "id": "secret-wars-1984",
@@ -670,7 +1380,249 @@
           "note": "石头人回到地球后的余波"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 1",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "1",
+          "date": "1984-01-24",
+          "title": "The War Begins",
+          "cover": "Marvel_Super_Heroes_Secret_Wars_Vol_1_1_Canada_Variant.jpg",
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 11",
+          "series": "Thing",
+          "number": "11",
+          "date": "1984-01-24",
+          "title": "Well, Here I Am... Rocky Grimm - Space Ranger. (Part I of XII)",
+          "cover": "Thing_Vol_1_11.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 2",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "2",
+          "date": "1984-02-28",
+          "title": "Prisoners of War!",
+          "cover": "Marvel_Super_Heroes_Secret_Wars_Vol_1_2.jpg",
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 12",
+          "series": "Thing",
+          "number": "12",
+          "date": "1984-02-28",
+          "title": "Rocky Grimm Space Ranger Part II (of XII): Doom!",
+          "cover": "Thing_Vol_1_12.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 3",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "3",
+          "date": "1984-03-27",
+          "title": "Tempest Without, Crisis Within!",
+          "cover": "Marvel_Super_Heroes_Secret_Wars_Vol_1_3.jpg",
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 13",
+          "series": "Thing",
+          "number": "13",
+          "date": "1984-03-27",
+          "title": "Rocky Grimm Space Ranger Part III (of XII): In All the Gathering Gloom",
+          "cover": "Thing_Vol_1_13.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 4",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "4",
+          "date": "1984-04-24",
+          "title": "Situation: Hopeless!",
+          "cover": "Marvel_Super_Heroes_Secret_Wars_Vol_1_4.jpg",
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 14",
+          "series": "Thing",
+          "number": "14",
+          "date": "1984-04-24",
+          "title": "Rocky Grimm Space Ranger Part IV (of XII): Wild Blue Yonder",
+          "cover": "Thing_Vol_1_14.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 5",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "5",
+          "date": "1984-05-22",
+          "title": "The Battle of Four Armies!",
+          "cover": "Marvel_Super_Heroes_Secret_Wars_Vol_1_5.jpg",
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 15",
+          "series": "Thing",
+          "number": "15",
+          "date": "1984-05-22",
+          "title": "Rocky Grimm Space Rancher Part 5 of 12: It Started On Yancy Street!",
+          "cover": "Thing_Vol_1_15.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 6",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "6",
+          "date": "1984-06-26",
+          "title": "A Little Death...",
+          "cover": "Marvel_Super_Heroes_Secret_Wars_Vol_1_6_Unused_Cover.jpg",
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 16",
+          "series": "Thing",
+          "number": "16",
+          "date": "1984-06-26",
+          "title": "Rocky Grimm Space Ranger Part VI (of XII): One Thing Leads to Another!",
+          "cover": "Thing_Vol_1_16.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 7",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "7",
+          "date": "1984-07-24",
+          "title": "Berserker!",
+          "cover": "Marvel_Super_Heroes_Secret_Wars_Vol_1_7_Rejected_Cover.jpg",
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 17",
+          "series": "Thing",
+          "number": "17",
+          "date": "1984-07-24",
+          "title": "Rocky Grimm Space Ranger Part VII (of XII): Blind Ambition!",
+          "cover": "Thing_Vol_1_17.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 8",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "8",
+          "date": "1984-08-28",
+          "title": "Invasion!",
+          "cover": null,
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 18",
+          "series": "Thing",
+          "number": "18",
+          "date": "1984-08-28",
+          "title": "Rocky Grimm Space Ranger Part VIII (of XII): Family Man",
+          "cover": "Thing_Vol_1_18.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 9",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "9",
+          "date": "1984-09-25",
+          "title": "Assault on Galactus!",
+          "cover": "Marvel_Super_Heroes_Secret_Wars_Vol_1_9_Newsstand.jpg",
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 19",
+          "series": "Thing",
+          "number": "19",
+          "date": "1984-09-25",
+          "title": "Rocky Grimm Space Ranger Part IX (of XII): Monster Mash",
+          "cover": "Thing_Vol_1_19.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 10",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "10",
+          "date": "1984-10-23",
+          "title": "Death to the Beyonder!",
+          "cover": null,
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 20",
+          "series": "Thing",
+          "number": "20",
+          "date": "1984-10-23",
+          "title": "Rocky Grimm Space Ranger Part X (of XII): The Way Things Were!",
+          "cover": "Thing_Vol_1_20.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 11",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "11",
+          "date": "1984-11-27",
+          "title": "...And Dust To Dust!",
+          "cover": "Marvel_Super_Heroes_Secret_Wars_Vol_1_11.jpg",
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 21",
+          "series": "Thing",
+          "number": "21",
+          "date": "1984-11-27",
+          "title": "Rocky Grimm Space Ranger Part XI (of XII): Revelations!",
+          "cover": "Thing_Vol_1_21.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        },
+        {
+          "id": "fandom:Marvel Super Heroes Secret Wars Vol 1 12",
+          "series": "Marvel Super Heroes Secret Wars",
+          "number": "12",
+          "date": "1984-12-25",
+          "title": "...Nothing to Fear",
+          "cover": null,
+          "core": true,
+          "note": "主线，本体系列首次登场"
+        },
+        {
+          "id": "fandom:Thing Vol 1 22",
+          "series": "Thing",
+          "number": "22",
+          "date": "1984-12-25",
+          "title": "Rocky Grimm Space Ranger Part XII (of XII): To All Things an Ending",
+          "cover": "Thing_Vol_1_22.jpg",
+          "core": false,
+          "note": "石头人回到地球后的余波"
+        }
+      ]
     },
     {
       "id": "imperial-2025",
@@ -773,7 +1725,369 @@
           "note": "新星视角"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Secret Invasion: Inhumans Vol 1 1",
+          "series": "Secret Invasion: Inhumans",
+          "number": "1",
+          "date": "2008-08-13",
+          "title": "Family  (Part 1)",
+          "cover": "Secret_Invasion_Inhumans_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "前置：异人为何参战"
+        },
+        {
+          "id": "fandom:Secret Invasion: Inhumans Vol 1 2",
+          "series": "Secret Invasion: Inhumans",
+          "number": "2",
+          "date": "2008-09-10",
+          "title": "Family  (Part 2)",
+          "cover": "Secret_Invasion_Inhumans_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "前置：异人为何参战"
+        },
+        {
+          "id": "fandom:Secret Invasion: Inhumans Vol 1 3",
+          "series": "Secret Invasion: Inhumans",
+          "number": "3",
+          "date": "2008-10-08",
+          "title": "",
+          "cover": "Secret_Invasion_Inhumans_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "前置：异人为何参战"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 7",
+          "series": "Guardians of the Galaxy",
+          "number": "7",
+          "date": "2008-11-26",
+          "title": "No Future",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_7_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:Secret Invasion: Inhumans Vol 1 4",
+          "series": "Secret Invasion: Inhumans",
+          "number": "4",
+          "date": "2008-11-26",
+          "title": "",
+          "cover": "Secret_Invasion_Inhumans_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "前置：异人为何参战"
+        },
+        {
+          "id": "fandom:X-Men: Kingbreaker Vol 1 1",
+          "series": "X-Men: Kingbreaker",
+          "number": "1",
+          "date": "2008-12-17",
+          "title": "Kingbreaker",
+          "cover": "X-Men_Kingbreaker_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "前置：Vulcan 的扩张"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 8",
+          "series": "Guardians of the Galaxy",
+          "number": "8",
+          "date": "2009-01-02",
+          "title": "Past Mistakes",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_8_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 9",
+          "series": "Guardians of the Galaxy",
+          "number": "9",
+          "date": "2009-01-21",
+          "title": "Prison Break",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_9_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:X-Men: Kingbreaker Vol 1 2",
+          "series": "X-Men: Kingbreaker",
+          "number": "2",
+          "date": "2009-01-21",
+          "title": "X-Men: Kingbreaker (Part 2)",
+          "cover": "X-Men_Kingbreaker_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "前置：Vulcan 的扩张"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 10",
+          "series": "Guardians of the Galaxy",
+          "number": "10",
+          "date": "2009-02-18",
+          "title": "Blastaared!",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_10_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:X-Men: Kingbreaker Vol 1 3",
+          "series": "X-Men: Kingbreaker",
+          "number": "3",
+          "date": "2009-02-18",
+          "title": "X-Men: Kingbreaker (Part 3)",
+          "cover": "X-Men_Kingbreaker_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "前置：Vulcan 的扩张"
+        },
+        {
+          "id": "fandom:Nova Vol 4 22",
+          "series": "Nova",
+          "number": "22",
+          "date": "2009-02-25",
+          "title": "The Rapture",
+          "cover": "Nova_Vol_4_22_Textless.jpg",
+          "core": false,
+          "note": "新星视角"
+        },
+        {
+          "id": "fandom:War of Kings Vol 1 1",
+          "series": "War of Kings",
+          "number": "1",
+          "date": "2009-03-04",
+          "title": "Asunder",
+          "cover": "War_of_Kings_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 11",
+          "series": "Guardians of the Galaxy",
+          "number": "11",
+          "date": "2009-03-11",
+          "title": "Welcome to Oblivion",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_11_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:X-Men: Kingbreaker Vol 1 4",
+          "series": "X-Men: Kingbreaker",
+          "number": "4",
+          "date": "2009-03-18",
+          "title": "X-Men: Kingbreaker (Part 4)",
+          "cover": "X-Men_Kingbreaker_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "前置：Vulcan 的扩张"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 12",
+          "series": "Guardians of the Galaxy",
+          "number": "12",
+          "date": "2009-03-25",
+          "title": "Sacrifice",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_12_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:Nova Vol 4 23",
+          "series": "Nova",
+          "number": "23",
+          "date": "2009-03-25",
+          "title": "End of Story",
+          "cover": "Nova_Vol_4_23_Textless.jpg",
+          "core": false,
+          "note": "新星视角"
+        },
+        {
+          "id": "fandom:War of Kings Vol 1 2",
+          "series": "War of Kings",
+          "number": "2",
+          "date": "2009-04-01",
+          "title": "Every Last One of Them",
+          "cover": "War_of_Kings_Vol_1_2_Copiel_Variant.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 13",
+          "series": "Guardians of the Galaxy",
+          "number": "13",
+          "date": "2009-04-22",
+          "title": "Peacemakers",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_13_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:Nova Vol 4 24",
+          "series": "Nova",
+          "number": "24",
+          "date": "2009-04-29",
+          "title": "This World and the Next",
+          "cover": "Nova_Vol_4_24_Textless.jpg",
+          "core": false,
+          "note": "新星视角"
+        },
+        {
+          "id": "fandom:War of Kings Vol 1 3",
+          "series": "War of Kings",
+          "number": "3",
+          "date": "2009-05-06",
+          "title": "The Head That Wears the Crown",
+          "cover": "War_of_Kings_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 14",
+          "series": "Guardians of the Galaxy",
+          "number": "14",
+          "date": "2009-05-28",
+          "title": "To The Death",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_14_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:Nova Vol 4 25",
+          "series": "Nova",
+          "number": "25",
+          "date": "2009-05-28",
+          "title": "Empire of the Mind",
+          "cover": "Nova_Vol_4_25_Textless.jpg",
+          "core": false,
+          "note": "新星视角"
+        },
+        {
+          "id": "fandom:War of Kings Vol 1 4",
+          "series": "War of Kings",
+          "number": "4",
+          "date": "2009-06-03",
+          "title": "King Takes Queen",
+          "cover": "War_of_Kings_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 15",
+          "series": "Guardians of the Galaxy",
+          "number": "15",
+          "date": "2009-06-24",
+          "title": "\"Knowhere To Run To\"",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_15_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:Nova Vol 4 26",
+          "series": "Nova",
+          "number": "26",
+          "date": "2009-06-24",
+          "title": "Saving Private Robbie",
+          "cover": "Nova_Vol_4_26_Textless.jpg",
+          "core": false,
+          "note": "新星视角"
+        },
+        {
+          "id": "fandom:War of Kings Vol 1 5",
+          "series": "War of Kings",
+          "number": "5",
+          "date": "2009-07-01",
+          "title": "In Rage and Blood and Fire",
+          "cover": "War_of_Kings_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 16",
+          "series": "Guardians of the Galaxy",
+          "number": "16",
+          "date": "2009-07-22",
+          "title": "Earth, Overcome",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_16_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:Nova Vol 4 27",
+          "series": "Nova",
+          "number": "27",
+          "date": "2009-07-22",
+          "title": "Shock and Awe",
+          "cover": "Nova_Vol_4_27_Textless.jpg",
+          "core": false,
+          "note": "新星视角"
+        },
+        {
+          "id": "fandom:War of Kings Vol 1 6",
+          "series": "War of Kings",
+          "number": "6",
+          "date": "2009-08-05",
+          "title": "War of Kings",
+          "cover": "War_of_Kings_Vol_1_6_Variant.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 17",
+          "series": "Guardians of the Galaxy",
+          "number": "17",
+          "date": "2009-08-26",
+          "title": "Adam Magus",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_17_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:Nova Vol 4 28",
+          "series": "Nova",
+          "number": "28",
+          "date": "2009-08-26",
+          "title": "War Crimes",
+          "cover": "Nova_Vol_4_28_Textless.jpg",
+          "core": false,
+          "note": "新星视角"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 18",
+          "series": "Guardians of the Galaxy",
+          "number": "18",
+          "date": "2009-09-23",
+          "title": "Other Worlds, Other Wars.",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_18.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:Nova Vol 4 29",
+          "series": "Nova",
+          "number": "29",
+          "date": "2009-09-23",
+          "title": "Starstalker",
+          "cover": "Nova_Vol_4_29_Textless.jpg",
+          "core": false,
+          "note": "新星视角"
+        },
+        {
+          "id": "fandom:Guardians of the Galaxy Vol 2 19",
+          "series": "Guardians of the Galaxy",
+          "number": "19",
+          "date": "2009-10-28",
+          "title": "Seconds Out",
+          "cover": "Guardians_of_the_Galaxy_Vol_2_19_Textless.jpg",
+          "core": false,
+          "note": "护卫队夹缝求生"
+        },
+        {
+          "id": "fandom:Nova Vol 4 30",
+          "series": "Nova",
+          "number": "30",
+          "date": "2009-10-28",
+          "title": "Krushed",
+          "cover": "Nova_Vol_4_30_Textless.jpg",
+          "core": false,
+          "note": "新星视角"
+        }
+      ]
     },
     {
       "id": "annihilation-conquest-2007",
@@ -915,7 +2229,189 @@
         }
       ],
       "optionalOrder": [],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 1",
+          "series": "Amazing Spider-Man",
+          "number": "1",
+          "date": "2014-04-30",
+          "title": "Lucky to Be Alive",
+          "cover": "Amazing_Spider-Man_Vol_3_1_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 2",
+          "series": "Amazing Spider-Man",
+          "number": "2",
+          "date": "2014-05-21",
+          "title": "",
+          "cover": "Amazing_Spider-Man_Vol_3_2_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 3",
+          "series": "Amazing Spider-Man",
+          "number": "3",
+          "date": "2014-06-25",
+          "title": "",
+          "cover": "Amazing_Spider-Man_Vol_3_3_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 4",
+          "series": "Amazing Spider-Man",
+          "number": "4",
+          "date": "2014-07-23",
+          "title": "",
+          "cover": "Amazing_Spider-Man_Vol_3_4_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 5",
+          "series": "Amazing Spider-Man",
+          "number": "5",
+          "date": "2014-08-13",
+          "title": "",
+          "cover": "Amazing_Spider-Man_Vol_3_5_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 6",
+          "series": "Amazing Spider-Man",
+          "number": "6",
+          "date": "2014-09-10",
+          "title": "",
+          "cover": "Amazing_Spider-Man_Vol_3_6_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 7",
+          "series": "Amazing Spider-Man",
+          "number": "7",
+          "date": "2014-10-08",
+          "title": "Ms. Marvel Team-Up",
+          "cover": "Amazing_Spider-Man_Vol_3_7_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 8",
+          "series": "Amazing Spider-Man",
+          "number": "8",
+          "date": "2014-10-22",
+          "title": "Ms. Adventures in Babysitting",
+          "cover": "Amazing_Spider-Man_Vol_3_8_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 9",
+          "series": "Amazing Spider-Man",
+          "number": "9",
+          "date": "2014-11-05",
+          "title": "Spider-Verse - Part One: The Gathering",
+          "cover": "Amazing_Spider-Man_Vol_3_9_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 10",
+          "series": "Amazing Spider-Man",
+          "number": "10",
+          "date": "2014-11-19",
+          "title": "Spider-Verse - Part Two: Superior Force",
+          "cover": "Amazing_Spider-Man_Vol_3_10_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 11",
+          "series": "Amazing Spider-Man",
+          "number": "11",
+          "date": "2014-12-10",
+          "title": "Spider-Verse - Part Three: Higher Ground",
+          "cover": "Amazing_Spider-Man_Vol_3_11_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 12",
+          "series": "Amazing Spider-Man",
+          "number": "12",
+          "date": "2015-01-07",
+          "title": "Spider-Verse - Part Four: Anywhere But Here",
+          "cover": "Amazing_Spider-Man_Vol_3_12_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 13",
+          "series": "Amazing Spider-Man",
+          "number": "13",
+          "date": "2015-01-21",
+          "title": "Spider-Verse - Part Five: Spider-Men: No More",
+          "cover": "Amazing_Spider-Man_Vol_3_13_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 14",
+          "series": "Amazing Spider-Man",
+          "number": "14",
+          "date": "2015-02-11",
+          "title": "Spider-Verse - Part Six: Web Warriors",
+          "cover": "Amazing_Spider-Man_Vol_3_14_Dell'Otto_Variant.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 15",
+          "series": "Amazing Spider-Man",
+          "number": "15",
+          "date": "2015-02-25",
+          "title": "Spider-Verse: Epilogue",
+          "cover": "Amazing_Spider-Man_Vol_3_15_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 16",
+          "series": "Amazing Spider-Man",
+          "number": "16",
+          "date": "2015-03-11",
+          "title": "The Graveyard Shift Part One: The Late, Late Mr. Parker",
+          "cover": "Amazing_Spider-Man_Vol_3_16_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 17",
+          "series": "Amazing Spider-Man",
+          "number": "17",
+          "date": "2015-04-01",
+          "title": "The Graveyard Shift Part Two: Trust Issues",
+          "cover": "Amazing_Spider-Man_Vol_3_17_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        },
+        {
+          "id": "fandom:Amazing Spider-Man Vol 3 18",
+          "series": "Amazing Spider-Man",
+          "number": "18",
+          "date": "2015-05-06",
+          "title": "The Graveyard Shift, Part Three: Trade Secrets",
+          "cover": "Amazing_Spider-Man_Vol_3_18_Textless.jpg",
+          "core": true,
+          "note": "本刊联动线"
+        }
+      ]
     },
     {
       "id": "spider-verse-2014",
@@ -1018,7 +2514,629 @@
           "note": "无限漫画副线"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:X-Men Vol 4 22",
+          "series": "X-Men",
+          "number": "22",
+          "date": "2014-12-10",
+          "title": "Exogenous: Conclusion",
+          "cover": "X-Men_Vol_4_22_Textless.jpg",
+          "core": true,
+          "note": "前置：启示现身当下时间线"
+        },
+        {
+          "id": "fandom:X-Men Vol 4 23",
+          "series": "X-Men",
+          "number": "23",
+          "date": "2015-01-07",
+          "title": "The Burning World: Part 1",
+          "cover": "X-Men_Vol_4_23_Textless.jpg",
+          "core": true,
+          "note": "收尾，回到当下时间线"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Overture Vol 1 1",
+          "series": "X-Men: Age of Revelation Overture",
+          "number": "1",
+          "date": "2025-10-01",
+          "title": "",
+          "cover": "X-Men_Age_of_Revelation_Overture_Vol_1_1_Artgerm_Variant.jpg",
+          "core": true,
+          "note": "开启事件所在的未来时间线"
+        },
+        {
+          "id": "fandom:Amazing X-Men Vol 3 1",
+          "series": "Amazing X-Men",
+          "number": "1",
+          "date": "2025-10-08",
+          "title": "Flight",
+          "cover": "Amazing_X-Men_Vol_3_1_Textless.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Binary Vol 1 1",
+          "series": "Binary",
+          "number": "1",
+          "date": "2025-10-08",
+          "title": "",
+          "cover": "Binary_Vol_1_1_Binary_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Laura Kinney: Sabretooth Vol 1 1",
+          "series": "Laura Kinney: Sabretooth",
+          "number": "1",
+          "date": "2025-10-08",
+          "title": "",
+          "cover": "Laura_Kinney_Sabretooth_Vol_1_1_Laura_Kinney_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Longshots Vol 1 1",
+          "series": "Longshots",
+          "number": "1",
+          "date": "2025-10-08",
+          "title": "...A Whole New Show",
+          "cover": "Longshots_Vol_1_1_Textless.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:World of Revelation Vol 1 1",
+          "series": "World of Revelation",
+          "number": "1",
+          "date": "2025-10-08",
+          "title": "The Message",
+          "cover": "World_of_Revelation_Vol_1_1_Apocalypse_Variant.jpg",
+          "core": true,
+          "note": "世界观设定篇"
+        },
+        {
+          "id": "fandom:Iron & Frost Vol 1 1",
+          "series": "Iron & Frost",
+          "number": "1",
+          "date": "2025-10-15",
+          "title": "",
+          "cover": "Iron_&_Frost_Vol_1_1_Iron_Man_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Rogue Storm Vol 1 1",
+          "series": "Rogue Storm",
+          "number": "1",
+          "date": "2025-10-15",
+          "title": "Deicide",
+          "cover": "Rogue_Storm_Vol_1_1_Darboe_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Sinister's Six Vol 1 1",
+          "series": "Sinister's Six",
+          "number": "1",
+          "date": "2025-10-15",
+          "title": "",
+          "cover": "Sinister's_Six_Vol_1_1_Anindito_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Unbreakable X-Men Vol 1 1",
+          "series": "Unbreakable X-Men",
+          "number": "1",
+          "date": "2025-10-15",
+          "title": "Guarding The Gate",
+          "cover": "Unbreakable_X-Men_Vol_1_1_Anacleto_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Last Wolverine Vol 1 1",
+          "series": "Last Wolverine",
+          "number": "1",
+          "date": "2025-10-22",
+          "title": "",
+          "cover": "Last_Wolverine_Vol_1_1_Crain_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Omega Kids Vol 1 1",
+          "series": "Omega Kids",
+          "number": "1",
+          "date": "2025-10-22",
+          "title": "",
+          "cover": "Omega_Kids_Vol_1_1_Quentin_Quire_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Radioactive Spider-Man Vol 1 1",
+          "series": "Radioactive Spider-Man",
+          "number": "1",
+          "date": "2025-10-22",
+          "title": "",
+          "cover": "Radioactive_Spider-Man_Vol_1_1_Doaly_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Men: Book of Revelation Vol 1 1",
+          "series": "X-Men: Book of Revelation",
+          "number": "1",
+          "date": "2025-10-22",
+          "title": "",
+          "cover": "X-Men_Book_of_Revelation_Vol_1_1_Coccolo_Variant.jpg",
+          "core": true,
+          "note": "主线中轴"
+        },
+        {
+          "id": "fandom:Cloak or Dagger Vol 1 1",
+          "series": "Cloak or Dagger",
+          "number": "1",
+          "date": "2025-10-29",
+          "title": "",
+          "cover": "Cloak_or_Dagger_Vol_1_1_Cloak_or_Dagger_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Expatriate X-Men Vol 1 1",
+          "series": "Expatriate X-Men",
+          "number": "1",
+          "date": "2025-10-29",
+          "title": "",
+          "cover": "Expatriate_X-Men_Vol_1_1_Lupacchino_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Undeadpool Vol 1 1",
+          "series": "Undeadpool",
+          "number": "1",
+          "date": "2025-10-29",
+          "title": "",
+          "cover": "Undeadpool_Vol_1_1_Deadpool_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Vengers Vol 1 1",
+          "series": "X-Vengers",
+          "number": "1",
+          "date": "2025-10-29",
+          "title": "",
+          "cover": "X-Vengers_Vol_1_1_Land_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Infinity Comic Vol 1 1",
+          "series": "X-Men: Age of Revelation Infinity Comic",
+          "number": "1",
+          "date": "2025-11-03",
+          "title": "Deliverance Part 1",
+          "cover": "X-Men_Age_of_Revelation_Infinity_Comic_Vol_1_1.jpg",
+          "core": false,
+          "note": "无限漫画副线"
+        },
+        {
+          "id": "fandom:Amazing X-Men Vol 3 2",
+          "series": "Amazing X-Men",
+          "number": "2",
+          "date": "2025-11-05",
+          "title": "A Duel of Truths",
+          "cover": "Amazing_X-Men_Vol_3_2_Ejikure_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Binary Vol 1 2",
+          "series": "Binary",
+          "number": "2",
+          "date": "2025-11-05",
+          "title": "",
+          "cover": "Binary_Vol_1_2_Camagni_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Laura Kinney: Sabretooth Vol 1 2",
+          "series": "Laura Kinney: Sabretooth",
+          "number": "2",
+          "date": "2025-11-05",
+          "title": "",
+          "cover": "Laura_Kinney_Sabretooth_Vol_1_2_Camagni_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Longshots Vol 1 2",
+          "series": "Longshots",
+          "number": "2",
+          "date": "2025-11-05",
+          "title": "Left is Better",
+          "cover": "Longshots_Vol_1_2_Textless.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Infinity Comic Vol 1 2",
+          "series": "X-Men: Age of Revelation Infinity Comic",
+          "number": "2",
+          "date": "2025-11-10",
+          "title": "Deliverance Part 2",
+          "cover": "X-Men_Age_of_Revelation_Infinity_Comic_Vol_1_2.jpg",
+          "core": false,
+          "note": "无限漫画副线"
+        },
+        {
+          "id": "fandom:Iron & Frost Vol 1 2",
+          "series": "Iron & Frost",
+          "number": "2",
+          "date": "2025-11-12",
+          "title": "",
+          "cover": "Iron_&_Frost_Vol_1_2_Clarke_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Rogue Storm Vol 1 2",
+          "series": "Rogue Storm",
+          "number": "2",
+          "date": "2025-11-12",
+          "title": "Best Served Cold",
+          "cover": "Rogue_Storm_Vol_1_2_Street-Verse_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Sinister's Six Vol 1 2",
+          "series": "Sinister's Six",
+          "number": "2",
+          "date": "2025-11-12",
+          "title": "",
+          "cover": "Sinister's_Six_Vol_1_2_Dekal_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Infinity Comic Vol 1 3",
+          "series": "X-Men: Age of Revelation Infinity Comic",
+          "number": "3",
+          "date": "2025-11-17",
+          "title": "Deliverance Part 3",
+          "cover": "X-Men_Age_of_Revelation_Infinity_Comic_Vol_1_3.jpg",
+          "core": false,
+          "note": "无限漫画副线"
+        },
+        {
+          "id": "fandom:Last Wolverine Vol 1 2",
+          "series": "Last Wolverine",
+          "number": "2",
+          "date": "2025-11-19",
+          "title": "",
+          "cover": "Last_Wolverine_Vol_1_2_Daniel_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Omega Kids Vol 1 2",
+          "series": "Omega Kids",
+          "number": "2",
+          "date": "2025-11-19",
+          "title": "",
+          "cover": "Omega_Kids_Vol_1_2_Hardin_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Radioactive Spider-Man Vol 1 2",
+          "series": "Radioactive Spider-Man",
+          "number": "2",
+          "date": "2025-11-19",
+          "title": "",
+          "cover": "Radioactive_Spider-Man_Vol_1_2_Ferreyra_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Unbreakable X-Men Vol 1 2",
+          "series": "Unbreakable X-Men",
+          "number": "2",
+          "date": "2025-11-19",
+          "title": "Burial At Sea",
+          "cover": "Unbreakable_X-Men_Vol_1_2_Checchetto_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Men: Book of Revelation Vol 1 2",
+          "series": "X-Men: Book of Revelation",
+          "number": "2",
+          "date": "2025-11-19",
+          "title": "",
+          "cover": "X-Men_Book_of_Revelation_Vol_1_2_Howell_Variant.jpg",
+          "core": true,
+          "note": "主线中轴"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Infinity Comic Vol 1 4",
+          "series": "X-Men: Age of Revelation Infinity Comic",
+          "number": "4",
+          "date": "2025-11-24",
+          "title": "Perdition Lost Part 1",
+          "cover": "X-Men_Age_of_Revelation_Infinity_Comic_Vol_1_4.jpg",
+          "core": false,
+          "note": "无限漫画副线"
+        },
+        {
+          "id": "fandom:Cloak or Dagger Vol 1 2",
+          "series": "Cloak or Dagger",
+          "number": "2",
+          "date": "2025-11-26",
+          "title": "",
+          "cover": "Cloak_or_Dagger_Vol_1_2_Baldeón_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Expatriate X-Men Vol 1 2",
+          "series": "Expatriate X-Men",
+          "number": "2",
+          "date": "2025-11-26",
+          "title": "",
+          "cover": "Expatriate_X-Men_Vol_1_2_Anindito_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Undeadpool Vol 1 2",
+          "series": "Undeadpool",
+          "number": "2",
+          "date": "2025-11-26",
+          "title": "",
+          "cover": "Undeadpool_Vol_1_2_Arita_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Vengers Vol 1 2",
+          "series": "X-Vengers",
+          "number": "2",
+          "date": "2025-11-26",
+          "title": "",
+          "cover": "X-Vengers_Vol_1_2_Cassara_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Infinity Comic Vol 1 5",
+          "series": "X-Men: Age of Revelation Infinity Comic",
+          "number": "5",
+          "date": "2025-12-01",
+          "title": "Perdition Lost Part 2",
+          "cover": "X-Men_Age_of_Revelation_Infinity_Comic_Vol_1_5.jpg",
+          "core": false,
+          "note": "无限漫画副线"
+        },
+        {
+          "id": "fandom:Amazing X-Men Vol 3 3",
+          "series": "Amazing X-Men",
+          "number": "3",
+          "date": "2025-12-03",
+          "title": "Philadelphia",
+          "cover": "Amazing_X-Men_Vol_3_3_Textless.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Binary Vol 1 3",
+          "series": "Binary",
+          "number": "3",
+          "date": "2025-12-03",
+          "title": "",
+          "cover": "Binary_Vol_1_3_Di_Nicuolo_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Laura Kinney: Sabretooth Vol 1 3",
+          "series": "Laura Kinney: Sabretooth",
+          "number": "3",
+          "date": "2025-12-03",
+          "title": "",
+          "cover": "Laura_Kinney_Sabretooth_Vol_1_3_López_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Infinity Comic Vol 1 6",
+          "series": "X-Men: Age of Revelation Infinity Comic",
+          "number": "6",
+          "date": "2025-12-08",
+          "title": "Perdition Lost Part 3",
+          "cover": "X-Men_Age_of_Revelation_Infinity_Comic_Vol_1_6.jpg",
+          "core": false,
+          "note": "无限漫画副线"
+        },
+        {
+          "id": "fandom:Iron & Frost Vol 1 3",
+          "series": "Iron & Frost",
+          "number": "3",
+          "date": "2025-12-10",
+          "title": "",
+          "cover": "Iron_&_Frost_Vol_1_3_Bagley_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Longshots Vol 1 3",
+          "series": "Longshots",
+          "number": "3",
+          "date": "2025-12-10",
+          "title": "",
+          "cover": "Longshots_Vol_1_3_Textless.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Sinister's Six Vol 1 3",
+          "series": "Sinister's Six",
+          "number": "3",
+          "date": "2025-12-10",
+          "title": "",
+          "cover": "Sinister's_Six_Vol_1_3_Diaz_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Unbreakable X-Men Vol 1 3",
+          "series": "Unbreakable X-Men",
+          "number": "3",
+          "date": "2025-12-10",
+          "title": "Like Drowning In The Dark",
+          "cover": "Unbreakable_X-Men_Vol_1_3_Ejikure_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Infinity Comic Vol 1 7",
+          "series": "X-Men: Age of Revelation Infinity Comic",
+          "number": "7",
+          "date": "2025-12-15",
+          "title": "The Underground Man Part 1",
+          "cover": "X-Men_Age_of_Revelation_Infinity_Comic_Vol_1_7.jpg",
+          "core": false,
+          "note": "无限漫画副线"
+        },
+        {
+          "id": "fandom:Last Wolverine Vol 1 3",
+          "series": "Last Wolverine",
+          "number": "3",
+          "date": "2025-12-17",
+          "title": "",
+          "cover": "Last_Wolverine_Vol_1_3_Siqueira_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Omega Kids Vol 1 3",
+          "series": "Omega Kids",
+          "number": "3",
+          "date": "2025-12-17",
+          "title": "",
+          "cover": "Omega_Kids_Vol_1_3_Larroca_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Radioactive Spider-Man Vol 1 3",
+          "series": "Radioactive Spider-Man",
+          "number": "3",
+          "date": "2025-12-17",
+          "title": "",
+          "cover": "Radioactive_Spider-Man_Vol_1_3_Lee_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Rogue Storm Vol 1 3",
+          "series": "Rogue Storm",
+          "number": "3",
+          "date": "2025-12-17",
+          "title": "The Gallows and the Executioner",
+          "cover": "Rogue_Storm_Vol_1_3_Harvey_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Men: Book of Revelation Vol 1 3",
+          "series": "X-Men: Book of Revelation",
+          "number": "3",
+          "date": "2025-12-17",
+          "title": "",
+          "cover": "X-Men_Book_of_Revelation_Vol_1_3_De_Tommaso_Variant.jpg",
+          "core": true,
+          "note": "主线中轴"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Infinity Comic Vol 1 8",
+          "series": "X-Men: Age of Revelation Infinity Comic",
+          "number": "8",
+          "date": "2025-12-22",
+          "title": "The Underground Man Part 2",
+          "cover": "X-Men_Age_of_Revelation_Infinity_Comic_Vol_1_8.jpg",
+          "core": false,
+          "note": "无限漫画副线"
+        },
+        {
+          "id": "fandom:Cloak or Dagger Vol 1 3",
+          "series": "Cloak or Dagger",
+          "number": "3",
+          "date": "2025-12-24",
+          "title": "",
+          "cover": "Cloak_or_Dagger_Vol_1_3_Land_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Expatriate X-Men Vol 1 3",
+          "series": "Expatriate X-Men",
+          "number": "3",
+          "date": "2025-12-24",
+          "title": "",
+          "cover": "Expatriate_X-Men_Vol_1_3_Baldeón_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:Undeadpool Vol 1 3",
+          "series": "Undeadpool",
+          "number": "3",
+          "date": "2025-12-24",
+          "title": "",
+          "cover": "Undeadpool_Vol_1_3_ACO_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Vengers Vol 1 3",
+          "series": "X-Vengers",
+          "number": "3",
+          "date": "2025-12-24",
+          "title": "",
+          "cover": "X-Vengers_Vol_1_3_Dávila_Variant.jpg",
+          "core": false,
+          "note": "十五条三期刊支线，铺开新世界的各个角落"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Infinity Comic Vol 1 9",
+          "series": "X-Men: Age of Revelation Infinity Comic",
+          "number": "9",
+          "date": "2025-12-29",
+          "title": "The Underground Man Part 3",
+          "cover": "X-Men_Age_of_Revelation_Infinity_Comic_Vol_1_9.jpg",
+          "core": false,
+          "note": "无限漫画副线"
+        },
+        {
+          "id": "fandom:X-Men: Age of Revelation Finale Vol 1 1",
+          "series": "X-Men: Age of Revelation Finale",
+          "number": "1",
+          "date": "2025-12-31",
+          "title": "",
+          "cover": "X-Men_Age_of_Revelation_Finale_Vol_1_1_Bressan_Variant.jpg",
+          "core": true,
+          "note": "终章"
+        }
+      ]
     },
     {
       "id": "x-manhunt-2025",
@@ -1093,7 +3211,109 @@
         }
       ],
       "optionalOrder": [],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Fall of the House of X Vol 1 1",
+          "series": "Fall of the House of X",
+          "number": "1",
+          "date": "2024-01-03",
+          "title": "The Trial of Cyclops",
+          "cover": "Fall_of_the_House_of_X_Vol_1_1_Artgerm_Variant.jpg",
+          "core": true,
+          "note": "当下时间线"
+        },
+        {
+          "id": "fandom:Rise of the Powers of X Vol 1 1",
+          "series": "Rise of the Powers of X",
+          "number": "1",
+          "date": "2024-01-10",
+          "title": "Data Pages",
+          "cover": "Rise_of_the_Powers_of_X_Vol_1_1_Brooks_Connecting_Variant.jpg",
+          "core": true,
+          "note": "十年后的时间线，与上面交替读"
+        },
+        {
+          "id": "fandom:Fall of the House of X Vol 1 2",
+          "series": "Fall of the House of X",
+          "number": "2",
+          "date": "2024-02-14",
+          "title": "Long Games End",
+          "cover": "Fall_of_the_House_of_X_Vol_1_2_Camuncoli_Connecting_Variant.jpg",
+          "core": true,
+          "note": "当下时间线"
+        },
+        {
+          "id": "fandom:Rise of the Powers of X Vol 1 2",
+          "series": "Rise of the Powers of X",
+          "number": "2",
+          "date": "2024-02-21",
+          "title": "Out of Space",
+          "cover": "Rise_of_the_Powers_of_X_Vol_1_2_Camuncoli_Connecting_Variant.jpg",
+          "core": true,
+          "note": "十年后的时间线，与上面交替读"
+        },
+        {
+          "id": "fandom:Fall of the House of X Vol 1 3",
+          "series": "Fall of the House of X",
+          "number": "3",
+          "date": "2024-03-13",
+          "title": "The X Deaths of Dr. Stasis",
+          "cover": "Fall_of_the_House_of_X_Vol_1_3_Bradshaw_Variant.jpg",
+          "core": true,
+          "note": "当下时间线"
+        },
+        {
+          "id": "fandom:Rise of the Powers of X Vol 1 3",
+          "series": "Rise of the Powers of X",
+          "number": "3",
+          "date": "2024-03-27",
+          "title": "The Ex Life of Moira",
+          "cover": "Rise_of_the_Powers_of_X_Vol_1_3_Bradshaw_Variant.jpg",
+          "core": true,
+          "note": "十年后的时间线，与上面交替读"
+        },
+        {
+          "id": "fandom:Fall of the House of X Vol 1 4",
+          "series": "Fall of the House of X",
+          "number": "4",
+          "date": "2024-04-17",
+          "title": "The Turn",
+          "cover": "Fall_of_the_House_of_X_Vol_1_4_Asrar_Variant.jpg",
+          "core": true,
+          "note": "当下时间线"
+        },
+        {
+          "id": "fandom:Rise of the Powers of X Vol 1 4",
+          "series": "Rise of the Powers of X",
+          "number": "4",
+          "date": "2024-04-24",
+          "title": "Sentinel X",
+          "cover": "Rise_of_the_Powers_of_X_Vol_1_4_Foreshadow_Variant.jpg",
+          "core": true,
+          "note": "十年后的时间线，与上面交替读"
+        },
+        {
+          "id": "fandom:Fall of the House of X Vol 1 5",
+          "series": "Fall of the House of X",
+          "number": "5",
+          "date": "2024-05-22",
+          "title": "The Turn",
+          "cover": "Fall_of_the_House_of_X_Vol_1_5_Bradshaw_Variant.jpg",
+          "core": true,
+          "note": "当下时间线"
+        },
+        {
+          "id": "fandom:Rise of the Powers of X Vol 1 5",
+          "series": "Rise of the Powers of X",
+          "number": "5",
+          "date": "2024-05-29",
+          "title": "Now And Forever",
+          "cover": "Rise_of_the_Powers_of_X_Vol_1_5_Asrar_Variant.jpg",
+          "core": true,
+          "note": "十年后的时间线，与上面交替读"
+        }
+      ]
     },
     {
       "id": "raid-on-graymalkin-2024",
@@ -1157,7 +3377,8 @@
         }
       ],
       "optionalOrder": [],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": []
     },
     {
       "id": "battle-of-the-atom-2013",
@@ -1196,7 +3417,69 @@
         }
       ],
       "optionalOrder": [],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:X-Men: Schism Vol 1 1",
+          "series": "X-Men: Schism",
+          "number": "1",
+          "date": "2011-07-13",
+          "title": "Schism (Part One)",
+          "cover": "X-Men_Schism_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:X-Men: Schism Vol 1 2",
+          "series": "X-Men: Schism",
+          "number": "2",
+          "date": "2011-07-27",
+          "title": "Schism (Part Two)",
+          "cover": "X-Men_Schism_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:X-Men: Schism Vol 1 3",
+          "series": "X-Men: Schism",
+          "number": "3",
+          "date": "2011-08-17",
+          "title": "Schism (Part Three)",
+          "cover": "X-Men_Schism_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:X-Men: Schism Vol 1 4",
+          "series": "X-Men: Schism",
+          "number": "4",
+          "date": "2011-09-21",
+          "title": "Schism (Part Four)",
+          "cover": "X-Men_Schism_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:X-Men: Schism Vol 1 5",
+          "series": "X-Men: Schism",
+          "number": "5",
+          "date": "2011-10-05",
+          "title": "Schism (Part Five)",
+          "cover": "X-Men_Schism_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "主线"
+        },
+        {
+          "id": "fandom:X-Men: Regenesis Vol 1 1",
+          "series": "X-Men: Regenesis",
+          "number": "1",
+          "date": "2011-10-12",
+          "title": "Regenesis",
+          "cover": "X-Men_Regenesis_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "后续：两个阵营各自点兵"
+        }
+      ]
     },
     {
       "id": "second-coming-2010",
@@ -1258,7 +3541,189 @@
           "note": "三条同题支线，补各队视角"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Hunger Vol 1 1",
+          "series": "Hunger",
+          "number": "1",
+          "date": "2013-07-24",
+          "title": "",
+          "cover": "Hunger_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "前置：吞星抵达终极地球"
+        },
+        {
+          "id": "fandom:Hunger Vol 1 2",
+          "series": "Hunger",
+          "number": "2",
+          "date": "2013-08-07",
+          "title": "",
+          "cover": "Hunger_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "前置：吞星抵达终极地球"
+        },
+        {
+          "id": "fandom:Hunger Vol 1 3",
+          "series": "Hunger",
+          "number": "3",
+          "date": "2013-10-02",
+          "title": "Part 3 of 4",
+          "cover": "Hunger_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "前置：吞星抵达终极地球"
+        },
+        {
+          "id": "fandom:Hunger Vol 1 4",
+          "series": "Hunger",
+          "number": "4",
+          "date": "2013-10-16",
+          "title": "Hunger Conclusion",
+          "cover": "Hunger_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "前置：吞星抵达终极地球"
+        },
+        {
+          "id": "fandom:Cataclysm: The Ultimates' Last Stand Vol 1 1",
+          "series": "Cataclysm: The Ultimates' Last Stand",
+          "number": "1",
+          "date": "2013-11-06",
+          "title": "Cataclysm: Part One",
+          "cover": "Cataclysm_The_Ultimates'_Last_Stand_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "主线，2013 年 11 月至 2014 年 2 月"
+        },
+        {
+          "id": "fandom:Cataclysm: Ultimate Spider-Man Vol 1 1",
+          "series": "Cataclysm: Ultimate Spider-Man",
+          "number": "1",
+          "date": "2013-11-13",
+          "title": "Cataclysm: Ultimate Spider-Man, Part One",
+          "cover": "Cataclysm_Ultimate_Spider-Man_Vol_1_1_Textless.jpg",
+          "core": false,
+          "note": "三条同题支线，补各队视角"
+        },
+        {
+          "id": "fandom:Cataclysm: The Ultimates' Last Stand Vol 1 2",
+          "series": "Cataclysm: The Ultimates' Last Stand",
+          "number": "2",
+          "date": "2013-12-04",
+          "title": "Cataclysm: Part Two",
+          "cover": "Cataclysm_The_Ultimates'_Last_Stand_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "主线，2013 年 11 月至 2014 年 2 月"
+        },
+        {
+          "id": "fandom:Cataclysm: Ultimate Spider-Man Vol 1 2",
+          "series": "Cataclysm: Ultimate Spider-Man",
+          "number": "2",
+          "date": "2013-12-11",
+          "title": "Cataclysm: Ultimate Spider-Man, Part Two",
+          "cover": "Cataclysm_Ultimate_Spider-Man_Vol_1_2_Textless.jpg",
+          "core": false,
+          "note": "三条同题支线，补各队视角"
+        },
+        {
+          "id": "fandom:Cataclysm: The Ultimates' Last Stand Vol 1 3",
+          "series": "Cataclysm: The Ultimates' Last Stand",
+          "number": "3",
+          "date": "2014-01-08",
+          "title": "Cataclysm: Part Three",
+          "cover": "Cataclysm_The_Ultimates'_Last_Stand_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "主线，2013 年 11 月至 2014 年 2 月"
+        },
+        {
+          "id": "fandom:Cataclysm: Ultimate Spider-Man Vol 1 3",
+          "series": "Cataclysm: Ultimate Spider-Man",
+          "number": "3",
+          "date": "2014-01-08",
+          "title": "Cataclysm: Ultimate Spider-Man, Part Three",
+          "cover": "Cataclysm_Ultimate_Spider-Man_Vol_1_3_Textless.jpg",
+          "core": false,
+          "note": "三条同题支线，补各队视角"
+        },
+        {
+          "id": "fandom:Cataclysm: The Ultimates' Last Stand Vol 1 4",
+          "series": "Cataclysm: The Ultimates' Last Stand",
+          "number": "4",
+          "date": "2014-01-29",
+          "title": "Cataclysm: Part Four",
+          "cover": "Cataclysm_The_Ultimates'_Last_Stand_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "主线，2013 年 11 月至 2014 年 2 月"
+        },
+        {
+          "id": "fandom:Cataclysm: The Ultimates' Last Stand Vol 1 5",
+          "series": "Cataclysm: The Ultimates' Last Stand",
+          "number": "5",
+          "date": "2014-02-26",
+          "title": "Cataclysm: Conclusion",
+          "cover": "Cataclysm_The_Ultimates'_Last_Stand_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "主线，2013 年 11 月至 2014 年 2 月"
+        },
+        {
+          "id": "fandom:Ultimates Vol 2 1",
+          "series": "Ultimates",
+          "number": "1",
+          "date": "2015-11-11",
+          "title": "Start With The Impossible",
+          "cover": "Ultimates_Vol_2_1_Textless.jpg",
+          "core": false,
+          "note": "三条同题支线，补各队视角"
+        },
+        {
+          "id": "fandom:Ultimates Vol 2 2",
+          "series": "Ultimates",
+          "number": "2",
+          "date": "2015-12-09",
+          "title": "Lifebringer",
+          "cover": "Ultimates_Vol_2_2_Textless.jpg",
+          "core": false,
+          "note": "三条同题支线，补各队视角"
+        },
+        {
+          "id": "fandom:Ultimates Vol 2 3",
+          "series": "Ultimates",
+          "number": "3",
+          "date": "2016-01-06",
+          "title": "Outside",
+          "cover": "Ultimates_Vol_2_3_Textless.jpg",
+          "core": false,
+          "note": "三条同题支线，补各队视角"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 1",
+          "series": "Ultimate X-Men",
+          "number": "1",
+          "date": "2024-03-06",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_1_Aka_Variant.jpg",
+          "core": false,
+          "note": "三条同题支线，补各队视角"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 2",
+          "series": "Ultimate X-Men",
+          "number": "2",
+          "date": "2024-04-10",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_2_Textless.jpeg",
+          "core": false,
+          "note": "三条同题支线，补各队视角"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 3",
+          "series": "Ultimate X-Men",
+          "number": "3",
+          "date": "2024-05-15",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_3_Daniel_Variant.jpg",
+          "core": false,
+          "note": "三条同题支线，补各队视角"
+        }
+      ]
     },
     {
       "id": "ultimate-fallout-2011",
@@ -1286,7 +3751,399 @@
           "note": "后续：迈尔斯正式接任"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 1",
+          "series": "Ultimate Spider-Man",
+          "number": "1",
+          "date": "2009-08-12",
+          "title": "The New World According to Peter Parker",
+          "cover": "Ultimate_Spider-Man_Vol_2_1_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 2",
+          "series": "Ultimate Spider-Man",
+          "number": "2",
+          "date": "2009-09-02",
+          "title": "The New World According to Peter Parker (Part II)",
+          "cover": "Ultimate_Spider-Man_Vol_2_2_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 3",
+          "series": "Ultimate Spider-Man",
+          "number": "3",
+          "date": "2009-10-07",
+          "title": "The New World According to Peter Parker (Part III)",
+          "cover": "Ultimate_Spider-Man_Vol_2_3_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 4",
+          "series": "Ultimate Spider-Man",
+          "number": "4",
+          "date": "2009-11-04",
+          "title": "The New World According to Peter Parker (Part IV)",
+          "cover": "Ultimate_Spider-Man_Vol_2_4_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 5",
+          "series": "Ultimate Spider-Man",
+          "number": "5",
+          "date": "2009-12-02",
+          "title": "The New World According to Peter Parker (Part V)",
+          "cover": "Ultimate_Spider-Man_Vol_2_5_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 6",
+          "series": "Ultimate Spider-Man",
+          "number": "6",
+          "date": "2010-01-06",
+          "title": "The New World According to Peter Parker (Part VI)",
+          "cover": "Ultimate_Spider-Man_Vol_2_6_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 7",
+          "series": "Ultimate Spider-Man",
+          "number": "7",
+          "date": "2010-02-10",
+          "title": "Crossroad (Part 1)",
+          "cover": "Ultimate_Spider-Man_Vol_2_7_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 8",
+          "series": "Ultimate Spider-Man",
+          "number": "8",
+          "date": "2010-03-10",
+          "title": "Crossroad (Part 2)",
+          "cover": "Ultimate_Spider-Man_Vol_2_8_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 9",
+          "series": "Ultimate Spider-Man",
+          "number": "9",
+          "date": "2010-04-21",
+          "title": "Tainted Love (Part 1)",
+          "cover": "Ultimate_Spider-Man_Vol_2_9_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 10",
+          "series": "Ultimate Spider-Man",
+          "number": "10",
+          "date": "2010-05-12",
+          "title": "Tainted Love (Part 2)",
+          "cover": "Ultimate_Spider-Man_Vol_2_10_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 11",
+          "series": "Ultimate Spider-Man",
+          "number": "11",
+          "date": "2010-06-09",
+          "title": "Tainted Love (Part 3)",
+          "cover": "Ultimate_Spider-Man_Vol_2_11_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 12",
+          "series": "Ultimate Spider-Man",
+          "number": "12",
+          "date": "2010-07-14",
+          "title": "Tainted Love (Part 4)",
+          "cover": "Ultimate_Spider-Man_Vol_2_12_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 13",
+          "series": "Ultimate Spider-Man",
+          "number": "13",
+          "date": "2010-08-11",
+          "title": "Tainted Love (Part 5)",
+          "cover": "Ultimate_Spider-Man_Vol_2_13_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 14",
+          "series": "Ultimate Spider-Man",
+          "number": "14",
+          "date": "2010-09-22",
+          "title": "Tainted Love (Part 6)",
+          "cover": "Ultimate_Spider-Man_Vol_2_14_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 15",
+          "series": "Ultimate Spider-Man",
+          "number": "15",
+          "date": "2010-10-27",
+          "title": "Tainted Love (Epilogue)",
+          "cover": "Ultimate_Spider-Man_Vol_2_15_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 150",
+          "series": "Ultimate Spider-Man",
+          "number": "150",
+          "date": "2010-11-24",
+          "title": "Spidey's 150th Anniversary Special",
+          "cover": "Ultimate_Spider-Man_Vol_2_150_Textless2.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 151",
+          "series": "Ultimate Spider-Man",
+          "number": "151",
+          "date": "2010-12-22",
+          "title": "Superhero Training (Part 1)",
+          "cover": "Ultimate_Spider-Man_Vol_2_151_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 152",
+          "series": "Ultimate Spider-Man",
+          "number": "152",
+          "date": "2011-01-26",
+          "title": "Superhero Training (Part 2)",
+          "cover": "Ultimate_Spider-Man_Vol_2_152_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Avengers vs. New Ultimates Vol 1 1",
+          "series": "Ultimate Avengers vs. New Ultimates",
+          "number": "1",
+          "date": "2011-02-09",
+          "title": "Ultimate Avengers vs. New Ultimates (Part I)",
+          "cover": "Ultimate_Avengers_vs._New_Ultimates_Vol_1_1_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 153",
+          "series": "Ultimate Spider-Man",
+          "number": "153",
+          "date": "2011-02-09",
+          "title": "Death of Spider-Man: Prelude (Part 1)",
+          "cover": "Ultimate_Spider-Man_Vol_2_153_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 154",
+          "series": "Ultimate Spider-Man",
+          "number": "154",
+          "date": "2011-02-23",
+          "title": "Death of Spider-Man: Prelude (Part 2)",
+          "cover": "Ultimate_Spider-Man_Vol_2_154_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 155",
+          "series": "Ultimate Spider-Man",
+          "number": "155",
+          "date": "2011-03-09",
+          "title": "Death of Spider-Man: Prelude  (Part 3)",
+          "cover": "Ultimate_Spider-Man_Vol_2_155_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Avengers vs. New Ultimates Vol 1 2",
+          "series": "Ultimate Avengers vs. New Ultimates",
+          "number": "2",
+          "date": "2011-03-16",
+          "title": "Ultimate Avengers vs. New Ultimates (Part II)",
+          "cover": "Ultimate_Avengers_vs._New_Ultimates_Vol_1_2_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 156",
+          "series": "Ultimate Spider-Man",
+          "number": "156",
+          "date": "2011-03-23",
+          "title": "Death of Spider-Man (Part 1)",
+          "cover": "Ultimate_Spider-Man_Vol_2_156_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Avengers vs. New Ultimates Vol 1 3",
+          "series": "Ultimate Avengers vs. New Ultimates",
+          "number": "3",
+          "date": "2011-04-13",
+          "title": "Ultimate Avengers vs. New Ultimates (Part III)",
+          "cover": "Ultimate_Avengers_vs._New_Ultimates_Vol_1_3_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 157",
+          "series": "Ultimate Spider-Man",
+          "number": "157",
+          "date": "2011-04-13",
+          "title": "Death of Spider-Man (Part 2)",
+          "cover": "Ultimate_Spider-Man_Vol_2_157_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Avengers vs. New Ultimates Vol 1 4",
+          "series": "Ultimate Avengers vs. New Ultimates",
+          "number": "4",
+          "date": "2011-05-18",
+          "title": "Ultimate Avengers vs. New Ultimates (Part IV)",
+          "cover": "Ultimate_Avengers_vs._New_Ultimates_Vol_1_4_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 158",
+          "series": "Ultimate Spider-Man",
+          "number": "158",
+          "date": "2011-05-18",
+          "title": "Death of Spider-Man (Part 3)",
+          "cover": "Ultimate_Spider-Man_Vol_2_158_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 159",
+          "series": "Ultimate Spider-Man",
+          "number": "159",
+          "date": "2011-06-08",
+          "title": "Death of Spider-Man (Part 4)",
+          "cover": "Ultimate_Spider-Man_Vol_2_159_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Avengers vs. New Ultimates Vol 1 5",
+          "series": "Ultimate Avengers vs. New Ultimates",
+          "number": "5",
+          "date": "2011-06-22",
+          "title": "Ultimate Avengers vs. New Ultimates (Part V)",
+          "cover": "Ultimate_Avengers_vs._New_Ultimates_Vol_1_5_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 160",
+          "series": "Ultimate Spider-Man",
+          "number": "160",
+          "date": "2011-06-22",
+          "title": "Death of Spider-Man (Part 5)",
+          "cover": "Ultimate_Spider-Man_Vol_2_160_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Avengers vs. New Ultimates Vol 1 6",
+          "series": "Ultimate Avengers vs. New Ultimates",
+          "number": "6",
+          "date": "2011-07-13",
+          "title": "Ultimate Avengers vs. New Ultimates (Conclusion)",
+          "cover": "Ultimate_Avengers_vs._New_Ultimates_Vol_1_6_Textless.jpg",
+          "core": false,
+          "note": "前置：蜘蛛侠之死全线"
+        },
+        {
+          "id": "fandom:Ultimate Fallout Vol 1 1",
+          "series": "Ultimate Fallout",
+          "number": "1",
+          "date": "2011-07-13",
+          "title": "Spider-Man No More (Part I)",
+          "cover": "Ultimate_Fallout_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "主线，2011 年 7 月至 8 月，每周一期"
+        },
+        {
+          "id": "fandom:Ultimate Fallout Vol 1 2",
+          "series": "Ultimate Fallout",
+          "number": "2",
+          "date": "2011-07-20",
+          "title": "Spider-Man No More (Part II)",
+          "cover": "Ultimate_Fallout_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "主线，2011 年 7 月至 8 月，每周一期"
+        },
+        {
+          "id": "fandom:Ultimate Fallout Vol 1 3",
+          "series": "Ultimate Fallout",
+          "number": "3",
+          "date": "2011-07-27",
+          "title": "Spider-Man No More (Part III)",
+          "cover": "Ultimate_Fallout_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "主线，2011 年 7 月至 8 月，每周一期"
+        },
+        {
+          "id": "fandom:Ultimate Fallout Vol 1 4",
+          "series": "Ultimate Fallout",
+          "number": "4",
+          "date": "2011-08-03",
+          "title": "Ultimate Fallout: Part Four of Six",
+          "cover": "Ultimate_Fallout_Vol_1_4_Solicit.jpg",
+          "core": true,
+          "note": "主线，2011 年 7 月至 8 月，每周一期"
+        },
+        {
+          "id": "fandom:Ultimate Fallout Vol 1 5",
+          "series": "Ultimate Fallout",
+          "number": "5",
+          "date": "2011-08-10",
+          "title": "Spider-Man No More (Part V)",
+          "cover": "Ultimate_Fallout_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "主线，2011 年 7 月至 8 月，每周一期"
+        },
+        {
+          "id": "fandom:Ultimate Fallout Vol 1 6",
+          "series": "Ultimate Fallout",
+          "number": "6",
+          "date": "2011-08-17",
+          "title": "Spider-Man No More (Conclusion)",
+          "cover": "Ultimate_Fallout_Vol_1_6_Textless.jpg",
+          "core": true,
+          "note": "主线，2011 年 7 月至 8 月，每周一期"
+        },
+        {
+          "id": "fandom:Ultimate Comics Spider-Man Vol 1 1",
+          "series": "Ultimate Comics Spider-Man",
+          "number": "1",
+          "date": "2011-09-14",
+          "title": "All-New Ultimate Spider-Man",
+          "cover": "Ultimate_Comics_Spider-Man_Vol_1_1_Solicit.jpg",
+          "core": false,
+          "note": "后续：迈尔斯正式接任"
+        }
+      ]
     },
     {
       "id": "ultimate-enemy-trilogy-2010",
@@ -1313,7 +4170,129 @@
         }
       ],
       "optionalOrder": [],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Ultimate Enemy Vol 1 1",
+          "series": "Ultimate Enemy",
+          "number": "1",
+          "date": "2010-01-27",
+          "title": "Ultimate Enemy (Part I)",
+          "cover": "Ultimate_Enemy_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "第一部，2010 年 1 月至 5 月"
+        },
+        {
+          "id": "fandom:Ultimate Enemy Vol 1 2",
+          "series": "Ultimate Enemy",
+          "number": "2",
+          "date": "2010-02-24",
+          "title": "Ultimate Enemy (Part II)",
+          "cover": "Ultimate_Enemy_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "第一部，2010 年 1 月至 5 月"
+        },
+        {
+          "id": "fandom:Ultimate Enemy Vol 1 3",
+          "series": "Ultimate Enemy",
+          "number": "3",
+          "date": "2010-04-14",
+          "title": "Ultimate Enemy (Part III)",
+          "cover": "Ultimate_Enemy_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "第一部，2010 年 1 月至 5 月"
+        },
+        {
+          "id": "fandom:Ultimate Enemy Vol 1 4",
+          "series": "Ultimate Enemy",
+          "number": "4",
+          "date": "2010-05-26",
+          "title": "Ultimate Enemy (Part IV)",
+          "cover": "Ultimate_Enemy_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "第一部，2010 年 1 月至 5 月"
+        },
+        {
+          "id": "fandom:Ultimate Mystery Vol 1 1",
+          "series": "Ultimate Mystery",
+          "number": "1",
+          "date": "2010-07-28",
+          "title": "Ultimate Mystery (Part I)",
+          "cover": "Ultimate_Mystery_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "第二部，2010 年 7 月至 10 月"
+        },
+        {
+          "id": "fandom:Ultimate Mystery Vol 1 2",
+          "series": "Ultimate Mystery",
+          "number": "2",
+          "date": "2010-08-25",
+          "title": "Ultimate Mystery (Part II)",
+          "cover": "Ultimate_Mystery_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "第二部，2010 年 7 月至 10 月"
+        },
+        {
+          "id": "fandom:Ultimate Mystery Vol 1 3",
+          "series": "Ultimate Mystery",
+          "number": "3",
+          "date": "2010-09-22",
+          "title": "Ultimate Mystery (Part III)",
+          "cover": "Ultimate_Mystery_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "第二部，2010 年 7 月至 10 月"
+        },
+        {
+          "id": "fandom:Ultimate Mystery Vol 1 4",
+          "series": "Ultimate Mystery",
+          "number": "4",
+          "date": "2010-10-27",
+          "title": "Ultimate Mystery (Part IV)",
+          "cover": "Ultimate_Mystery_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "第二部，2010 年 7 月至 10 月"
+        },
+        {
+          "id": "fandom:Ultimate Doom Vol 1 1",
+          "series": "Ultimate Doom",
+          "number": "1",
+          "date": "2010-12-22",
+          "title": "Ultimate Doom (Part I)",
+          "cover": "Ultimate_Doom_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "第三部，2010 年 12 月至 2011 年 3 月"
+        },
+        {
+          "id": "fandom:Ultimate Doom Vol 1 2",
+          "series": "Ultimate Doom",
+          "number": "2",
+          "date": "2011-01-26",
+          "title": "Ultimate Doom (Part II)",
+          "cover": "Ultimate_Doom_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "第三部，2010 年 12 月至 2011 年 3 月"
+        },
+        {
+          "id": "fandom:Ultimate Doom Vol 1 3",
+          "series": "Ultimate Doom",
+          "number": "3",
+          "date": "2011-02-23",
+          "title": "Ultimate Doom (Part III)",
+          "cover": "Ultimate_Doom_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "第三部，2010 年 12 月至 2011 年 3 月"
+        },
+        {
+          "id": "fandom:Ultimate Doom Vol 1 4",
+          "series": "Ultimate Doom",
+          "number": "4",
+          "date": "2011-03-23",
+          "title": "Ultimate Doom (Part IV)",
+          "cover": "Ultimate_Doom_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "第三部，2010 年 12 月至 2011 年 3 月"
+        }
+      ]
     },
     {
       "id": "ultimatum-2008",
@@ -1346,7 +4325,339 @@
           "note": "悼念特刊"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Ultimatum Vol 1 1",
+          "series": "Ultimatum",
+          "number": "1",
+          "date": "2008-11-05",
+          "title": "Three Kings",
+          "cover": "Ultimatum_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "主线，2008 年 11 月至 2009 年 7 月"
+        },
+        {
+          "id": "fandom:Ultimatum Vol 1 2",
+          "series": "Ultimatum",
+          "number": "2",
+          "date": "2008-12-24",
+          "title": "Death Becomes Her",
+          "cover": "Ultimatum_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "主线，2008 年 11 月至 2009 年 7 月"
+        },
+        {
+          "id": "fandom:Ultimatum Vol 1 3",
+          "series": "Ultimatum",
+          "number": "3",
+          "date": "2009-03-18",
+          "title": "Heaven On Earth",
+          "cover": "Ultimatum_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "主线，2008 年 11 月至 2009 年 7 月"
+        },
+        {
+          "id": "fandom:Ultimatum Vol 1 4",
+          "series": "Ultimatum",
+          "number": "4",
+          "date": "2009-06-03",
+          "title": "A Time to Die",
+          "cover": "Ultimatum_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "主线，2008 年 11 月至 2009 年 7 月"
+        },
+        {
+          "id": "fandom:Ultimatum: Spider-Man Requiem Vol 1 1",
+          "series": "Ultimatum: Spider-Man Requiem",
+          "number": "1",
+          "date": "2009-06-17",
+          "title": "Requiem (Part I)",
+          "cover": "Ultimatum_Spider-Man_Requiem_Vol_1_1_Textless.jpg",
+          "core": false,
+          "note": "悼念特刊"
+        },
+        {
+          "id": "fandom:Ultimatum Vol 1 5",
+          "series": "Ultimatum",
+          "number": "5",
+          "date": "2009-07-29",
+          "title": "The Ugly Truth",
+          "cover": "Ultimatum_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "主线，2008 年 11 月至 2009 年 7 月"
+        },
+        {
+          "id": "fandom:Ultimatum: Spider-Man Requiem Vol 1 2",
+          "series": "Ultimatum: Spider-Man Requiem",
+          "number": "2",
+          "date": "2009-07-29",
+          "title": "Requiem (Part II)",
+          "cover": "Ultimatum_Spider-Man_Requiem_Vol_1_2_Textless.jpg",
+          "core": false,
+          "note": "悼念特刊"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 1",
+          "series": "Ultimate Spider-Man",
+          "number": "1",
+          "date": "2009-08-12",
+          "title": "The New World According to Peter Parker",
+          "cover": "Ultimate_Spider-Man_Vol_2_1_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 2",
+          "series": "Ultimate Spider-Man",
+          "number": "2",
+          "date": "2009-09-02",
+          "title": "The New World According to Peter Parker (Part II)",
+          "cover": "Ultimate_Spider-Man_Vol_2_2_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 3",
+          "series": "Ultimate Spider-Man",
+          "number": "3",
+          "date": "2009-10-07",
+          "title": "The New World According to Peter Parker (Part III)",
+          "cover": "Ultimate_Spider-Man_Vol_2_3_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 4",
+          "series": "Ultimate Spider-Man",
+          "number": "4",
+          "date": "2009-11-04",
+          "title": "The New World According to Peter Parker (Part IV)",
+          "cover": "Ultimate_Spider-Man_Vol_2_4_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 5",
+          "series": "Ultimate Spider-Man",
+          "number": "5",
+          "date": "2009-12-02",
+          "title": "The New World According to Peter Parker (Part V)",
+          "cover": "Ultimate_Spider-Man_Vol_2_5_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 6",
+          "series": "Ultimate Spider-Man",
+          "number": "6",
+          "date": "2010-01-06",
+          "title": "The New World According to Peter Parker (Part VI)",
+          "cover": "Ultimate_Spider-Man_Vol_2_6_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 7",
+          "series": "Ultimate Spider-Man",
+          "number": "7",
+          "date": "2010-02-10",
+          "title": "Crossroad (Part 1)",
+          "cover": "Ultimate_Spider-Man_Vol_2_7_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 8",
+          "series": "Ultimate Spider-Man",
+          "number": "8",
+          "date": "2010-03-10",
+          "title": "Crossroad (Part 2)",
+          "cover": "Ultimate_Spider-Man_Vol_2_8_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 9",
+          "series": "Ultimate Spider-Man",
+          "number": "9",
+          "date": "2010-04-21",
+          "title": "Tainted Love (Part 1)",
+          "cover": "Ultimate_Spider-Man_Vol_2_9_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 10",
+          "series": "Ultimate Spider-Man",
+          "number": "10",
+          "date": "2010-05-12",
+          "title": "Tainted Love (Part 2)",
+          "cover": "Ultimate_Spider-Man_Vol_2_10_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 11",
+          "series": "Ultimate Spider-Man",
+          "number": "11",
+          "date": "2010-06-09",
+          "title": "Tainted Love (Part 3)",
+          "cover": "Ultimate_Spider-Man_Vol_2_11_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 12",
+          "series": "Ultimate Spider-Man",
+          "number": "12",
+          "date": "2010-07-14",
+          "title": "Tainted Love (Part 4)",
+          "cover": "Ultimate_Spider-Man_Vol_2_12_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 13",
+          "series": "Ultimate Spider-Man",
+          "number": "13",
+          "date": "2010-08-11",
+          "title": "Tainted Love (Part 5)",
+          "cover": "Ultimate_Spider-Man_Vol_2_13_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 14",
+          "series": "Ultimate Spider-Man",
+          "number": "14",
+          "date": "2010-09-22",
+          "title": "Tainted Love (Part 6)",
+          "cover": "Ultimate_Spider-Man_Vol_2_14_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 15",
+          "series": "Ultimate Spider-Man",
+          "number": "15",
+          "date": "2010-10-27",
+          "title": "Tainted Love (Epilogue)",
+          "cover": "Ultimate_Spider-Man_Vol_2_15_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 150",
+          "series": "Ultimate Spider-Man",
+          "number": "150",
+          "date": "2010-11-24",
+          "title": "Spidey's 150th Anniversary Special",
+          "cover": "Ultimate_Spider-Man_Vol_2_150_Textless2.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 151",
+          "series": "Ultimate Spider-Man",
+          "number": "151",
+          "date": "2010-12-22",
+          "title": "Superhero Training (Part 1)",
+          "cover": "Ultimate_Spider-Man_Vol_2_151_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 152",
+          "series": "Ultimate Spider-Man",
+          "number": "152",
+          "date": "2011-01-26",
+          "title": "Superhero Training (Part 2)",
+          "cover": "Ultimate_Spider-Man_Vol_2_152_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 153",
+          "series": "Ultimate Spider-Man",
+          "number": "153",
+          "date": "2011-02-09",
+          "title": "Death of Spider-Man: Prelude (Part 1)",
+          "cover": "Ultimate_Spider-Man_Vol_2_153_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 154",
+          "series": "Ultimate Spider-Man",
+          "number": "154",
+          "date": "2011-02-23",
+          "title": "Death of Spider-Man: Prelude (Part 2)",
+          "cover": "Ultimate_Spider-Man_Vol_2_154_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 155",
+          "series": "Ultimate Spider-Man",
+          "number": "155",
+          "date": "2011-03-09",
+          "title": "Death of Spider-Man: Prelude  (Part 3)",
+          "cover": "Ultimate_Spider-Man_Vol_2_155_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 156",
+          "series": "Ultimate Spider-Man",
+          "number": "156",
+          "date": "2011-03-23",
+          "title": "Death of Spider-Man (Part 1)",
+          "cover": "Ultimate_Spider-Man_Vol_2_156_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 157",
+          "series": "Ultimate Spider-Man",
+          "number": "157",
+          "date": "2011-04-13",
+          "title": "Death of Spider-Man (Part 2)",
+          "cover": "Ultimate_Spider-Man_Vol_2_157_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 158",
+          "series": "Ultimate Spider-Man",
+          "number": "158",
+          "date": "2011-05-18",
+          "title": "Death of Spider-Man (Part 3)",
+          "cover": "Ultimate_Spider-Man_Vol_2_158_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 159",
+          "series": "Ultimate Spider-Man",
+          "number": "159",
+          "date": "2011-06-08",
+          "title": "Death of Spider-Man (Part 4)",
+          "cover": "Ultimate_Spider-Man_Vol_2_159_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 2 160",
+          "series": "Ultimate Spider-Man",
+          "number": "160",
+          "date": "2011-06-22",
+          "title": "Death of Spider-Man (Part 5)",
+          "cover": "Ultimate_Spider-Man_Vol_2_160_Textless.jpg",
+          "core": false,
+          "note": "蜘蛛侠战线，与主线并行"
+        }
+      ]
     },
     {
       "id": "ultimate-power-2006",
@@ -1369,7 +4680,189 @@
           "note": "交叉的另一半，另一侧的宇宙"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Squadron Supreme Vol 2 1",
+          "series": "Squadron Supreme",
+          "number": "1",
+          "date": "2006-03-22",
+          "title": "The Pre-War Years",
+          "cover": "Squadron_Supreme_Vol_2_1_Textless.jpg",
+          "core": false,
+          "note": "交叉的另一半，另一侧的宇宙"
+        },
+        {
+          "id": "fandom:Squadron Supreme Vol 2 2",
+          "series": "Squadron Supreme",
+          "number": "2",
+          "date": "2006-04-19",
+          "title": "First Steps",
+          "cover": "Squadron_Supreme_Vol_2_2_Textless.jpg",
+          "core": false,
+          "note": "交叉的另一半，另一侧的宇宙"
+        },
+        {
+          "id": "fandom:Squadron Supreme Vol 2 3",
+          "series": "Squadron Supreme",
+          "number": "3",
+          "date": "2006-05-24",
+          "title": "International Incidents",
+          "cover": "Squadron_Supreme_Vol_2_3_Textless.jpg",
+          "core": false,
+          "note": "交叉的另一半，另一侧的宇宙"
+        },
+        {
+          "id": "fandom:Squadron Supreme Vol 2 4",
+          "series": "Squadron Supreme",
+          "number": "4",
+          "date": "2006-06-14",
+          "title": "Blood and Sand",
+          "cover": "Squadron_Supreme_Vol_2_4_Textless.jpg",
+          "core": false,
+          "note": "交叉的另一半，另一侧的宇宙"
+        },
+        {
+          "id": "fandom:Squadron Supreme Vol 2 5",
+          "series": "Squadron Supreme",
+          "number": "5",
+          "date": "2006-07-12",
+          "title": "Blood and Sand (Part II)",
+          "cover": "Squadron_Supreme_Vol_2_5_Textless.jpg",
+          "core": false,
+          "note": "交叉的另一半，另一侧的宇宙"
+        },
+        {
+          "id": "fandom:Squadron Supreme Vol 2 6",
+          "series": "Squadron Supreme",
+          "number": "6",
+          "date": "2006-08-09",
+          "title": "Questions of Loyalty",
+          "cover": "Squadron_Supreme_Vol_2_6_Textless.jpg",
+          "core": false,
+          "note": "交叉的另一半，另一侧的宇宙"
+        },
+        {
+          "id": "fandom:Squadron Supreme Vol 2 8",
+          "series": "Squadron Supreme",
+          "number": "8",
+          "date": "2006-10-04",
+          "title": "",
+          "cover": "Squadron_Supreme_Vol_3_8_Textless.jpg",
+          "core": false,
+          "note": "交叉的另一半，另一侧的宇宙"
+        },
+        {
+          "id": "fandom:Ultimate Power Vol 1 1",
+          "series": "Ultimate Power",
+          "number": "1",
+          "date": "2006-10-11",
+          "title": "Ultimate Power (Part I)",
+          "cover": "Ultimate_Power_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "主线，2006 年 10 月至 2007 年 12 月"
+        },
+        {
+          "id": "fandom:Squadron Supreme Vol 2 9",
+          "series": "Squadron Supreme",
+          "number": "9",
+          "date": "2006-11-01",
+          "title": "",
+          "cover": "Squadron_Supreme_Vol_3_9_Textless.jpg",
+          "core": false,
+          "note": "交叉的另一半，另一侧的宇宙"
+        },
+        {
+          "id": "fandom:Squadron Supreme Vol 2 7",
+          "series": "Squadron Supreme",
+          "number": "7",
+          "date": "2006-11-15",
+          "title": "Turnabout",
+          "cover": "Squadron_Supreme_Vol_2_7_Textless.jpg",
+          "core": false,
+          "note": "交叉的另一半，另一侧的宇宙"
+        },
+        {
+          "id": "fandom:Ultimate Power Vol 1 2",
+          "series": "Ultimate Power",
+          "number": "2",
+          "date": "2006-11-29",
+          "title": "Ultimate Power (Part II)",
+          "cover": "Ultimate_Power_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "主线，2006 年 10 月至 2007 年 12 月"
+        },
+        {
+          "id": "fandom:Ultimate Power Vol 1 3",
+          "series": "Ultimate Power",
+          "number": "3",
+          "date": "2006-12-28",
+          "title": "Ultimate Power (Part III)",
+          "cover": "Ultimate_Power_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "主线，2006 年 10 月至 2007 年 12 月"
+        },
+        {
+          "id": "fandom:Ultimate Power Vol 1 4",
+          "series": "Ultimate Power",
+          "number": "4",
+          "date": "2007-03-21",
+          "title": "Ultimate Power (Part IV)",
+          "cover": "Ultimate_Power_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "主线，2006 年 10 月至 2007 年 12 月"
+        },
+        {
+          "id": "fandom:Ultimate Power Vol 1 5",
+          "series": "Ultimate Power",
+          "number": "5",
+          "date": "2007-05-09",
+          "title": "Ultimate Power (Part V)",
+          "cover": "Ultimate_Power_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "主线，2006 年 10 月至 2007 年 12 月"
+        },
+        {
+          "id": "fandom:Ultimate Power Vol 1 6",
+          "series": "Ultimate Power",
+          "number": "6",
+          "date": "2007-07-05",
+          "title": "Ultimate Power (Part VI)",
+          "cover": "Ultimate_Power_Vol_1_6_Textless.jpg",
+          "core": true,
+          "note": "主线，2006 年 10 月至 2007 年 12 月"
+        },
+        {
+          "id": "fandom:Ultimate Power Vol 1 7",
+          "series": "Ultimate Power",
+          "number": "7",
+          "date": "2007-09-12",
+          "title": "Ultimate Power (Part VII)",
+          "cover": "Ultimate_Power_Vol_1_7.jpg",
+          "core": true,
+          "note": "主线，2006 年 10 月至 2007 年 12 月"
+        },
+        {
+          "id": "fandom:Ultimate Power Vol 1 8",
+          "series": "Ultimate Power",
+          "number": "8",
+          "date": "2007-10-31",
+          "title": "Ultimate Power (Part VIII)",
+          "cover": "Ultimate_Power_Vol_1_8_Textless.jpg",
+          "core": true,
+          "note": "主线，2006 年 10 月至 2007 年 12 月"
+        },
+        {
+          "id": "fandom:Ultimate Power Vol 1 9",
+          "series": "Ultimate Power",
+          "number": "9",
+          "date": "2007-12-28",
+          "title": "Ultimate Power (Part IX)",
+          "cover": "Ultimate_Power_Vol_1_9_Textless.jpg",
+          "core": true,
+          "note": "主线，2006 年 10 月至 2007 年 12 月"
+        }
+      ]
     },
     {
       "id": "ultimate-galactus-trilogy-2004",
@@ -1396,7 +4889,149 @@
         }
       ],
       "optionalOrder": [],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Ultimate Nightmare Vol 1 1",
+          "series": "Ultimate Nightmare",
+          "number": "1",
+          "date": "2004-08-04",
+          "title": "Ultimate Nightmare (Part I)",
+          "cover": "Ultimate_Nightmare_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "第一部：西伯利亚的异常信号"
+        },
+        {
+          "id": "fandom:Ultimate Nightmare Vol 1 2",
+          "series": "Ultimate Nightmare",
+          "number": "2",
+          "date": "2004-09-08",
+          "title": "Ultimate Nightmare (Part II)",
+          "cover": "Ultimate_Nightmare_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "第一部：西伯利亚的异常信号"
+        },
+        {
+          "id": "fandom:Ultimate Nightmare Vol 1 3",
+          "series": "Ultimate Nightmare",
+          "number": "3",
+          "date": "2004-10-13",
+          "title": "Ultimate Nightmare (Part III)",
+          "cover": "Ultimate_Nightmare_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "第一部：西伯利亚的异常信号"
+        },
+        {
+          "id": "fandom:Ultimate Nightmare Vol 1 4",
+          "series": "Ultimate Nightmare",
+          "number": "4",
+          "date": "2004-12-29",
+          "title": "Ultimate Nightmare (Part IV)",
+          "cover": "Ultimate_Nightmare_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "第一部：西伯利亚的异常信号"
+        },
+        {
+          "id": "fandom:Ultimate Nightmare Vol 1 5",
+          "series": "Ultimate Nightmare",
+          "number": "5",
+          "date": "2005-02-23",
+          "title": "Ultimate Nightmare (Part V)",
+          "cover": "Ultimate_Nightmare_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "第一部：西伯利亚的异常信号"
+        },
+        {
+          "id": "fandom:Ultimate Secret Vol 1 1",
+          "series": "Ultimate Secret",
+          "number": "1",
+          "date": "2005-03-30",
+          "title": "Ultimate Secret (Part I)",
+          "cover": "Ultimate_Secret_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "第二部：克里人的情报"
+        },
+        {
+          "id": "fandom:Ultimate Secret Vol 1 2",
+          "series": "Ultimate Secret",
+          "number": "2",
+          "date": "2005-04-27",
+          "title": "Ultimate Secret (Part II)",
+          "cover": "Ultimate_Secret_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "第二部：克里人的情报"
+        },
+        {
+          "id": "fandom:Ultimate Secret Vol 1 3",
+          "series": "Ultimate Secret",
+          "number": "3",
+          "date": "2005-09-28",
+          "title": "Ultimate Secret (Part III)",
+          "cover": "Ultimate_Secret_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "第二部：克里人的情报"
+        },
+        {
+          "id": "fandom:Ultimate Secret Vol 1 4",
+          "series": "Ultimate Secret",
+          "number": "4",
+          "date": "2005-10-26",
+          "title": "Ultimate Secret (Part IV)",
+          "cover": "Ultimate_Secret_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "第二部：克里人的情报"
+        },
+        {
+          "id": "fandom:Ultimate Extinction Vol 1 1",
+          "series": "Ultimate Extinction",
+          "number": "1",
+          "date": "2006-01-11",
+          "title": "Ultimate Extinction (Part I)",
+          "cover": "Ultimate_Extinction_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "第三部：银色冲浪者与终局"
+        },
+        {
+          "id": "fandom:Ultimate Extinction Vol 1 2",
+          "series": "Ultimate Extinction",
+          "number": "2",
+          "date": "2006-02-08",
+          "title": "Ultimate Extinction (Part II)",
+          "cover": "Ultimate_Extinction_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "第三部：银色冲浪者与终局"
+        },
+        {
+          "id": "fandom:Ultimate Extinction Vol 1 3",
+          "series": "Ultimate Extinction",
+          "number": "3",
+          "date": "2006-03-15",
+          "title": "Ultimate Extinction (Part III)",
+          "cover": "Ultimate_Extinction_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "第三部：银色冲浪者与终局"
+        },
+        {
+          "id": "fandom:Ultimate Extinction Vol 1 4",
+          "series": "Ultimate Extinction",
+          "number": "4",
+          "date": "2006-04-12",
+          "title": "Ultimate Extinction (Part IV)",
+          "cover": "Ultimate_Extinction_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "第三部：银色冲浪者与终局"
+        },
+        {
+          "id": "fandom:Ultimate Extinction Vol 1 5",
+          "series": "Ultimate Extinction",
+          "number": "5",
+          "date": "2006-05-31",
+          "title": "Ultimate Extinction (Part V)",
+          "cover": "Ultimate_Extinction_Vol_1_5_Textless.jpg",
+          "core": true,
+          "note": "第三部：银色冲浪者与终局"
+        }
+      ]
     },
     {
       "id": "ultimate-war-2003",
@@ -1419,7 +5054,49 @@
           "note": "事件的直接前因散在两刊的同期连载里"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Ultimate War Vol 1 1",
+          "series": "Ultimate War",
+          "number": "1",
+          "date": "2002-12-04",
+          "title": "Ultimates vs. Ultimate X-Men (Part I)",
+          "cover": "Ultimate_War_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "主线，2002 年 12 月至 2003 年 2 月"
+        },
+        {
+          "id": "fandom:Ultimate War Vol 1 2",
+          "series": "Ultimate War",
+          "number": "2",
+          "date": "2002-12-26",
+          "title": "Ultimates vs. Ultimate X-Men (Part II)",
+          "cover": "Ultimate_War_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "主线，2002 年 12 月至 2003 年 2 月"
+        },
+        {
+          "id": "fandom:Ultimate War Vol 1 3",
+          "series": "Ultimate War",
+          "number": "3",
+          "date": "2003-01-29",
+          "title": "Ultimates vs. Ultimate X-Men (Part III)",
+          "cover": "Ultimate_War_Vol_1_3_Textless.jpg",
+          "core": true,
+          "note": "主线，2002 年 12 月至 2003 年 2 月"
+        },
+        {
+          "id": "fandom:Ultimate War Vol 1 4",
+          "series": "Ultimate War",
+          "number": "4",
+          "date": "2003-02-19",
+          "title": "Ultimates vs. Ultimate X-Men (Part IV)",
+          "cover": "Ultimate_War_Vol_1_4_Textless.jpg",
+          "core": true,
+          "note": "主线，2002 年 12 月至 2003 年 2 月"
+        }
+      ]
     },
     {
       "id": "ultimate-endgame-2025",
@@ -1485,58 +5162,109 @@
           "note": "6160 侧蜘蛛侠的同期连载"
         }
       ],
-      "imageUrl": null
-    },
-    {
-      "id": "ultimate-universe-two-years-in-2025",
-      "title": "Ultimate Universe: Two Years In",
-      "titleZh": "新终极宇宙：两年之后",
-      "tier": "ultimate6160",
-      "year": 2025,
-      "oneLiner": "第二年的总盘点，终极宇宙版的银河护卫队登场，各条战线在终局开打前全部就位。",
-      "coreOrder": [
+      "imageUrl": null,
+      "readingOrder": [
         {
-          "series": "Ultimate Universe: Two Years In",
-          "issues": "1",
-          "note": "年度特刊，2025 年 12 月"
-        }
-      ],
-      "optionalOrder": [
-        {
-          "series": "Ultimate Spider-Man (2024) / Ultimate Black Panther (2024) / Ultimate X-Men (2024)",
-          "issues": "各 13-24",
-          "note": "第二年三刊连载（Year Two）"
+          "id": "fandom:Ultimate Spider-Man: Incursion Vol 1 1",
+          "series": "Ultimate Spider-Man: Incursion",
+          "number": "1",
+          "date": "2025-06-04",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Incursion_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "主线，2025 年 6 月至 10 月"
         },
         {
-          "series": "Ultimate Wolverine (2025)",
-          "issues": "1-12",
-          "note": "同期的金刚狼连载"
-        }
-      ],
-      "imageUrl": null
-    },
-    {
-      "id": "ultimate-universe-one-year-in-2024",
-      "title": "Ultimate Universe: One Year In",
-      "titleZh": "新终极宇宙：一年之后",
-      "tier": "ultimate6160",
-      "year": 2024,
-      "oneLiner": "一年之后的一次总盘点：造物主议会各条战线浮出水面，为新终极宇宙的第二年布好局。",
-      "coreOrder": [
+          "id": "fandom:Ultimate Spider-Man Vol 3 18",
+          "series": "Ultimate Spider-Man",
+          "number": "18",
+          "date": "2025-06-25",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_18_Textless.jpg",
+          "core": false,
+          "note": "6160 侧蜘蛛侠的同期连载"
+        },
         {
-          "series": "Ultimate Universe: One Year In",
-          "issues": "1",
-          "note": "年度特刊，2024 年 12 月"
-        }
-      ],
-      "optionalOrder": [
+          "id": "fandom:Ultimate Spider-Man: Incursion Vol 1 2",
+          "series": "Ultimate Spider-Man: Incursion",
+          "number": "2",
+          "date": "2025-07-09",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Incursion_Vol_1_2_Textless.jpg",
+          "core": true,
+          "note": "主线，2025 年 6 月至 10 月"
+        },
         {
-          "series": "Ultimates (2024)",
-          "issues": "7-18",
-          "note": "紧接其后的第二年主线"
+          "id": "fandom:Ultimate Spider-Man Vol 3 19",
+          "series": "Ultimate Spider-Man",
+          "number": "19",
+          "date": "2025-07-30",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_19_Textless.jpg",
+          "core": false,
+          "note": "6160 侧蜘蛛侠的同期连载"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man: Incursion Vol 1 3",
+          "series": "Ultimate Spider-Man: Incursion",
+          "number": "3",
+          "date": "2025-08-13",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Incursion_Vol_1_3_Di_Meo_Variant.jpg",
+          "core": true,
+          "note": "主线，2025 年 6 月至 10 月"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 20",
+          "series": "Ultimate Spider-Man",
+          "number": "20",
+          "date": "2025-08-27",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_20_Textless.jpg",
+          "core": false,
+          "note": "6160 侧蜘蛛侠的同期连载"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man: Incursion Vol 1 4",
+          "series": "Ultimate Spider-Man: Incursion",
+          "number": "4",
+          "date": "2025-09-10",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Incursion_Vol_1_4_Land_Variant.jpg",
+          "core": true,
+          "note": "主线，2025 年 6 月至 10 月"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 21",
+          "series": "Ultimate Spider-Man",
+          "number": "21",
+          "date": "2025-09-24",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_21_Lozano_Variant.jpg",
+          "core": false,
+          "note": "6160 侧蜘蛛侠的同期连载"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 22",
+          "series": "Ultimate Spider-Man",
+          "number": "22",
+          "date": "2025-10-22",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_22_Textless.jpg",
+          "core": false,
+          "note": "6160 侧蜘蛛侠的同期连载"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man: Incursion Vol 1 5",
+          "series": "Ultimate Spider-Man: Incursion",
+          "number": "5",
+          "date": "2025-10-22",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Incursion_Vol_1_5_Aspinall_Variant.jpg",
+          "core": true,
+          "note": "主线，2025 年 6 月至 10 月"
         }
-      ],
-      "imageUrl": null
+      ]
     },
     {
       "id": "ultimate-invasion-2023",
@@ -1552,57 +5280,620 @@
           "note": "主线，2023 年 6 月至 9 月"
         }
       ],
-      "optionalOrder": [
+      "optionalOrder": [],
+      "imageUrl": null,
+      "readingOrder": [
         {
-          "series": "Ultimate Universe",
-          "issues": "1",
-          "note": "紧接其后的特刊，新终极宇宙正式开场"
+          "id": "fandom:Ultimate Invasion Vol 1 1",
+          "series": "Ultimate Invasion",
+          "number": "1",
+          "date": "2023-06-21",
+          "title": "Chapter One: Good Artists Copy",
+          "cover": "Ultimate_Invasion_Vol_1_1_Wraparound.jpg",
+          "core": true,
+          "note": "主线，2023 年 6 月至 9 月"
+        },
+        {
+          "id": "fandom:Ultimate Invasion Vol 1 2",
+          "series": "Ultimate Invasion",
+          "number": "2",
+          "date": "2023-07-26",
+          "title": "Chapter Two: Down the Rabbit Hole",
+          "cover": "Ultimate_Invasion_Vol_1_2_Hellfire_Gala_Variant.jpg",
+          "core": true,
+          "note": "主线，2023 年 6 月至 9 月"
+        },
+        {
+          "id": "fandom:Ultimate Invasion Vol 1 3",
+          "series": "Ultimate Invasion",
+          "number": "3",
+          "date": "2023-08-30",
+          "title": "Chapter Three: Through the Looking Glass",
+          "cover": "Ultimate_Invasion_Vol_1_3_Acuña_Variant.jpg",
+          "core": true,
+          "note": "主线，2023 年 6 月至 9 月"
+        },
+        {
+          "id": "fandom:Ultimate Invasion Vol 1 4",
+          "series": "Ultimate Invasion",
+          "number": "4",
+          "date": "2023-09-27",
+          "title": "Chapter Four: Yesterday, Today, Tomorrow",
+          "cover": "Ultimate_Invasion_Vol_1_4_Manapul_Variant.jpg",
+          "core": true,
+          "note": "主线，2023 年 6 月至 9 月"
         }
-      ],
-      "imageUrl": null
+      ]
     },
     {
       "id": "ultimate-universe-2023",
-      "title": "Ultimate Universe",
-      "titleZh": "新终极宇宙",
+      "title": "Ultimate Universe: Year One",
+      "titleZh": "新终极宇宙：第一年",
       "tier": "ultimate6160",
-      "year": 2023,
-      "oneLiner": "造物主把地球-6160 交到一群反派手里，钢铁小子拉上一群从没当过英雄的人组成新的终极战队，开始把被偷走的历史一寸寸抢回来。",
+      "year": 2024,
+      "oneLiner": "造物主议会被推翻后，新终极宇宙正式铺开：一年之内四刊并行，已婚的蜘蛛侠、瓦坎达的黑豹、日本都市传说里的 X 战警先后登场。",
       "coreOrder": [
         {
           "series": "Ultimate Universe",
           "issues": "1",
-          "note": "开篇特刊，2023 年 11 月"
-        }
-      ],
-      "optionalOrder": [
+          "note": "开篇特刊，新终极宇宙正式开场（2023-11）"
+        },
         {
           "series": "Ultimate Spider-Man (2024)",
-          "issues": "1-12",
-          "note": "四刊并行之一：已婚已育的彼得·帕克"
+          "issues": "1-6",
+          "note": "第一年：已婚已育的彼得·帕克重新成为蜘蛛侠"
         },
         {
           "series": "Ultimate Black Panther (2024)",
-          "issues": "1-12",
-          "note": "四刊并行之二：瓦坎达对抗造物主议会"
+          "issues": "1-6",
+          "note": "第一年：瓦坎达对抗造物主议会"
         },
         {
           "series": "Ultimate X-Men (2024)",
-          "issues": "1-12",
-          "note": "四刊并行之三：日本，变种人被当成都市传说"
+          "issues": "1-6",
+          "note": "第一年：日本，变种人被当成都市传说"
         },
         {
           "series": "Ultimates (2024)",
           "issues": "1-6",
-          "note": "四刊并行之四：新终极战队正式组队"
+          "note": "第一年：新终极战队正式组队"
+        }
+      ],
+      "optionalOrder": [
+        {
+          "series": "Ultimate Universe: One Year In",
+          "issues": "1",
+          "note": "一周年特刊（2024-12），收束第一年的四条线"
+        },
+        {
+          "series": "Ultimate Spider-Man (2024) / Ultimate Black Panther (2024) / Ultimate X-Men (2024)",
+          "issues": "7-12",
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "series": "Ultimate Universe: Two Years In",
+          "issues": "1",
+          "note": "两周年特刊（2025-12），第二年总结"
         },
         {
           "series": "Ultimate Wolverine (2025)",
-          "issues": "1-12",
+          "issues": "1-6",
           "note": "第二年起加入的第五刊"
         }
       ],
-      "imageUrl": null
+      "imageUrl": null,
+      "readingOrder": [
+        {
+          "id": "fandom:Ultimate Universe Vol 1 1",
+          "series": "Ultimate Universe",
+          "number": "1",
+          "date": "2023-11-01",
+          "title": "Epilogue",
+          "cover": "Ultimate_Universe_Vol_1_1_Textless.jpg",
+          "core": true,
+          "note": "开篇特刊，新终极宇宙正式开场（2023-11）"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 1",
+          "series": "Ultimate Spider-Man",
+          "number": "1",
+          "date": "2024-01-10",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_-_Official_Trailer_-_Marvel_Comics",
+          "core": true,
+          "note": "第一年：已婚已育的彼得·帕克重新成为蜘蛛侠"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 1",
+          "series": "Ultimate Black Panther",
+          "number": "1",
+          "date": "2024-02-07",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_-1_-_Official_Trailer_-_Marvel_Comics",
+          "core": true,
+          "note": "第一年：瓦坎达对抗造物主议会"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 2",
+          "series": "Ultimate Spider-Man",
+          "number": "2",
+          "date": "2024-02-21",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_2_Bagley_Connecting_Variant.jpg",
+          "core": true,
+          "note": "第一年：已婚已育的彼得·帕克重新成为蜘蛛侠"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 1",
+          "series": "Ultimate X-Men",
+          "number": "1",
+          "date": "2024-03-06",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_1_Aka_Variant.jpg",
+          "core": true,
+          "note": "第一年：日本，变种人被当成都市传说"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 2",
+          "series": "Ultimate Black Panther",
+          "number": "2",
+          "date": "2024-03-13",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_2_Bustos_Variant.jpg",
+          "core": true,
+          "note": "第一年：瓦坎达对抗造物主议会"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 3",
+          "series": "Ultimate Spider-Man",
+          "number": "3",
+          "date": "2024-03-27",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_3_Bagley_Connecting_Variant.jpg",
+          "core": true,
+          "note": "第一年：已婚已育的彼得·帕克重新成为蜘蛛侠"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 2",
+          "series": "Ultimate X-Men",
+          "number": "2",
+          "date": "2024-04-10",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_2_Textless.jpeg",
+          "core": true,
+          "note": "第一年：日本，变种人被当成都市传说"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 3",
+          "series": "Ultimate Black Panther",
+          "number": "3",
+          "date": "2024-04-17",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_3_BossLogic_Second_Printing_Variant.jpg",
+          "core": true,
+          "note": "第一年：瓦坎达对抗造物主议会"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 4",
+          "series": "Ultimate Spider-Man",
+          "number": "4",
+          "date": "2024-04-24",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_4_Design_Second_Printing_Variant.jpg",
+          "core": true,
+          "note": "第一年：已婚已育的彼得·帕克重新成为蜘蛛侠"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 3",
+          "series": "Ultimate X-Men",
+          "number": "3",
+          "date": "2024-05-15",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_3_Daniel_Variant.jpg",
+          "core": true,
+          "note": "第一年：日本，变种人被当成都市传说"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 4",
+          "series": "Ultimate Black Panther",
+          "number": "4",
+          "date": "2024-05-22",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_4_Doaly_Variant.jpg",
+          "core": true,
+          "note": "第一年：瓦坎达对抗造物主议会"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 5",
+          "series": "Ultimate Spider-Man",
+          "number": "5",
+          "date": "2024-05-29",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_5_Checchetto_Second_Printing_Variant.jpg",
+          "core": true,
+          "note": "第一年：已婚已育的彼得·帕克重新成为蜘蛛侠"
+        },
+        {
+          "id": "fandom:Ultimates Vol 3 1",
+          "series": "Ultimates",
+          "number": "1",
+          "date": "2024-06-05",
+          "title": "",
+          "cover": "Ultimates_Vol_3_1_Textless.jpg",
+          "core": true,
+          "note": "第一年：新终极战队正式组队"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 4",
+          "series": "Ultimate X-Men",
+          "number": "4",
+          "date": "2024-06-12",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_4_Design_Variant.jpg",
+          "core": true,
+          "note": "第一年：日本，变种人被当成都市传说"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 6",
+          "series": "Ultimate Spider-Man",
+          "number": "6",
+          "date": "2024-06-19",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_6_Checchetto_Second_Printing_Variant.jpg",
+          "core": true,
+          "note": "第一年：已婚已育的彼得·帕克重新成为蜘蛛侠"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 5",
+          "series": "Ultimate Black Panther",
+          "number": "5",
+          "date": "2024-06-26",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_5_Clarke_Variant.jpg",
+          "core": true,
+          "note": "第一年：瓦坎达对抗造物主议会"
+        },
+        {
+          "id": "fandom:Ultimates Vol 3 2",
+          "series": "Ultimates",
+          "number": "2",
+          "date": "2024-07-10",
+          "title": "",
+          "cover": "Ultimates_Vol_3_2_Textless.jpg",
+          "core": true,
+          "note": "第一年：新终极战队正式组队"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 5",
+          "series": "Ultimate X-Men",
+          "number": "5",
+          "date": "2024-07-17",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_5_Larraz_Variant.jpg",
+          "core": true,
+          "note": "第一年：日本，变种人被当成都市传说"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 6",
+          "series": "Ultimate Black Panther",
+          "number": "6",
+          "date": "2024-07-24",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_6_Mack_Variant.jpg",
+          "core": true,
+          "note": "第一年：瓦坎达对抗造物主议会"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 7",
+          "series": "Ultimate Spider-Man",
+          "number": "7",
+          "date": "2024-07-31",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_7_Big_Time_Collectibles_Exclusive_Variant.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 7",
+          "series": "Ultimate Black Panther",
+          "number": "7",
+          "date": "2024-08-07",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_7_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimates Vol 3 3",
+          "series": "Ultimates",
+          "number": "3",
+          "date": "2024-08-14",
+          "title": "",
+          "cover": "Ultimates_Vol_3_3_Textless.jpg",
+          "core": true,
+          "note": "第一年：新终极战队正式组队"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 8",
+          "series": "Ultimate Spider-Man",
+          "number": "8",
+          "date": "2024-08-21",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_8_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 6",
+          "series": "Ultimate X-Men",
+          "number": "6",
+          "date": "2024-08-28",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_6_Textless.jpg",
+          "core": true,
+          "note": "第一年：日本，变种人被当成都市传说"
+        },
+        {
+          "id": "fandom:Ultimates Vol 3 4",
+          "series": "Ultimates",
+          "number": "4",
+          "date": "2024-09-04",
+          "title": "",
+          "cover": "Ultimates_Vol_3_4_Textless.jpg",
+          "core": true,
+          "note": "第一年：新终极战队正式组队"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 8",
+          "series": "Ultimate Black Panther",
+          "number": "8",
+          "date": "2024-09-11",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_8_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 7",
+          "series": "Ultimate X-Men",
+          "number": "7",
+          "date": "2024-09-18",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_7_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 9",
+          "series": "Ultimate Spider-Man",
+          "number": "9",
+          "date": "2024-09-25",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_9_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 9",
+          "series": "Ultimate Black Panther",
+          "number": "9",
+          "date": "2024-10-02",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_9_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimates Vol 3 5",
+          "series": "Ultimates",
+          "number": "5",
+          "date": "2024-10-09",
+          "title": "",
+          "cover": "Ultimates_Vol_3_5_Textless.jpg",
+          "core": true,
+          "note": "第一年：新终极战队正式组队"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 10",
+          "series": "Ultimate Spider-Man",
+          "number": "10",
+          "date": "2024-10-16",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_10_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 8",
+          "series": "Ultimate X-Men",
+          "number": "8",
+          "date": "2024-10-30",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_8_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimates Vol 3 6",
+          "series": "Ultimates",
+          "number": "6",
+          "date": "2024-11-06",
+          "title": "",
+          "cover": "Ultimates_Vol_3_6_Textless.jpg",
+          "core": true,
+          "note": "第一年：新终极战队正式组队"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 9",
+          "series": "Ultimate X-Men",
+          "number": "9",
+          "date": "2024-11-13",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_9_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 11",
+          "series": "Ultimate Spider-Man",
+          "number": "11",
+          "date": "2024-11-20",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_11_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 10",
+          "series": "Ultimate Black Panther",
+          "number": "10",
+          "date": "2024-11-27",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_10_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Universe: One Year In Vol 1 1",
+          "series": "Ultimate Universe: One Year In",
+          "number": "1",
+          "date": "2024-12-11",
+          "title": "",
+          "cover": "Ultimate_Universe_One_Year_In_Vol_1_1_Textless.jpg",
+          "core": false,
+          "note": "一周年特刊（2024-12），收束第一年的四条线"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 10",
+          "series": "Ultimate X-Men",
+          "number": "10",
+          "date": "2024-12-11",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_10_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Spider-Man Vol 3 12",
+          "series": "Ultimate Spider-Man",
+          "number": "12",
+          "date": "2024-12-18",
+          "title": "",
+          "cover": "Ultimate_Spider-Man_Vol_3_12_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 11",
+          "series": "Ultimate Black Panther",
+          "number": "11",
+          "date": "2024-12-25",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_11_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Black Panther Vol 1 12",
+          "series": "Ultimate Black Panther",
+          "number": "12",
+          "date": "2025-01-08",
+          "title": "",
+          "cover": "Ultimate_Black_Panther_Vol_1_12_Hans_Variant.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Wolverine Vol 1 1",
+          "series": "Ultimate Wolverine",
+          "number": "1",
+          "date": "2025-01-15",
+          "title": "",
+          "cover": "Ultimate_Wolverine_-_Official_Trailer_-_Marvel_Comics",
+          "core": false,
+          "note": "第二年起加入的第五刊"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 11",
+          "series": "Ultimate X-Men",
+          "number": "11",
+          "date": "2025-01-29",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_11_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Wolverine Vol 1 2",
+          "series": "Ultimate Wolverine",
+          "number": "2",
+          "date": "2025-02-19",
+          "title": "",
+          "cover": "Ultimate_Wolverine_Vol_1_2_Textless.jpg",
+          "core": false,
+          "note": "第二年起加入的第五刊"
+        },
+        {
+          "id": "fandom:Ultimate X-Men Vol 2 12",
+          "series": "Ultimate X-Men",
+          "number": "12",
+          "date": "2025-02-26",
+          "title": "",
+          "cover": "Ultimate_X-Men_Vol_2_12_Textless.jpg",
+          "core": false,
+          "note": "第一年下半段三刊连载"
+        },
+        {
+          "id": "fandom:Ultimate Wolverine Vol 1 3",
+          "series": "Ultimate Wolverine",
+          "number": "3",
+          "date": "2025-03-26",
+          "title": "",
+          "cover": "Ultimate_Wolverine_Vol_1_3_Textless.jpg",
+          "core": false,
+          "note": "第二年起加入的第五刊"
+        },
+        {
+          "id": "fandom:Ultimate Wolverine Vol 1 4",
+          "series": "Ultimate Wolverine",
+          "number": "4",
+          "date": "2025-04-16",
+          "title": "",
+          "cover": "Ultimate_Wolverine_Vol_1_4_Textless.jpg",
+          "core": false,
+          "note": "第二年起加入的第五刊"
+        },
+        {
+          "id": "fandom:Ultimate Wolverine Vol 1 5",
+          "series": "Ultimate Wolverine",
+          "number": "5",
+          "date": "2025-05-07",
+          "title": "",
+          "cover": "Ultimate_Wolverine_Vol_1_5_Textless.jpg",
+          "core": false,
+          "note": "第二年起加入的第五刊"
+        },
+        {
+          "id": "fandom:Ultimate Wolverine Vol 1 6",
+          "series": "Ultimate Wolverine",
+          "number": "6",
+          "date": "2025-06-04",
+          "title": "",
+          "cover": "Ultimate_Wolverine_Vol_1_6_Textless.jpg",
+          "core": false,
+          "note": "第二年起加入的第五刊"
+        },
+        {
+          "id": "fandom:Ultimate Universe: Two Years In Vol 1 1",
+          "series": "Ultimate Universe: Two Years In",
+          "number": "1",
+          "date": "2025-12-03",
+          "title": "",
+          "cover": "Ultimate_Universe_Two_Years_In_Vol_1_1_Anindito_Variant.jpg",
+          "core": false,
+          "note": "两周年特刊（2025-12），第二年总结"
+        }
+      ]
     }
   ]
 }

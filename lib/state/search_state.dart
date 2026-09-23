@@ -52,21 +52,21 @@ class SearchHit {
 
   /// 类型角标文字。
   String get kindLabel => switch (kind) {
-        SearchHitKind.issue => '漫画',
-        SearchHitKind.series => '系列',
-        SearchHitKind.wikiSeries => 'wiki 系列',
-        SearchHitKind.guide => '指南',
-        SearchHitKind.event => '事件',
-      };
+    SearchHitKind.issue => '漫画',
+    SearchHitKind.series => '系列',
+    SearchHitKind.wikiSeries => 'wiki 系列',
+    SearchHitKind.guide => '指南',
+    SearchHitKind.event => '事件',
+  };
 
   /// 去重键。
   String get key => switch (kind) {
-        SearchHitKind.issue => 'issue:${issue?.id}',
-        SearchHitKind.series => 'series:$seriesId',
-        SearchHitKind.guide => 'guide:${guide?.id}',
-        SearchHitKind.wikiSeries => 'wiki:$wikiPageName',
-        SearchHitKind.event => 'event:${event?.id}',
-      };
+    SearchHitKind.issue => 'issue:${issue?.id}',
+    SearchHitKind.series => 'series:$seriesId',
+    SearchHitKind.guide => 'guide:${guide?.id}',
+    SearchHitKind.wikiSeries => 'wiki:$wikiPageName',
+    SearchHitKind.event => 'event:${event?.id}',
+  };
 }
 
 /// 搜索状态。
@@ -83,11 +83,11 @@ class SearchState extends ChangeNotifier {
     required EventsRepository events,
     required PreferencesRepository prefs,
     required List<ComicIssue> Function() localIssues,
-  })  : _catalog = catalog,
-        _wiki = wiki,
-        _events = events,
-        _prefs = prefs,
-        _localIssues = localIssues;
+  }) : _catalog = catalog,
+       _wiki = wiki,
+       _events = events,
+       _prefs = prefs,
+       _localIssues = localIssues;
 
   final CatalogRepository _catalog;
   final WikiRepository _wiki;
@@ -150,8 +150,7 @@ class SearchState extends ChangeNotifier {
       final events = await _events.all();
       final lower = q.toLowerCase();
       for (final e in events) {
-        if (!e.title.toLowerCase().contains(lower) &&
-            !e.titleZh.contains(q)) {
+        if (!e.title.toLowerCase().contains(lower) && !e.titleZh.contains(q)) {
           continue;
         }
         hits.putIfAbsent(
@@ -198,11 +197,21 @@ class SearchState extends ChangeNotifier {
     }
     notifyListeners();
 
-    // 3) 官网 lockjaw 系列搜索（带封面）
+    // 3) 官网 lockjaw 标题搜索：系列 + 单期（带封面）
     try {
-      final official =
-          await _catalog.searchOfficialSeries(q).timeout(const Duration(seconds: 15));
-      for (final s in official.take(8)) {
+      final official = await _catalog
+          .searchOfficial(q)
+          .timeout(const Duration(seconds: 15));
+      final seriesHits = official
+          .where((h) => h.kind == 'series')
+          .take(8)
+          .toList();
+      final issueHits = official
+          .where((h) => h.kind == 'issue')
+          .take(12)
+          .toList();
+
+      for (final s in seriesHits) {
         hits.putIfAbsent(
           'series:${s.id}',
           () => SearchHit(
@@ -213,27 +222,86 @@ class SearchState extends ChangeNotifier {
           ),
         );
       }
-      // 给前 4 个官网系列补封面（并发走系列详情，命中缓存很快）
-      final seriesHits = hits.values
-          .where((h) => h.kind == SearchHitKind.series)
-          .take(4)
-          .toList();
-      final details = await Future.wait(
-        seriesHits.map((h) => _catalog
-            .seriesDetail(h.seriesId!)
-            .timeout(const Duration(seconds: 10))
-            .catchError((_) => null)),
+      // 单期：标题形如 "Ultimate Invasion (2023) #1"，拆成系列名 + 期号
+      for (final it in issueHits) {
+        final m = RegExp(r'^(.*)\s+#([^#]+)$').firstMatch(it.title);
+        final series = m?.group(1)?.trim() ?? it.title;
+        final number = m?.group(2)?.trim() ?? '';
+        hits.putIfAbsent(
+          'issue:${it.id}',
+          () => SearchHit(
+            kind: SearchHitKind.issue,
+            title: it.title,
+            subtitle: '漫画期${number.isEmpty ? '' : ' · #$number'}',
+            issue: ComicIssue(
+              id: it.id,
+              title: it.title,
+              seriesTitle: series,
+              issueNumber: number,
+              releaseDate: '',
+              description: '',
+            ),
+          ),
+        );
+      }
+      // 封面：前几个系列详情 + 这些系列的全部期数（一次请求拿一整卷）
+      final topSeries = seriesHits.take(3).map((h) => h.id).toList();
+      final issueCoverById = <String, String>{};
+      await Future.wait(
+        topSeries.map(
+          (sid) => _catalog
+              .seriesIssues(sid)
+              .timeout(const Duration(seconds: 10))
+              .catchError((_) => const <ComicIssue>[])
+              .then((list) {
+                for (final i in list) {
+                  final c = i.coverUrl;
+                  if (c != null) issueCoverById[i.id] = c;
+                }
+              }),
+        ),
       );
-      for (var i = 0; i < seriesHits.length; i++) {
-        final cover = details[i]?.coverUrl;
-        if (cover != null) {
-          final h = seriesHits[i];
+      final seriesCovers = <String, String>{};
+      await Future.wait(
+        topSeries.map(
+          (sid) => _catalog
+              .seriesDetail(sid)
+              .timeout(const Duration(seconds: 10))
+              .catchError((_) => null)
+              .then((d) {
+                final c = d?.coverUrl;
+                if (c != null) seriesCovers[sid] = c;
+              }),
+        ),
+      );
+      for (final h in hits.values.toList()) {
+        if (h.kind == SearchHitKind.series &&
+            h.seriesId != null &&
+            seriesCovers[h.seriesId] != null) {
           hits[h.key] = SearchHit(
             kind: SearchHitKind.series,
             title: h.title,
             subtitle: h.subtitle,
-            coverUrl: cover,
+            coverUrl: seriesCovers[h.seriesId],
             seriesId: h.seriesId,
+          );
+        } else if (h.kind == SearchHitKind.issue &&
+            h.issue != null &&
+            issueCoverById[h.issue!.id] != null) {
+          hits[h.key] = SearchHit(
+            kind: SearchHitKind.issue,
+            title: h.title,
+            subtitle: h.subtitle,
+            coverUrl: issueCoverById[h.issue!.id],
+            issue: ComicIssue(
+              id: h.issue!.id,
+              title: h.issue!.title,
+              seriesTitle: h.issue!.seriesTitle,
+              issueNumber: h.issue!.issueNumber,
+              releaseDate: '',
+              description: '',
+              coverUrl: issueCoverById[h.issue!.id],
+            ),
           );
         }
       }

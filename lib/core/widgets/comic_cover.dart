@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../media/image_url.dart';
@@ -7,9 +10,14 @@ import '../theme/app_palette.dart';
 
 /// 统一的漫画封面。
 ///
-/// 除了占位/错误兜底统一在这里，还带两件可靠性的事：
-/// 1. 加载失败可以点一下重试（封面图偶尔被 CDN 掐，之前只能干看着占位图）；
-/// 2. Web 端对不放 CORS 的图床（fandom wiki）自动改走本地开发代理。
+/// 除了占位/错误兜底统一在这里，还带几件可靠性的事：
+/// 1. 加载失败**自动重试**（400ms / 1.2s / 3s 三次），还失败才显示
+///    「点一下重试」——封面被 CDN 掐、切页面回来重新加载失败都常见，
+///    以前失败一下就永远黑着，得手点；
+/// 2. Web 端不走 `CachedNetworkImage`：它底下的 flutter_cache_manager
+///    在 Web 上要落 IndexedDB，失败一次就再也不恢复；Web 直接用浏览器
+///    自己的 HTTP 缓存更稳（移动端仍用缓存库，磁盘缓存有用）；
+/// 3. Web 端对不放 CORS 的图床（fandom wiki）自动改走本地开发代理。
 class ComicCover extends StatefulWidget {
   const ComicCover({
     super.key,
@@ -61,13 +69,39 @@ class ComicCover extends StatefulWidget {
 
 class _ComicCoverState extends State<ComicCover> {
   int _attempt = 0;
+  Timer? _retryTimer;
+
+  /// 自动重试的间隔（长度即自动重试次数）。
+  static const _retryDelays = [
+    Duration(milliseconds: 400),
+    Duration(milliseconds: 1200),
+    Duration(milliseconds: 3000),
+  ];
 
   @override
   void didUpdateWidget(ComicCover old) {
     super.didUpdateWidget(old);
     if (old.url != widget.url) {
+      _retryTimer?.cancel();
       _attempt = 0;
     }
+  }
+
+  @override
+  void dispose() {
+    _retryTimer?.cancel();
+    super.dispose();
+  }
+
+  /// 失败后排一次自动重试。不用 setState 直接改，避免在 build 期间调；
+  /// 挪到定时器里（失败态本来就已经画出来了）。
+  void _scheduleRetry() {
+    if (!widget.retryOnTap) return;
+    if (_attempt >= _retryDelays.length) return;
+    if (_retryTimer?.isActive ?? false) return;
+    _retryTimer = Timer(_retryDelays[_attempt], () {
+      if (mounted) setState(() => _attempt++);
+    });
   }
 
   @override
@@ -85,9 +119,22 @@ class _ComicCoverState extends State<ComicCover> {
         fit: widget.fit,
         errorBuilder: (_, _, _) => _errorPlaceholder(context, placeholderColor),
       );
+    } else if (kIsWeb) {
+      // Web：走浏览器原生缓存，避开 flutter_cache_manager 那层
+      // （它在 Web 上用 IndexedDB，坏一次就再也不出图）
+      cover = Image.network(
+        resolveImage(widget.url!)!,
+        key: ValueKey('${widget.url}#$_attempt'),
+        fit: widget.fit,
+        filterQuality: FilterQuality.medium,
+        gaplessPlayback: true,
+        loadingBuilder: (_, child, progress) =>
+            progress == null ? child : _placeholder(context, placeholderColor),
+        errorBuilder: (_, _, _) => _errorPlaceholder(context, placeholderColor),
+      );
     } else {
       cover = CachedNetworkImage(
-        // key 带上重试次数，失败后点按能强制重新请求
+        // key 带上重试次数，失败后重试会强制重新请求
         key: ValueKey('${widget.url}#$_attempt'),
         imageUrl: resolveImage(widget.url)!,
         fit: widget.fit,
@@ -122,6 +169,7 @@ class _ComicCoverState extends State<ComicCover> {
   }
 
   Widget _errorPlaceholder(BuildContext context, Color placeholderColor) {
+    _scheduleRetry();
     return ColoredBox(
       color: widget.errorColor ?? placeholderColor,
       child: Center(

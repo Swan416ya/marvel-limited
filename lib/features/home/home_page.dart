@@ -44,9 +44,13 @@ class _HomePageState extends State<HomePage> {
   List<MarvelEvent>? _events;
   List<SeriesSummary>? _series;
 
-  /// 上一次见到的那几路数据，用来判断「变了没有」。
+  /// 官方指南（候选池要用）。
   List<ReadingGuide> _guides = const [];
-  List<ReadingProgress> _continues = const [];
+
+  /// 上一帧的数据签名。**不能用 identical 比列表**：LibraryState
+  /// .continueReading 每次访问都 `where().toList()` 出新列表，比引用
+  /// 会永远判「变了」，于是每帧重建池子 → 页面自己刷个不停。
+  String _dataSig = '';
 
   /// 正在重建池子中（避免同一帧里被触发多次）。
   bool _rebuilding = false;
@@ -145,6 +149,21 @@ class _HomePageState extends State<HomePage> {
     ];
   }
 
+  /// 数据签名：内容真变了才重建池子。只取「条数 + 首尾 id」这种便宜的
+  /// 指纹，够判断变化，又不会因为列表对象每次新建而误判。
+  String _signature(
+    List<ReadingGuide> guides,
+    List<ReadingProgress> continues,
+  ) {
+    final g = guides.isEmpty
+        ? '-'
+        : '${guides.length}:${guides.first.id}:${guides.last.id}';
+    final c = continues.isEmpty
+        ? '-'
+        : '${continues.length}:${continues.map((p) => p.issue.id).join(',')}';
+    return '$g|$c|${_events?.length ?? 0}|${_series?.length ?? 0}';
+  }
+
   /// 用户信号：搜索记录 + 收藏（含自建书单名）+ 追更。
   FeedSignals _signals() {
     final prefs = context.read<PreferencesRepository>();
@@ -163,13 +182,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // 官方指南和在读列表是异步/可变的，变了就重建池子
+    // 官方指南和在读列表是异步/可变的，变了才重建池子
     // （放在帧后，避免在 build 里直接 setState）。
-    final guides = context.watch<CatalogState>().guides ?? const <ReadingGuide>[];
+    final guides =
+        context.watch<CatalogState>().guides ?? const <ReadingGuide>[];
     final continues = context.watch<LibraryState>().continueReading;
-    if (!identical(guides, _guides) || !identical(continues, _continues)) {
-      _guides = guides;
-      _continues = continues;
+    _guides = guides;
+    final sig = _signature(guides, continues);
+    if (sig != _dataSig) {
+      _dataSig = sig;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _rebuildPool();
       });
@@ -216,7 +237,7 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: Column(
                           children: [
-                            for (final c in left) _FeedCardView(card: c)
+                            for (final c in left) _FeedCardView(card: c),
                           ],
                         ),
                       ),
@@ -224,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: Column(
                           children: [
-                            for (final c in right) _FeedCardView(card: c)
+                            for (final c in right) _FeedCardView(card: c),
                           ],
                         ),
                       ),
@@ -331,8 +352,11 @@ class _FeedCardView extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            child:
-                                Icon(Icons.bolt, color: p.iconOnCover, size: 32),
+                            child: Icon(
+                              Icons.bolt,
+                              color: p.iconOnCover,
+                              size: 32,
+                            ),
                           ),
                   ),
                   // 事件卡压一层黑渐变放白字
@@ -369,11 +393,7 @@ class _FeedCardView extends StatelessWidget {
                       ),
                     ),
                   // 类型标签
-                  Positioned(
-                    left: 6,
-                    top: 6,
-                    child: _kindBadge(p),
-                  ),
+                  Positioned(left: 6, top: 6, child: _kindBadge(p)),
                 ],
               ),
             ),

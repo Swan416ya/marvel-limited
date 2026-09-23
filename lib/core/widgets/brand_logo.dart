@@ -10,8 +10,8 @@ import '../theme/app_palette.dart';
 /// - 首页 MARVEL LIMITED、指南 MARVEL GUIDE、系列 MARVEL SERIES、
 ///   事件 MARVEL EVENT、收藏 MARVEL COLLECTION。
 /// - logo 用 `assets/brand/marvel_unlimited_logo.svg|.png`（存在即用）；
-///   右侧单词按 logo 里 **MARVEL 字形**的实测尺寸对齐（见下方常量），
-///   字体用打包的 Anton（OFL 授权），字形和漫威标志的粗窄无衬线最接近。
+///   右侧单词和 logo **竖直居中对齐**（字高按 MARVEL 字形实测比例算，
+///   字号固定不变），字体用打包的 Anton（OFL 授权）。
 /// - 没放官方素材时回落到自绘的红底 MARVEL 方块（见 `_WordMark`）。
 class BrandLogo extends StatelessWidget {
   const BrandLogo({super.key, this.height = 24, this.tail = 'UNLIMITED'});
@@ -31,12 +31,13 @@ class BrandLogo extends StatelessWidget {
   /// Anton 的 capHeight / unitsPerEm = 1760 / 2048。
   static const antonCapRatio = 0.859375;
 
-  /// 文字相对 logo 字形的**视觉**微调。
+  /// 文字的**视觉**下沉量（占 logo 高的比例）。
   ///
-  /// 按基线对齐算下来（0.9202H）实际渲染出来还是比 MARVEL 字形高 1px
-  /// 左右（字体渲染的取整差异），看着像顶到红框上沿。这里只挪绘制、
-  /// 不动基线布局，字号保持和字形同高。
-  static const tailNudge = 0.045;
+  /// 基线对齐在几何上是对的（MARVEL 字形中心恰好在红方块中心），
+  /// 但 Anton 的字形墨迹底部比基线高约 1px（H=22 时实测：文字中心
+  /// 比方块中心高 1.0px），所以只挪绘制、不动布局，把墨迹压回中心。
+  /// 截图像素量过：加了这个量后 |文字中心 - 方块中心| < 0.5px。
+  static const tailNudge = 0.048;
 
   /// 右侧单词的字号：目标字高反推。
   static double tailFontSize(double height) =>
@@ -56,8 +57,11 @@ class BrandLogo extends StatelessWidget {
             );
       return Row(
         mainAxisSize: MainAxisSize.min,
-        // 按文字基线对齐：logo 的基线就是里面 MARVEL 字形的基线
-        // （SVG 实测 0.9202），单词的基线也是它，两边自然连成一体。
+        // 对齐方式：**字形块的竖直中心**对齐红方块的竖直中心。
+        // 不能用 Row 的 center——那对齐的是文字「行框」（含下降部的
+        // 空白），字形会整体偏上。SVG 里 MARVEL 字形占 y 0.0798H~
+        // 0.9202H（几何中心恰好在方块中心），所以把 logo 的基线申报为
+        // 0.9202H、文字基线也落在那里，两边字形中心就重合了。
         crossAxisAlignment: CrossAxisAlignment.baseline,
         textBaseline: TextBaseline.alphabetic,
         children: [

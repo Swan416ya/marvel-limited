@@ -40,6 +40,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
   List<ComicIssue>? _guideIssues;
   bool _guideLoading = false;
 
+  /// 阅读顺序里是否把「延伸刊物」也放进网格（默认只看主线）。
+  bool _includeOptional = false;
+
   @override
   void initState() {
     super.initState();
@@ -77,8 +80,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
         if (!mounted) return;
         if (issues.isEmpty) continue;
         if (!_yearFits(issues, event.year)) {
-          debugPrint('[EventDetail] 跳过年份不符的指南：'
-              '${guide.title}（事件 ${event.year}）');
+          debugPrint(
+            '[EventDetail] 跳过年份不符的指南：'
+            '${guide.title}（事件 ${event.year}）',
+          );
           continue;
         }
         setState(() {
@@ -100,7 +105,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
   /// 标题候选：必须按词边界完整包含事件名，再按「像不像这个事件的正传」
   /// 排序。返回的是**待验证**列表，年份由 [_yearFits] 说了算。
   static List<ReadingGuide> _candidates(
-      List<ReadingGuide> guides, MarvelEvent event) {
+    List<ReadingGuide> guides,
+    MarvelEvent event,
+  ) {
     final key = _normalize(event.title);
     if (key.isEmpty) return const [];
     final scored = <({ReadingGuide guide, int score})>[];
@@ -136,16 +143,22 @@ class _EventDetailPageState extends State<EventDetailPage> {
   ///
   /// 大事件正传都是事件当年到次年发的，所以取年份区间放宽 ±2 年做判定。
   static bool _yearFits(List<ComicIssue> issues, int eventYear) {
-    final years = issues
-        .map((i) => int.tryParse(i.releaseDate.split('-').first))
-        .whereType<int>()
-        .toList()
-      ..sort();
+    final years =
+        issues
+            .map((i) => int.tryParse(i.releaseDate.split('-').first))
+            .whereType<int>()
+            .toList()
+          ..sort();
     if (years.isEmpty) return true; // 没有日期就不拦，交给标题匹配
     final lo = years.first;
     final hi = years.last;
     return eventYear >= lo - 2 && eventYear <= hi + 2;
   }
+
+  /// 网格里要显示的期：默认只主线，开关打开后含延伸。
+  List<EventIssue> _visibleIssues(MarvelEvent event) => _includeOptional
+      ? event.readingOrder
+      : event.readingOrder.where((i) => i.core).toList();
 
   static bool _isBoundary(String ch) =>
       ch == ' ' || ch == ':' || ch == '-' || ch == ',' || ch == '(';
@@ -179,8 +192,10 @@ class _EventDetailPageState extends State<EventDetailPage> {
     // hero 配图：数据集 URL 优先，其次官方指南里同名事件的封面
     final guides =
         context.watch<CatalogState>().guides ?? const <ReadingGuide>[];
-    final coverUrl =
-        context.read<EventsRepository>().coverUrlFor(event, guides);
+    final coverUrl = context.read<EventsRepository>().coverUrlFor(
+      event,
+      guides,
+    );
 
     return Scaffold(
       body: CustomScrollView(
@@ -213,10 +228,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [
-                          const Color(0x59000000),
-                          p.background,
-                        ],
+                        colors: [const Color(0x59000000), p.background],
                         stops: const [0.45, 1],
                       ),
                     ),
@@ -345,20 +357,72 @@ class _EventDetailPageState extends State<EventDetailPage> {
               )
             else
               CoverGrid(
+                columns: 4,
                 itemCount: _guideIssues!.length,
-                textBlockHeight: 32, // 期号 + 系列名
-                itemBuilder: (context, i) => _GuideIssueTile(
-                  issue: _guideIssues![i],
-                  index: i,
-                ),
+                textBlockHeight: 30,
+                itemBuilder: (context, i) =>
+                    _GuideIssueTile(issue: _guideIssues![i], index: i),
               ),
           ],
           // 没匹配到官方指南的事件，退回静态整理的阅读顺序
-          if (_guide == null && !_guideLoading) ...[
+          // 没有官方指南：用本地整理的逐期导读（一本一本、按发行日期排）
+          // 没有官方指南：本地整理的逐期导读，封面网格 + 左上角序号。
+          // 默认只显示主线，右上角开关把延伸刊物（石头人那种支线）也放进来。
+          if (_guide == null &&
+              !_guideLoading &&
+              event.readingOrder.isNotEmpty) ...[
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xl,
+                  AppSpacing.xxl,
+                  AppSpacing.xl,
+                  AppSpacing.sm,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SectionHeader(
+                        title: '阅读顺序',
+                        subtitle:
+                            '共 ${event.readingOrder.length} 期 · '
+                            '按发行日期 · 整理自 Marvel Database',
+                        padding: EdgeInsets.zero,
+                      ),
+                    ),
+                    if (event.readingOrder.any((i) => !i.core))
+                      _OptionalToggle(
+                        on: _includeOptional,
+                        onChanged: (v) => setState(() => _includeOptional = v),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            CoverGrid(
+              columns: 4,
+              itemCount: _visibleIssues(event).length,
+              textBlockHeight: 30,
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.md,
+                0,
+                AppSpacing.md,
+                0,
+              ),
+              itemBuilder: (context, i) {
+                final list = _visibleIssues(event);
+                return _ReadingIssueTile(issue: list[i], index: i);
+              },
+            ),
+          ],
+          // 数据还没有逐期清单的老兜底：按系列给个大方向
+          if (_guide == null &&
+              !_guideLoading &&
+              event.readingOrder.isEmpty) ...[
             SliverToBoxAdapter(
               child: SectionHeader(
                 title: '阅读顺序',
-                subtitle: '静态整理（没找到官方指南）',
+                subtitle: '整理自 Marvel Database',
                 padding: const EdgeInsets.fromLTRB(
                   AppSpacing.xl,
                   AppSpacing.xxl,
@@ -375,7 +439,9 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   index: i,
                   item: event.coreOrder[i],
                   onTap: () => AppRouter.openSearch(
-                      context, query: event.coreOrder[i].series),
+                    context,
+                    query: event.coreOrder[i].series,
+                  ),
                 ),
               ),
             ),
@@ -383,7 +449,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               SliverToBoxAdapter(
                 child: SectionHeader(
                   title: '可选延伸',
-                  subtitle: '感兴趣的支线再补',
+                  subtitle: '主线之外、按兴趣再补',
                   padding: const EdgeInsets.fromLTRB(
                     AppSpacing.xl,
                     AppSpacing.lg,
@@ -467,11 +533,7 @@ class _GuideIssueTile extends StatelessWidget {
             issue.seriesTitle,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: p.textGhost,
-              fontSize: 10,
-              height: 1.3,
-            ),
+            style: TextStyle(color: p.textGhost, fontSize: 10, height: 1.3),
           ),
         ],
       ),
@@ -553,6 +615,130 @@ class _OrderItem extends StatelessWidget {
             Icon(Icons.search, size: 16, color: p.textGhost),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// 「含延伸刊物」开关：小胶囊，点一下切换。
+class _OptionalToggle extends StatelessWidget {
+  const _OptionalToggle({required this.on, required this.onChanged});
+
+  final bool on;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.p;
+    return GestureDetector(
+      onTap: () => onChanged(!on),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
+        decoration: BoxDecoration(
+          color: on ? p.brand.withValues(alpha: 0.18) : p.fill,
+          borderRadius: BorderRadius.circular(AppRadius.pill),
+          border: Border.all(color: on ? p.brand : p.border),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              on ? Icons.filter_alt : Icons.filter_alt_off,
+              size: 13,
+              color: on ? p.brand : p.textSubtle,
+            ),
+            const SizedBox(width: 5),
+            Text(
+              '含延伸刊物',
+              style: TextStyle(
+                color: on ? p.brand : p.textSubtle,
+                fontSize: 11.5,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// 本地逐期导读的网格瓦片：封面 + 左上角序号 + 期号，点进这一期。
+class _ReadingIssueTile extends StatelessWidget {
+  const _ReadingIssueTile({required this.issue, required this.index});
+
+  final EventIssue issue;
+  final int index;
+
+  void _open(BuildContext context) {
+    final number = issue.number;
+    AppRouter.openIssue(
+      context,
+      ComicIssue(
+        id: issue.id,
+        title: issue.title.isEmpty ? '${issue.series} #$number' : issue.title,
+        seriesTitle: issue.series,
+        issueNumber: number,
+        releaseDate: issue.date,
+        description: '',
+        coverUrl: issue.coverUrl,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.p;
+    return InkWell(
+      onTap: () => _open(context),
+      borderRadius: BorderRadius.circular(AppRadius.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ComicCover(
+                  url: issue.coverUrl,
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  placeholderIcon: Icons.menu_book,
+                ),
+                Positioned(
+                  left: 4,
+                  top: 4,
+                  child: CoverBadge(label: '${index + 1}'),
+                ),
+                if (!issue.core)
+                  Positioned(
+                    right: 4,
+                    top: 4,
+                    child: CoverBadge(
+                      label: '延伸',
+                      color: p.badge.withValues(alpha: 0.85),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            issue.number.isEmpty ? issue.series : '#${issue.number}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: p.textPrimary,
+              fontSize: 11.5,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            issue.series,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: p.textGhost, fontSize: 9.5, height: 1.3),
+          ),
+        ],
       ),
     );
   }
