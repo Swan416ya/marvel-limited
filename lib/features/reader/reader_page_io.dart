@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math' as math;
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -69,6 +68,13 @@ class _ReaderPageState extends State<ReaderPage> {
   /// 横屏天然就是双页，这个开关只影响竖屏。
   bool _spreadMode = false;
 
+  /// 跨页配对偏移：0 = (1,2)(3,4)…，1 = 封面单页 + (2,3)(4,5)…。
+  ///
+  /// 美漫扫描本的装订起点不固定，有的本子第 1、2 页是一幅跨页大图，
+  /// 有的第 2、3 页才是——固定配对总有一半的书对不上。用户在工具栏
+  /// 「切换配对」即可平移一格：当前跨页 (4,5) 点一下变成 (5,6)。
+  int _pairOffset = 0;
+
   int get _total => widget.pages.length;
 
   bool get _isLandscape =>
@@ -77,14 +83,23 @@ class _ReaderPageState extends State<ReaderPage> {
   /// 是否处于双页视图（横屏自动，或竖屏手动开启）。
   bool get _isSpreadView => _isLandscape || _spreadMode;
 
-  /// 双页跨页数。
-  int get _spreadCount => (_total + 1) ~/ 2;
+  /// 双页跨页数（offset=1 时第一视图是封面单页）。
+  int get _spreadCount =>
+      _pairOffset == 0 ? (_total + 1) ~/ 2 : 1 + (_total - 1 + 1) ~/ 2;
+
+  /// 视图 k 的左页（offset=1 的视图 0 是封面单页）。
+  int _leftPageOfView(int view) =>
+      _pairOffset == 0 ? view * 2 : (view == 0 ? 0 : view * 2 - 1);
+
+  /// 左页 p 对应的视图序号。
+  int _viewOfLeftPage(int page) =>
+      _pairOffset == 0 ? page ~/ 2 : (page == 0 ? 0 : (page + 1) ~/ 2);
 
   /// 当前平台下「一屏」的数量。
   int get _viewCount => _isSpreadView ? _spreadCount : _total;
 
   /// 当前单页索引对应的视图序号。
-  int get _viewIndex => _isSpreadView ? _page ~/ 2 : _page;
+  int get _viewIndex => _isSpreadView ? _viewOfLeftPage(_page) : _page;
 
   bool get _zoomed => _zoomController.value.getMaxScaleOnAxis() > 1.01;
 
@@ -156,9 +171,8 @@ class _ReaderPageState extends State<ReaderPage> {
 
   void _onPageChanged(int view) {
     setState(() {
-      // 一屏两页的场合（横屏或手动双页）都要乘 2，之前只判了横屏，
-      // 竖屏开双页后进度/书签页码会错位
-      _page = _isSpreadView ? view * 2 : view;
+      // 一屏两页的场合（横屏或手动双页）按配对偏移反推左页
+      _page = _isSpreadView ? _leftPageOfView(view) : view;
       if (_zoomed) _zoomController.value = Matrix4.identity();
     });
     _saveProgress();
@@ -358,8 +372,34 @@ class _ReaderPageState extends State<ReaderPage> {
       // 跨页（比如在第 4 页切双页显示「第 4-5 页」，但 4-5 根本
       // 不是一对：跨页固定是 (1,2)(3,4)…），进度页码也跟着错。
       if (_isSpreadView) {
-        _page = _page ~/ 2 * 2;
+        _page = _normalizeToLeftPage(_page);
       }
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && _pageController.hasClients) {
+        _pageController.jumpToPage(_viewIndex);
+      }
+    });
+  }
+
+  /// 把任意页码归一化成当前配对下的合法左页。
+  int _normalizeToLeftPage(int page) {
+    if (page == 0) return 0;
+    if (_pairOffset == 0) {
+      return page.isEven ? page : page - 1;
+    }
+    return page.isOdd ? page : page - 1;
+  }
+
+  /// 切换跨页配对（平移一格）：当前跨页 (4,5) → (5,6)。
+  /// 右页变成新的左页，右边补上它的下一页。
+  void _shiftPairing() {
+    setState(() {
+      _pairOffset = 1 - _pairOffset;
+      // 新的左页 = 原来的右页（没有右页就用当前页）
+      final right = _page + 1;
+      final newLeft = right < _total ? right : _page;
+      _page = _normalizeToLeftPage(newLeft);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && _pageController.hasClients) {
@@ -383,7 +423,7 @@ class _ReaderPageState extends State<ReaderPage> {
             if (_lastLandscape != null && _lastLandscape != landscape) {
               // 旋转后页码语义变了：先归一化到跨页左页再锚回去
               if (_isSpreadView) {
-                _page = _page ~/ 2 * 2;
+                _page = _normalizeToLeftPage(_page);
               }
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (mounted && _pageController.hasClients) {
@@ -404,15 +444,8 @@ class _ReaderPageState extends State<ReaderPage> {
                     controller: _pageController,
                     itemCount: _viewCount,
                     onPageChanged: _onPageChanged,
-                    // 仿真翻页：绕书脊（左缘）的 3D 转轴 + 背面阴影，
-                    // 手指拖动时页面跟着转，松手继续滑完成整页
-                    itemBuilder: (context, i) => _BookFlip(
-                      controller: _pageController,
-                      index: i,
-                      child: _isSpreadView
-                          ? _buildSpread(i)
-                          : _buildSinglePage(i),
-                    ),
+                    itemBuilder: (context, i) =>
+                        _isSpreadView ? _buildSpread(i) : _buildSinglePage(i),
                   ),
                 ),
                 _statusPill(landscape),
@@ -534,6 +567,18 @@ class _ReaderPageState extends State<ReaderPage> {
                   onPressed: _translating ? null : _translateCurrentPage,
                   onLongPress: _showLlmConfig,
                 ),
+                // 切换跨页配对：扫描本装订起点不同，固定配对一半的书对不上
+                if (_isSpreadView)
+                  IconButton(
+                    visualDensity: VisualDensity.compact,
+                    icon: Icon(
+                      Icons.join_left,
+                      size: 20,
+                      color: context.p.textStrong,
+                    ),
+                    tooltip: '切换跨页配对',
+                    onPressed: _shiftPairing,
+                  ),
                 // 竖屏时的双页拼合切换（横屏天然双页，不显示）
                 if (!landscape)
                   IconButton(
@@ -751,8 +796,10 @@ class _ReaderPageState extends State<ReaderPage> {
     final total = _total;
     if (landscape) {
       final left = _page;
-      final right = _page + 1;
-      if (right >= total) return '第 ${left + 1} 页 / 共 $total 页';
+      final right = left + 1;
+      // offset=1 的封面单页，或最后一页落单
+      final solo = (_pairOffset == 1 && left == 0) || right >= total;
+      if (solo) return '第 ${left + 1} 页 / 共 $total 页';
       return '第 ${left + 1}-${right + 1} 页 / 共 $total 页';
     }
     return '第 ${_page + 1} 页 / 共 $total 页';
@@ -774,15 +821,17 @@ class _ReaderPageState extends State<ReaderPage> {
 
   /// 横屏双页（美漫左→右）
   Widget _buildSpread(int spread) {
-    final left = spread * 2;
+    final left = _leftPageOfView(spread);
     final right = left + 1;
+    // offset=1 的视图 0 是封面单页（第 2 页起才两两配对）
+    final solo = _pairOffset == 1 && spread == 0;
     return _ZoomablePage(
       controller: _zoomController,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(child: _pageImage(left)),
-          if (right < _total)
+          if (!solo && right < _total)
             Expanded(child: _pageImage(right))
           else
             const Expanded(child: SizedBox()),
@@ -835,76 +884,6 @@ class _BrokenPage extends StatelessWidget {
           Text('这一页读不出来', style: TextStyle(color: p.textMuted, fontSize: 13)),
         ],
       ),
-    );
-  }
-}
-
-/// 仿真翻页：页面绕书脊（左缘）做 3D 旋转，翻过去的同时压一层阴影。
-///
-/// 用 PageController 的滚动位置驱动——手指拖到一半页面就转到一半，
-/// 不是翻页结束后播一段动画。视觉近似书页绕装订线翻动。
-class _BookFlip extends StatelessWidget {
-  const _BookFlip({
-    required this.controller,
-    required this.index,
-    required this.child,
-  });
-
-  final PageController controller;
-  final int index;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (context, child) {
-        if (!controller.hasClients) return child!;
-        final pos = controller.page ?? index.toDouble();
-        // 本页离视口的偏移：-1（正在翻入）到 1（正在翻出）
-        final delta = (pos - index).clamp(-1.0, 1.0);
-        if (delta.abs() < 0.001) return child!;
-
-        // 前翻（delta>0）：绕书脊转出；回翻（delta<0）：镜像——绕右侧
-        // 转入，两个方向都有翻页动作，回翻不再是一块平板滑回来。
-        final forward = delta > 0;
-        final angle = delta.abs();
-        final isSpread =
-            MediaQuery.sizeOf(context).width >
-            MediaQuery.sizeOf(context).height;
-        // 双页视图的「书脊」在跨页**中间**（两页的接缝），
-        // 单页视图在屏幕左缘
-        final spine = isSpread ? Alignment.center : Alignment.centerLeft;
-
-        return Stack(
-          children: [
-            Transform(
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.0015) // 透视
-                ..rotateY((forward ? -1 : 1) * angle * math.pi / 2),
-              alignment: spine,
-              // 阴影跟着翻动的那一页走（之前压在槽位上，页面转走后
-              // 阴影留在原地盖住来页）
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: forward
-                        ? Alignment.centerLeft
-                        : Alignment.centerRight,
-                    end: forward ? Alignment.centerRight : Alignment.centerLeft,
-                    colors: [
-                      Colors.black.withValues(alpha: angle * 0.45),
-                      Colors.black.withValues(alpha: angle * 0.05),
-                    ],
-                  ),
-                ),
-                child: child,
-              ),
-            ),
-          ],
-        );
-      },
-      child: child,
     );
   }
 }

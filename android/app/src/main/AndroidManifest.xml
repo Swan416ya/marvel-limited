@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Flutter 模板只在 debug/profile 清单里给 INTERNET 权限——release 包
+         装到手机上所有网络请求都会被系统拒绝（系列页/封面全挂），必须加在主清单 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="Marvel Limited"
         android:name="${applicationName}"

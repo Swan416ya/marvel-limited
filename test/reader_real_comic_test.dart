@@ -149,6 +149,49 @@ void main() {
       expect(find.text('第 5-6 页 / 共 6 页'), findsOneWidget);
     }, timeout: const Timeout(Duration(minutes: 3)));
 
+    testWidgets('跨页配对切换：平移一格，右页变左页', (tester) async {
+      final pages = [for (var i = 0; i < 6; i++) '/nonexistent/p-$i.jpg'];
+      final prefs = PreferencesRepository();
+      await prefs.load();
+      final state = LibraryState(prefs);
+
+      // 横屏视口 → 自动双页
+      tester.view.physicalSize = const Size(860, 400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(
+        ChangeNotifierProvider<LibraryState>.value(
+          value: state,
+          child: MaterialApp(
+            theme: ThemeData(brightness: Brightness.dark),
+            home: ReaderPage(issue: issue, pages: pages),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
+      // 默认配对 (1,2)(3,4)：第 1-2 页
+      expect(find.text('第 1-2 页 / 共 6 页'), findsOneWidget);
+
+      // 翻到第 3-4 页
+      await tester.tap(find.byTooltip('下一页'));
+      await tester.pump(const Duration(milliseconds: 80));
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(find.text('第 3-4 页 / 共 6 页'), findsOneWidget);
+
+      // 切换配对：3-4 → 4-5（右页 4 变成新的左页）
+      await tester.tap(find.byTooltip('切换跨页配对'));
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(find.text('第 4-5 页 / 共 6 页'), findsOneWidget);
+
+      // 再切回来：4-5 → 5-6
+      await tester.tap(find.byTooltip('切换跨页配对'));
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(find.text('第 5-6 页 / 共 6 页'), findsOneWidget);
+    }, timeout: const Timeout(Duration(minutes: 2)));
+
     testWidgets('进度记忆：重开直接落在上次那页', (tester) async {
       final prefs = PreferencesRepository();
       await prefs.load();
