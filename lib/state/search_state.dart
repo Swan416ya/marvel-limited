@@ -111,7 +111,6 @@ class SearchState extends ChangeNotifier {
   String query = '';
   List<SearchHit> results = const [];
   bool loading = false;
-  String? error;
 
   /// 搜过一次才有结果区可显示。
   bool searched = false;
@@ -149,7 +148,6 @@ class SearchState extends ChangeNotifier {
 
     query = q;
     loading = true;
-    error = null;
     searched = true;
     results = const [];
     notifyListeners();
@@ -246,7 +244,7 @@ class SearchState extends ChangeNotifier {
           .timeout(const Duration(seconds: 8));
       return [
         for (final h in official.take(20))
-          if (h.kind == 'series')
+          if (h.kind == OfficialSearchKind.series)
             SearchHit(
               kind: SearchHitKind.series,
               title: h.title,
@@ -274,9 +272,9 @@ class SearchState extends ChangeNotifier {
         for (final s in wiki)
           SearchHit(
             kind: SearchHitKind.wikiSeries,
-            title: s['title'] ?? '',
+            title: s.title,
             subtitle: 'Marvel Database',
-            wikiPageName: s['title'] ?? '',
+            wikiPageName: s.title,
           ),
       ];
     } catch (_) {
@@ -362,8 +360,6 @@ class SearchState extends ChangeNotifier {
     );
   }
 
-  Future<void> retry() => search(query);
-
   Future<void> clearHistory() async {
     await _prefs.clearSearchHistory();
     notifyListeners();
@@ -374,7 +370,6 @@ class SearchState extends ChangeNotifier {
     results = const [];
     searched = false;
     loading = false;
-    error = null;
     notifyListeners();
   }
 

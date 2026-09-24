@@ -5,6 +5,18 @@ import 'package:http/http.dart' as http;
 
 import '../../core/async/concurrent.dart';
 import '../models/marvel_models.dart';
+import 'http_retry.dart';
+
+/// opensearch 一条命中的 wiki 系列页：标题与页面链接。
+class WikiSeriesHit {
+  const WikiSeriesHit({required this.title, required this.url});
+
+  /// 页面标题，形如 "Amazing Spider-Man Vol 2"。
+  final String title;
+
+  /// 页面链接。
+  final String url;
+}
 
 /// Marvel Database (fandom wiki) 的原始 HTTP 客户端。
 ///
@@ -26,15 +38,8 @@ class FandomClient {
     ],
   }) : _client = client ?? http.Client();
 
-  Future<void> _backoff(int attempt) async {
-    if (attempt < retryDelays.length) {
-      await Future<void>.delayed(retryDelays[attempt]);
-    }
-  }
-
   Map<String, String> get _headers => const {
-        'User-Agent':
-            'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36',
+        'User-Agent': chromeMobileUserAgent,
         'Accept': 'application/json',
       };
 
@@ -46,22 +51,18 @@ class FandomClient {
         ? 'http://127.0.0.1:8322/proxy/${Uri.encodeFull(_base)}'
         : _base;
     final uri = Uri.parse(target).replace(queryParameters: params);
-    Object lastError =
-        Exception('fandom ${params['action']} failed after retries');
-    for (var attempt = 0; attempt <= retryDelays.length; attempt++) {
-      try {
+    return withRetry(
+      retryDelays: retryDelays,
+      failureMessage: 'fandom ${params['action']}',
+      run: () async {
         final resp = await _client.get(uri, headers: _headers);
         if (resp.statusCode != 200) {
           throw Exception(
               'fandom ${params['action']} failed: ${resp.statusCode}');
         }
         return json.decode(utf8.decode(resp.bodyBytes));
-      } catch (e) {
-        lastError = e;
-        await _backoff(attempt);
-      }
-    }
-    throw lastError;
+      },
+    );
   }
 
   /// 需要对象形状的接口（parse / query）用这个。
@@ -73,7 +74,7 @@ class FandomClient {
   /// 系列名搜索（Fandom opensearch）。
   /// 只保留 "XXX Vol N" 形式的系列主页面，过滤 issue 页与合集页。
   /// `limit` 默认给足：系列页按英雄筛选用（opensearch 上限 100）。
-  Future<List<Map<String, String>>> searchSeries(String query,
+  Future<List<WikiSeriesHit>> searchSeries(String query,
       {int limit = 50}) async {
     // opensearch 返回数组：["词", [标题…], [描述…], [链接…]]
     final body = await _apiRaw({
@@ -86,11 +87,11 @@ class FandomClient {
     final results =
         body.length > 1 && body[1] is List ? body[1] as List : const [];
     final urls = body.length > 3 && body[3] is List ? body[3] as List : const [];
-    final out = <Map<String, String>>[];
+    final out = <WikiSeriesHit>[];
     for (var i = 0; i < results.length && i < urls.length; i++) {
       final title = results[i].toString();
       if (RegExp(r' Vol \d+$').hasMatch(title)) {
-        out.add({'title': title, 'url': urls[i].toString()});
+        out.add(WikiSeriesHit(title: title, url: urls[i].toString()));
       }
     }
     return out;

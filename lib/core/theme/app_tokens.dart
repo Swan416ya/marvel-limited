@@ -44,3 +44,16 @@ abstract final class AppInsets {
   /// 详情页里的说明段落。
   static const detailNote = EdgeInsets.fromLTRB(20, 12, 20, 8);
 }
+
+/// 布局断点。按**可用宽度**判断，不按设备类型——横屏手机和竖屏平板
+/// 遇到的是同一种版式问题，用宽度一个判据就够。
+///
+/// 别和 `main.dart` 里「最短边 >= 600 才放开旋转」混起来：那个决定的是
+/// **设备类别**（要不要允许横屏），是另一回事。
+abstract final class AppBreakpoints {
+  /// 够宽到值得并排两张卡的阈值（两张 340 的卡加间距）。
+  static const wide = 700.0;
+
+  /// [width] 是**内容区**可用宽度，不是屏幕宽度——已经扣掉页面内边距的那种。
+  static bool isWide(double width) => width >= wide;
+}

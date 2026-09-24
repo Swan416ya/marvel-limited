@@ -297,18 +297,16 @@ class CatalogRepository {
     });
   }
 
-  /// 官网 lockjaw 标题搜索（系列）。
-  /// 官网标题联想（lockjaw）：系列与单期都返回，kind 为 'series' / 'issue'。
-  Future<List<({String id, String title, String kind})>> searchOfficial(
-    String query,
-  ) => _client.searchOfficial(query);
+  /// 官网标题联想（lockjaw）：系列与单期都返回，kind 见 [OfficialSearchKind]。
+  Future<List<({String id, String title, OfficialSearchKind kind})>>
+      searchOfficial(String query) => _client.searchOfficial(query);
 
   /// 兼容旧调用：只取系列结果。
   Future<List<({String id, String title})>> searchOfficialSeries(
     String query,
   ) async => [
     for (final h in await _client.searchOfficial(query))
-      if (h.kind == 'series') (id: h.id, title: h.title),
+      if (h.kind == OfficialSearchKind.series) (id: h.id, title: h.title),
   ];
 
   /// 官方编辑精选系列，带缓存。
@@ -367,12 +365,6 @@ class CatalogRepository {
       }
     }
     return null;
-  }
-
-  /// 清空缓存（下拉刷新强制重拉时用）。
-  void evict({String? guideId, String? seriesId}) {
-    if (guideId != null) _guideIssues.remove(guideId);
-    if (seriesId != null) _seriesIssues.remove(seriesId);
   }
 
   /// 清掉指南列表缓存（下拉刷新）。

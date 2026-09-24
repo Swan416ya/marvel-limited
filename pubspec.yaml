@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 0.1.1+1
+version: 0.1.2+2
 
 environment:
   sdk: ^3.11.1
@@ -48,6 +48,11 @@ dependencies:
   flutter_svg: ^2.3.0
   # 阅读器翻译：设备端 OCR（拉丁字母）。只认文字，不上传图片。
   google_mlkit_text_recognition: ^0.11.0
+  # 底部导航的液态玻璃材质（对齐 iOS 26 Liquid Glass）：边缘高光、Fresnel
+  # 受光边、点按回弹与指示器挤压。只在非 Web 平台启用——Web(CanvasKit) 上
+  # 圆角裁剪 + 背景滤镜会让整页图片停绘（本项目实测），那里走手绘降级版，
+  # 详见 lib/features/root/widgets/ 下两个文件的注释。
+  liquid_glass_widgets: ^1.7.2
 
 dev_dependencies:
   flutter_test:

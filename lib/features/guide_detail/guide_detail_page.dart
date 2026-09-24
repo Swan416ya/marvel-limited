@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/async_view.dart';
 import '../../core/widgets/brand_fade.dart';
-import '../../core/widgets/comic_cover.dart';
 import '../../core/widgets/cover_grid.dart';
-import '../../core/widgets/glass_panel.dart';
 import '../../core/widgets/state_views.dart';
 import '../../data/models/marvel_models.dart';
 import '../../data/repository/preferences_repository.dart';
 import '../../state/catalog_state.dart';
 import '../../state/favorites_state.dart';
+import '../guides/widgets/guide_cards.dart';
 
 /// 指南详情：按官方推荐顺序列出全部 issue（带阅读顺序角标）。
 ///
@@ -208,76 +206,12 @@ class _GuideDetailPageState extends State<GuideDetailPage> {
                     AppSpacing.lg,
                     AppSpacing.navBarClearance,
                   ),
-                  itemBuilder: (context, i) => _GuideIssueCard(
-                    issue: issues[i],
-                    index: i,
-                  ),
+                  itemBuilder: (context, i) =>
+                      GuideIssueCard(issue: issues[i], index: i),
                 ),
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-/// 指南里的一期：封面 + 阅读顺序角标 + 标题。
-class _GuideIssueCard extends StatelessWidget {
-  const _GuideIssueCard({required this.issue, required this.index});
-
-  final ComicIssue issue;
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => AppRouter.openIssue(context, issue),
-      borderRadius: BorderRadius.circular(AppRadius.sm),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ComicCover(
-                  url: issue.coverUrl,
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
-                  placeholderIcon: Icons.menu_book,
-                ),
-                Positioned(
-                  left: AppSpacing.xs,
-                  top: AppSpacing.xs,
-                  child: CoverBadge(label: '${index + 1}'),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          // 期号一行、系列名一行：如果直接把 title 塞进来，窄卡片里会被截成
-          // "The Amazing Spider-Man (1999)…"，一整屏卡片看起来一模一样。
-          Text(
-            issue.issueNumber.isEmpty ? issue.title : '#${issue.issueNumber}',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: context.p.textPrimary,
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          if (issue.issueNumber.isNotEmpty && issue.seriesTitle.isNotEmpty)
-            Text(
-              issue.seriesTitle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: context.p.textGhost,
-                fontSize: 10,
-                height: 1.3,
-              ),
-            ),
         ],
       ),
     );

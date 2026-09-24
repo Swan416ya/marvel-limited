@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'core/router/app_router.dart';
@@ -112,14 +114,28 @@ class _MarvelAppState extends State<MarvelApp> {
       ],
       child: AnimatedBuilder(
         animation: _theme,
-        builder: (context, _) => MaterialApp.router(
-          title: 'Marvel Limited',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light(),
-          darkTheme: AppTheme.dark(),
-          themeMode: _theme.mode,
-          routerConfig: _router,
-        ),
+        builder: (context, _) {
+          final app = MaterialApp.router(
+            title: 'Marvel Limited',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.light(),
+            darkTheme: AppTheme.dark(),
+            themeMode: _theme.mode,
+            routerConfig: _router,
+          );
+          // Web 上一个玻璃控件都不用，这层基础设施（自适应画质基准测试、
+          // 无障碍开关）就免了。
+          if (kIsWeb) return app;
+          return LiquidGlassWidgets.wrap(
+            child: app,
+            // 低端机自动把画质上限压到 minimal（免 shader 档），免得掉帧。
+            // 导航栏自己钉的是 standard，这里只当上限用。
+            adaptiveQuality: true,
+            // 玻璃控件跟随 MaterialApp 的 ThemeMode 判深浅，而不是设备系统
+            // 设置——两者不一致时（比如系统深色 + App 浅色）玻璃才不会看错。
+            brightnessResolver: Theme.maybeBrightnessOf,
+          );
+        },
       ),
     );
   }

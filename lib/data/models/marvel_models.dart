@@ -127,6 +127,15 @@ class ComicSeries {
   });
 }
 
+/// 官网 lockjaw 联想搜索命中的资源类型（由链接前缀决定）。
+enum OfficialSearchKind {
+  /// 系列页（`/comics/series/<id>`）。
+  series,
+
+  /// 单期页（`/comics/issue/<id>`）。
+  issue,
+}
+
 class ReadingGuide {
   final String id;
   final String title;

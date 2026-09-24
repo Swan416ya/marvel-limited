@@ -102,16 +102,52 @@ class _EventsPageState extends State<EventsPage> {
                           title: '这个筛选组合下没有事件',
                           subtitle: '换一级别或年份',
                         )
-                      : ListView.builder(
-                          padding: const EdgeInsets.only(
-                              bottom: AppSpacing.navBarClearance),
-                          itemCount: visible.length,
-                          itemBuilder: (context, i) {
-                            final e = visible[i];
-                            return _CompanyEventCard(
-                              event: e,
-                              coverUrl: repo.coverUrlFor(e, guides),
-                              onTap: () => AppRouter.openEvent(context, e),
+                      : LayoutBuilder(
+                          builder: (context, constraints) {
+                            // 宽屏（平板/横屏）：一张大卡独占一行会拉成一条
+                            // 细长横条，并排两列才像话。
+                            final wide = AppBreakpoints.isWide(
+                              constraints.maxWidth,
+                            );
+
+                            Widget itemAt(BuildContext context, int i) {
+                              final e = visible[i];
+                              return _CompanyEventCard(
+                                event: e,
+                                coverUrl: repo.coverUrlFor(e, guides),
+                                onTap: () => AppRouter.openEvent(context, e),
+                                // 网格：高度交给格子、间距交给 delegate
+                                fillHeight: wide,
+                                margin: wide
+                                    ? EdgeInsets.zero
+                                    : _CompanyEventCard.listMargin,
+                              );
+                            }
+
+                            if (!wide) {
+                              return ListView.builder(
+                                padding: const EdgeInsets.only(
+                                    bottom: AppSpacing.navBarClearance),
+                                itemCount: visible.length,
+                                itemBuilder: itemAt,
+                              );
+                            }
+                            return GridView.builder(
+                              padding: const EdgeInsets.fromLTRB(
+                                AppSpacing.lg,
+                                0,
+                                AppSpacing.lg,
+                                AppSpacing.navBarClearance,
+                              ),
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 440,
+                                childAspectRatio: 16 / 9,
+                                crossAxisSpacing: AppSpacing.md,
+                                mainAxisSpacing: AppSpacing.md,
+                              ),
+                              itemCount: visible.length,
+                              itemBuilder: itemAt,
                             );
                           },
                         ),
@@ -264,11 +300,27 @@ class _EventDropdown extends StatelessWidget {
 
 /// 事件大卡：横版主视觉 + 标题 + 年份 + 一句话。
 /// 所有级别统一这个样式，级别用角标区分（全公司级红底，其它中性底）。
+///
+/// 两种形态共用：手机端单列大卡（固定高 [listHeight]、自带 [listMargin]），
+/// 平板端多列网格（高度由格子给、间距交给 GridView 的 delegate）。
 class _CompanyEventCard extends StatelessWidget {
+  /// 单列列表里卡片自己的外边距。
+  static const listMargin = EdgeInsets.fromLTRB(
+    AppSpacing.lg,
+    AppSpacing.xs,
+    AppSpacing.lg,
+    AppSpacing.md,
+  );
+
+  /// 单列列表里卡片的高度。
+  static const listHeight = 176.0;
+
   const _CompanyEventCard({
     required this.event,
     required this.coverUrl,
     required this.onTap,
+    this.margin = listMargin,
+    this.fillHeight = false,
   });
 
   final MarvelEvent event;
@@ -278,21 +330,24 @@ class _CompanyEventCard extends StatelessWidget {
 
   final VoidCallback onTap;
 
+  final EdgeInsetsGeometry margin;
+
+  /// true = 撑满父级给的高度（网格格子）；false = 用 [listHeight] 钉死。
+  final bool fillHeight;
+
+  /// 列表模式套一层固定高度；网格模式原样返回，别白搭一层布局。
+  Widget _box({required Widget child}) =>
+      fillHeight ? child : SizedBox(height: listHeight, child: child);
+
   @override
   Widget build(BuildContext context) {
     final p = context.p;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.lg,
-        AppSpacing.xs,
-        AppSpacing.lg,
-        AppSpacing.md,
-      ),
+      padding: margin,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        child: SizedBox(
-          height: 176,
+        child: _box(
           child: Stack(
             fit: StackFit.expand,
             children: [

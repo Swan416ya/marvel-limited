@@ -165,14 +165,6 @@ class _SearchPageState extends State<SearchPage> {
       );
     }
 
-    if (state.error != null) {
-      return ErrorView(
-        message: '搜索失败',
-        detail: state.error,
-        onRetry: state.retry,
-      );
-    }
-
     if (!state.searched) return _idle();
 
     if (state.loading && state.results.isEmpty) {

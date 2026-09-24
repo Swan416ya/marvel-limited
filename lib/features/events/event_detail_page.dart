@@ -10,6 +10,7 @@ import '../../core/widgets/glass_panel.dart';
 import '../../core/widgets/section_header.dart';
 import '../../core/widgets/async_view.dart';
 import '../../data/models/marvel_event.dart';
+import '../guides/widgets/guide_cards.dart';
 import '../../data/models/marvel_models.dart';
 import '../../data/repository/events_repository.dart';
 import '../../state/catalog_state.dart';
@@ -364,8 +365,14 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 columns: 4,
                 itemCount: _guideIssues!.length,
                 textBlockHeight: 30,
-                itemBuilder: (context, i) =>
-                    _GuideIssueTile(issue: _guideIssues![i], index: i),
+                itemBuilder: (context, i) => GuideIssueCard(
+                  issue: _guideIssues![i],
+                  index: i,
+                  // 大事件页原观感：圆角 md、期号 11.5、系列名无条件显示
+                  radius: AppRadius.md,
+                  titleFontSize: 11.5,
+                  alwaysShowSeries: true,
+                ),
               ),
           ],
           // 没匹配到官方指南的事件，退回静态整理的阅读顺序
@@ -481,63 +488,6 @@ class _EventDetailPageState extends State<EventDetailPage> {
           ],
           const SliverToBoxAdapter(
             child: SizedBox(height: AppSpacing.navBarClearance),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// 官方指南里的一期：封面 + 顺序角标 + 标题，点进 issue 详情。
-class _GuideIssueTile extends StatelessWidget {
-  const _GuideIssueTile({required this.issue, required this.index});
-
-  final ComicIssue issue;
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = context.p;
-    return InkWell(
-      onTap: () => AppRouter.openIssue(context, issue),
-      borderRadius: BorderRadius.circular(AppRadius.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ComicCover(
-                  url: issue.coverUrl,
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                  placeholderIcon: Icons.menu_book,
-                ),
-                Positioned(
-                  left: 4,
-                  top: 4,
-                  child: CoverBadge(label: '${index + 1}'),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            issue.issueNumber.isEmpty ? issue.title : '#${issue.issueNumber}',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: p.textPrimary,
-              fontSize: 11.5,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          Text(
-            issue.seriesTitle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: p.textGhost, fontSize: 10, height: 1.3),
           ),
         ],
       ),

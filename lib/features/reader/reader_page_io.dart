@@ -363,6 +363,15 @@ class _ReaderPageState extends State<ReaderPage> {
     );
   }
 
+  /// 下一帧把视图锚回 [_viewIndex]（布局重建后控制器才有 clients）。
+  void _reanchor() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && _pageController.hasClients) {
+        _pageController.jumpToPage(_viewIndex);
+      }
+    });
+  }
+
   /// 竖屏切换单页/双页拼合。切换后锚回当前内容的起始页。
   void _toggleSpreadMode() {
     setState(() {
@@ -375,11 +384,7 @@ class _ReaderPageState extends State<ReaderPage> {
         _page = _normalizeToLeftPage(_page);
       }
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && _pageController.hasClients) {
-        _pageController.jumpToPage(_viewIndex);
-      }
-    });
+    _reanchor();
   }
 
   /// 把任意页码归一化成当前配对下的合法左页。
@@ -401,11 +406,7 @@ class _ReaderPageState extends State<ReaderPage> {
       final newLeft = right < _total ? right : _page;
       _page = _normalizeToLeftPage(newLeft);
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && _pageController.hasClients) {
-        _pageController.jumpToPage(_viewIndex);
-      }
-    });
+    _reanchor();
   }
 
   @override
@@ -425,11 +426,7 @@ class _ReaderPageState extends State<ReaderPage> {
               if (_isSpreadView) {
                 _page = _normalizeToLeftPage(_page);
               }
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (mounted && _pageController.hasClients) {
-                  _pageController.jumpToPage(_viewIndex);
-                }
-              });
+              _reanchor();
             }
             _lastLandscape = landscape;
 
@@ -611,7 +608,7 @@ class _ReaderPageState extends State<ReaderPage> {
     if (_page >= widget.pages.length) return;
     final messenger = ScaffoldMessenger.of(context);
     final prefs = context.read<PreferencesRepository>();
-    if (!prefs.llmConfigured) {
+    if (!prefs.llmConfig.isConfigured) {
       _showLlmConfig();
       messenger.showSnackBar(const SnackBar(content: Text('先长按「翻译」按钮配置大模型接口')));
       return;
@@ -637,10 +634,11 @@ class _ReaderPageState extends State<ReaderPage> {
         return;
       }
       // 2) 翻译：带上前一页的文本当上下文
+      final cfg = prefs.llmConfig;
       final service = TranslateService(
-        baseUrl: prefs.llmBaseUrl,
-        apiKey: prefs.llmApiKey,
-        model: prefs.llmModel,
+        baseUrl: cfg.baseUrl,
+        apiKey: cfg.apiKey,
+        model: cfg.model,
       );
       final translated = await service.translate(
         ocr,
@@ -712,9 +710,10 @@ class _ReaderPageState extends State<ReaderPage> {
   /// 长按「翻译」进入的模型配置：接口地址 / API Key / 模型名。
   Future<void> _showLlmConfig() {
     final prefs = context.read<PreferencesRepository>();
-    final baseUrl = TextEditingController(text: prefs.llmBaseUrl);
-    final apiKey = TextEditingController(text: prefs.llmApiKey);
-    final model = TextEditingController(text: prefs.llmModel);
+    final cfg = prefs.llmConfig;
+    final baseUrl = TextEditingController(text: cfg.baseUrl);
+    final apiKey = TextEditingController(text: cfg.apiKey);
+    final model = TextEditingController(text: cfg.model);
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -777,9 +776,11 @@ class _ReaderPageState extends State<ReaderPage> {
               child: FilledButton(
                 onPressed: () async {
                   await prefs.saveLlmConfig(
-                    baseUrl: baseUrl.text,
-                    apiKey: apiKey.text,
-                    model: model.text,
+                    LlmConfig(
+                      baseUrl: baseUrl.text,
+                      apiKey: apiKey.text,
+                      model: model.text,
+                    ),
                   );
                   if (sheetContext.mounted) Navigator.of(sheetContext).pop();
                 },

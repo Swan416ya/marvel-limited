@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../data/repository/preferences_repository.dart';
 
-/// 主题模式：跟随系统 / 浅色 / 深色，选择持久化。
+/// 主题模式：跟随系统 / 浅色 / 深色，选择持久化（ThemeMode 直存直取）。
 class ThemeState extends ChangeNotifier {
   ThemeState(this._prefs);
 
   final PreferencesRepository _prefs;
 
-  ThemeMode get mode => switch (_prefs.themeMode) {
-        'light' => ThemeMode.light,
-        'dark' => ThemeMode.dark,
-        _ => ThemeMode.system,
-      };
+  ThemeMode get mode => _prefs.themeMode;
 
   /// 循环切换：system → light → dark → system。
   Future<void> cycle() async {
@@ -25,11 +21,7 @@ class ThemeState extends ChangeNotifier {
   }
 
   Future<void> setMode(ThemeMode mode) async {
-    await _prefs.setThemeMode(switch (mode) {
-      ThemeMode.light => 'light',
-      ThemeMode.dark => 'dark',
-      ThemeMode.system => 'system',
-    });
+    await _prefs.setThemeMode(mode);
     notifyListeners();
   }
 }

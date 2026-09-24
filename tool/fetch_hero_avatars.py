@@ -6,7 +6,7 @@
 
 用法：
 
-    python tool/fetch_hero_avatars.py        # 下载 12 个英雄头像
+    python tool/fetch_hero_avatars.py        # 下载 heroes.dart 里列出的头像
     python tool/fetch_hero_avatars.py --clean
 
 跑完重启应用即生效。图很小（每个 ~15KB）。
@@ -36,6 +36,32 @@ HEROES = {
     '1009268': 'Deadpool',
     '1009220': 'Captain America (Steve Rogers)',
     '1009299': 'Fantastic Four',
+    '1009663': 'Venom (Flash Thompson)',  # 官网「Venom」条目，返回的就是毒液系列
+    '1009515': 'Punisher (Frank Castle)',
+    '1009452': 'Moon Knight',
+    '1009318': 'Ghost Rider (Johnny Blaze)',
+    '1009281': 'Doctor Doom (Victor Von Doom)',
+    '1011002': 'Marvel Zombies',
+    '1009262': 'Daredevil (Matt Murdock)',
+    '1009187': "Black Panther (T'Challa)",
+    '1009562': 'Scarlet Witch',
+    '1009189': 'Black Widow (Natasha Romanoff)',
+    '1009338': 'Hawkeye',
+    '1010338': 'Captain Marvel (Carol Danvers)',
+    '1009583': 'She-Hulk (Jennifer Walters)',
+    '1009592': 'Silver Surfer',
+    '1009407': 'Loki',
+    '1009417': 'Magneto',
+    '1009227': 'Carnage',
+    '1009191': 'Blade',
+    '1009288': 'Elektra',
+    '1009577': 'Shang-Chi',
+    '1009215': 'Luke Cage',
+    '1009378': 'Jessica Jones',
+    '1010740': 'Winter Soldier',
+    '1009477': 'Nova (Richard Rider)',
+    '1010860': 'Squirrel Girl',
+    '1010373': 'Howard the Duck',
 }
 
 PROXY = 'http://127.0.0.1:8322/proxy/'

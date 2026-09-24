@@ -24,7 +24,7 @@ class WikiRepository {
 
   final Map<String, List<ComicIssue>> _seriesCache = {};
 
-  Future<List<Map<String, String>>> searchSeries(String query,
+  Future<List<WikiSeriesHit>> searchSeries(String query,
           {int limit = 50}) =>
       _client.searchSeries(query, limit: limit);
 
@@ -33,8 +33,8 @@ class WikiRepository {
     final hits = await searchSeries(query);
     return hits
         .map((h) => SeriesSummary(
-              title: h['title'] ?? '',
-              wikiPageName: h['title'],
+              title: h.title,
+              wikiPageName: h.title,
             ))
         .toList();
   }

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../models/marvel_models.dart';
 import '../models/series_summary.dart';
 import '../series_naming.dart';
+import 'http_retry.dart';
 
 /// 漫威官网目录（bifrost）的原始 HTTP 客户端。
 ///
@@ -28,15 +29,8 @@ class BifrostClient {
     ],
   }) : _client = client ?? http.Client();
 
-  Future<void> _backoff(int attempt) async {
-    if (attempt < retryDelays.length) {
-      await Future<void>.delayed(retryDelays[attempt]);
-    }
-  }
-
   Map<String, String> get _headers => const {
-        'User-Agent':
-            'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36',
+        'User-Agent': chromeMobileUserAgent,
         'Referer': 'https://www.marvel.com/',
         'Accept': 'application/json',
       };
@@ -50,34 +44,32 @@ class BifrostClient {
     // CDN 会随机掐断长连接（实测 IncompleteRead），不带重试的话
     // 大响应（日历/指南列表 400KB+）失败率很高——系列页「一直加载失败」
     // 的根因就是它。
-    Object lastError = Exception('bifrost $path failed after retries');
-    for (var attempt = 0; attempt <= retryDelays.length; attempt++) {
-      try {
+    return withRetry(
+      retryDelays: retryDelays,
+      failureMessage: 'bifrost $path',
+      run: () async {
         final resp = await _client.get(uri, headers: _headers);
         if (resp.statusCode != 200) {
           throw Exception('bifrost $path failed: ${resp.statusCode}');
         }
         return json.decode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
-      } catch (e) {
-        lastError = e;
-        await _backoff(attempt);
-      }
-    }
-    throw lastError;
+      },
+    );
   }
 
   /// 官网标题联想搜索（lockjaw typeahead）。注意 host 是 www.marvel.com
   /// 而不是 bifrost，而且是 POST 表单。系列和单期都会返回，
-  /// [kind] 为 'series' 或 'issue'（链接分别是 /comics/series/ 和
+  /// [kind] 见 [OfficialSearchKind]（链接分别是 /comics/series/ 和
   /// /comics/issue/）。
-  Future<List<({String id, String title, String kind})>> searchOfficial(
-      String query) async {
+  Future<List<({String id, String title, OfficialSearchKind kind})>>
+      searchOfficial(String query) async {
     final url = 'https://www.marvel.com/v1/typeahead';
     final target = kIsWeb ? '$_proxy${Uri.encodeFull(url)}' : url;
     final uri = Uri.parse(target);
-    Object lastError = Exception('typeahead failed after retries');
-    for (var attempt = 0; attempt <= retryDelays.length; attempt++) {
-      try {
+    return withRetry(
+      retryDelays: retryDelays,
+      failureMessage: 'typeahead',
+      run: () async {
         final resp = await _client.post(
           uri,
           headers: {
@@ -97,7 +89,7 @@ class BifrostClient {
         final body =
             json.decode(utf8.decode(resp.bodyBytes)) as Map<String, dynamic>;
         final results = (body['data']?['results'] as List? ?? const []);
-        final out = <({String id, String title, String kind})>[];
+        final out = <({String id, String title, OfficialSearchKind kind})>[];
         for (final r in results) {
           final map = r as Map;
           final link =
@@ -106,9 +98,9 @@ class BifrostClient {
           final ms = RegExp(r'/comics/series/(\d+)').firstMatch(link);
           final mi = RegExp(r'/comics/issue/(\d+)').firstMatch(link);
           final kind = ms != null
-              ? 'series'
+              ? OfficialSearchKind.series
               : mi != null
-                  ? 'issue'
+                  ? OfficialSearchKind.issue
                   : null;
           if (kind == null) continue;
           final title = ((map['link'] as Map?)?['title'] ??
@@ -124,12 +116,8 @@ class BifrostClient {
           }
         }
         return out;
-      } catch (e) {
-        lastError = e;
-        await _backoff(attempt);
-      }
-    }
-    throw lastError;
+      },
+    );
   }
 
   /// 角色详情（方形头像）。注意无 /v1 前缀。

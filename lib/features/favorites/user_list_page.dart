@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/comic_cover.dart';
@@ -9,6 +8,7 @@ import '../../core/widgets/glass_panel.dart';
 import '../../core/widgets/state_views.dart';
 import '../../data/repository/preferences_repository.dart';
 import '../../state/favorites_state.dart';
+import 'favorite_kind_nav.dart';
 
 /// 自建书单详情：改名、删除、逐项移除。
 class UserListPage extends StatelessWidget {
@@ -107,32 +107,16 @@ class UserListPage extends StatelessWidget {
                             ),
                           ),
                     trailing: CoverBadge(
-                      label: switch (entry.kind) {
-                        FavoriteKind.issue => '期',
-                        FavoriteKind.series => '系列',
-                        FavoriteKind.guide => '指南',
-                      },
+                      label: entry.kind.badgeLabel,
                       color: context.p.fillStrong,
                       foreground: context.p.textMuted,
                     ),
-                    onTap: () => _open(context, entry),
+                    onTap: () => entry.open(context),
                   ),
                 );
               },
             ),
     );
-  }
-
-  void _open(BuildContext context, FavoriteEntry entry) {
-    switch (entry.kind) {
-      case FavoriteKind.issue:
-        final issue = entry.asIssue;
-        if (issue != null) AppRouter.openIssue(context, issue);
-      case FavoriteKind.series:
-        AppRouter.openSeries(context, entry.id, entry.title);
-      case FavoriteKind.guide:
-        AppRouter.openGuide(context, entry.asGuide);
-    }
   }
 
   Future<void> _rename(

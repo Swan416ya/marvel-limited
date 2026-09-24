@@ -5,6 +5,7 @@ import '../../core/router/app_router.dart';
 import '../../core/theme/app_palette.dart';
 import '../../core/theme/app_tokens.dart';
 import '../../core/widgets/section_header.dart';
+import '../../core/widgets/shelf_list.dart';
 import '../../core/widgets/state_views.dart';
 import '../../core/widgets/tab_app_bar.dart';
 import '../../data/models/marvel_models.dart';
@@ -143,7 +144,15 @@ class _GuidesPageState extends State<GuidesPage> {
   }
 }
 
-/// 顶部横版轮播：一次一张 16:9 大卡，底部圆点。
+/// 顶部横版 banner。两种版式：
+///
+/// - **窄屏**：一次一张 16:9 大卡，左右翻页，底部圆点；
+/// - **宽屏（[AppBreakpoints.isWide]）**：横着排开，一屏能放几张放几张，
+///   超出的横向滑——不再翻页，也就不需要圆点。
+///
+/// 卡片高度一律走 [GuideWideCard.heightFor]，别在这里另算一套：之前这里按
+/// 「图高 + 50」估、卡片按「图高 + 间距 + 标题」算，矮视口下两边对不上，
+/// 标题只有一行时会溢出 28 像素。
 class _HeroStrip extends StatefulWidget {
   const _HeroStrip({required this.guides, required this.onOpen});
 
@@ -155,8 +164,17 @@ class _HeroStrip extends StatefulWidget {
 }
 
 class _HeroStripState extends State<_HeroStrip> {
+  /// 窄屏翻页时每页占视口的比例（露出下一张的边，提示可以滑）。
+  static const _viewportFraction = 0.88;
+
+  /// 宽屏横排时单张卡的最小宽度，用来决定一屏放几张。
+  static const _minCardWidth = 300.0;
+
+  /// 宽屏横排最多放几张（再宽也别把卡摊成巨幅）。
+  static const _maxColumns = 4;
+
   late final PageController _controller = PageController(
-    viewportFraction: 0.88,
+    viewportFraction: _viewportFraction,
   );
   int _index = 0;
 
@@ -173,38 +191,74 @@ class _HeroStripState extends State<_HeroStrip> {
     final items = _items;
     if (items.isEmpty) return const SizedBox.shrink();
 
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // 卡片左右各留 AppSpacing.xs 的缝，两种版式共用同一份
+        const gap = AppSpacing.xs * 2;
+        return AppBreakpoints.isWide(constraints.maxWidth)
+            ? _wide(context, items, constraints.maxWidth, gap)
+            : _paged(
+                context,
+                items,
+                constraints.maxWidth * _viewportFraction - gap,
+              );
+      },
+    );
+  }
+
+  /// 宽屏：一屏 [columns] 张并排、等分填满一行；多余的横向滑。
+  Widget _wide(
+    BuildContext context,
+    List<ReadingGuide> items,
+    double width,
+    double gap,
+  ) {
+    // 左右留边对齐下方的指南网格（那里的 padding 是 AppSpacing.lg）
+    const inset = AppSpacing.lg;
+    final usable = width - inset * 2;
+    final columns = ((usable + gap) / (_minCardWidth + gap))
+        .floor()
+        .clamp(2, _maxColumns);
+    final cardWidth = (usable - gap * (columns - 1)) / columns;
+
+    return ShelfList(
+      height: GuideWideCard.heightFor(context, cardWidth),
+      itemCount: items.length,
+      itemWidth: cardWidth,
+      spacing: gap,
+      padding: const EdgeInsets.symmetric(horizontal: inset),
+      itemBuilder: (context, i) => GuideWideCard(
+        guide: items[i],
+        width: cardWidth,
+        onTap: () => widget.onOpen(items[i]),
+      ),
+    );
+  }
+
+  /// 窄屏：翻页轮播 + 圆点。
+  Widget _paged(
+    BuildContext context,
+    List<ReadingGuide> items,
+    double cardWidth,
+  ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // 高度由实际宽度计算（图 16:9 + 标题两行），窗口宽度变化时
-        // 自动重排，写死高度会在窄屏溢出、宽屏留白。
-        LayoutBuilder(
-          builder: (context, constraints) {
-            final pageWidth = constraints.maxWidth * 0.88;
-            // 横屏/平板：banner 高度封顶为视口高度的 42%，
-            // 不然一道横屏整屏都是 banner，往下翻不到内容
-            // 与 guide_cards.dart 的图高封顶同源（横屏限高），别手抄两份
-            final maxCard = GuideWideCard.maxCardHeight(context) - 50;
-            final cardHeight = (pageWidth / (16 / 9) + 50).clamp(0.0, maxCard);
-            return SizedBox(
-              height: cardHeight,
-              child: PageView.builder(
-                controller: _controller,
-                itemCount: items.length,
-                onPageChanged: (i) => setState(() => _index = i),
-                itemBuilder: (context, i) => Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.xs,
-                  ),
-                  child: GuideWideCard(
-                    guide: items[i],
-                    width: double.infinity,
-                    onTap: () => widget.onOpen(items[i]),
-                  ),
-                ),
+        SizedBox(
+          height: GuideWideCard.heightFor(context, cardWidth),
+          child: PageView.builder(
+            controller: _controller,
+            itemCount: items.length,
+            onPageChanged: (i) => setState(() => _index = i),
+            itemBuilder: (context, i) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+              child: GuideWideCard(
+                guide: items[i],
+                width: double.infinity,
+                onTap: () => widget.onOpen(items[i]),
               ),
-            );
-          },
+            ),
+          ),
         ),
         if (items.length > 1) ...[
           const SizedBox(height: AppSpacing.md),

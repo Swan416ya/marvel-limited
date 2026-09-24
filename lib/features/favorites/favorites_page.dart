@@ -15,6 +15,7 @@ import '../../core/widgets/tag_pill.dart';
 import '../../data/repository/preferences_repository.dart';
 import '../../state/favorites_state.dart';
 import '../../state/library_state.dart';
+import 'favorite_kind_nav.dart';
 
 /// 收藏 tab。
 ///
@@ -311,18 +312,6 @@ class _ShelfBookTile extends StatelessWidget {
 
   final FavoriteEntry entry;
 
-  void _open(BuildContext context) {
-    switch (entry.kind) {
-      case FavoriteKind.issue:
-        final issue = entry.asIssue;
-        if (issue != null) AppRouter.openIssue(context, issue);
-      case FavoriteKind.series:
-        AppRouter.openSeries(context, entry.id, entry.title);
-      case FavoriteKind.guide:
-        AppRouter.openGuide(context, entry.asGuide);
-    }
-  }
-
   void _remove(BuildContext context) {
     final favorites = context.read<FavoritesState>();
     final messenger = ScaffoldMessenger.of(context);
@@ -346,7 +335,7 @@ class _ShelfBookTile extends StatelessWidget {
         : null;
 
     return InkWell(
-      onTap: () => _open(context),
+      onTap: () => entry.open(context),
       onLongPress: () => _remove(context),
       borderRadius: BorderRadius.circular(AppRadius.md),
       child: Column(
@@ -366,11 +355,7 @@ class _ShelfBookTile extends StatelessWidget {
                   left: 4,
                   top: 4,
                   child: CoverBadge(
-                    label: switch (entry.kind) {
-                      FavoriteKind.issue => '期',
-                      FavoriteKind.series => '系列',
-                      FavoriteKind.guide => '指南',
-                    },
+                    label: entry.kind.badgeLabel,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 5,
                       vertical: 1,
